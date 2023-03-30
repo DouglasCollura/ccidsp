@@ -1,0 +1,348 @@
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url("../font/Ubuntu-Light.ttf");
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url("../font/Ubuntu-Regular.ttf");
+    font-weight: normal;
+
+}
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url("../font/Ubuntu-Medium.ttf");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url("../font/Ubuntu-Bold.ttf");
+    font-weight: 600;
+}
+
+
+@function calculateRem($size) {
+    $remSize: calc($size / 16px);
+    @return $remSize * 1rem;
+}
+
+@mixin font-size($size) {
+    font-size: $size;
+    font-size: calculateRem($size);
+    line-height: calculateRem($size)*1.5;
+}
+
+
+* {
+    font-family: Ubuntu;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    font-weight: 400;
+    color: #787878;
+    @include font-size(16px);
+
+    scrollbar-width: thin !important;
+    scrollbar-color:  red rgba(69,69,69,.09) !important;
+
+    *::-webkit-scrollbar {
+        width: 7px !important;
+        height: 7px;
+    }
+    
+    *::-webkit-scrollbar-track {
+    background: rgba(69,69,69,.09);
+    }
+    
+    *::-webkit-scrollbar-thumb {
+    background-color: red;
+    border-radius: 20px;
+    // border: 3px solid rgba(69,69,69,.09);
+    }
+}
+
+
+html {
+    height: 100%;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100%;
+    height: 100%;
+    font-family: Ubuntu;
+    @include font-size(15px);
+    position: relative;
+    background-color: white !important;
+}
+
+a{
+    text-decoration: none;
+}
+
+h1,h2,h3,h4,h5{margin: 0px; padding: 0px;}
+h1{@include font-size(21px)}
+h2{@include font-size(19px)}
+h3{@include font-size(17px)}
+h4{@include font-size(15px)}
+h5{@include font-size(13px)}
+
+
+.form-group {
+    
+    margin-bottom: 20px;
+  
+    label {
+      font-weight: 500;
+      font-size: 14px;
+    }
+  
+    textarea {
+      min-width: 100%
+    }
+  
+    .alone {
+      min-width: 100%
+    }
+  
+    .color-negro {
+      font-size: 16px;
+      font-weight: 600;
+      padding: 10px 5px;
+  
+      .icon-upload {
+        font-size: 22px;
+        font-weight: 600;
+      }
+    }
+
+    .text-rojo{
+        margin-top: 10px;
+    }
+}
+
+
+input:focus,textarea:focus{
+    outline: none;
+}
+
+input,select{
+    cursor: pointer;
+    border: 1px solid #787878;
+    border-radius: 8px;
+    padding: 8px 12px;
+    height: 45px;
+}
+
+select{
+    min-width: 120px;
+    max-width: 400px;
+    margin: 5px 0px;
+    background: none;
+    border: none;
+}
+
+.input-block{
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.input-square{
+    min-width: 120px;
+    max-width: 400px;
+    // margin: 5px 0px;
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    border: 1px solid #787878;
+    border-radius: 8px;
+    background:#fff;
+    width: 100%;
+    cursor: auto !important;
+} 
+
+
+
+
+/* * 
+*   ###################### BUTTONS ##################################### 
+* */
+
+.btn-block{
+    width: 100% !important;
+}
+
+.btn{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 15px;
+    max-height: 45px;
+    border-radius: 100px;
+    width: max-content;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    -ms-border-radius: 100px;
+    -o-border-radius: 100px;
+    transition: all .15s;
+    -webkit-transition: all .15s;
+    -moz-transition: all .15s;
+    -ms-transition: all .15s;
+    -o-transition: all .15s;
+    display: flex;
+    flex-wrap:wrap;
+    grid-gap: 7px;
+    justify-content: center;
+    align-items: center;
+
+    span{
+        color: inherit !important;
+        font-size: 24px;
+    }
+
+    &-primary{
+        @extend .btn;
+        background-color: #68bcd1;
+        color: white;
+    }
+
+}
+
+/* * 
+*   ###################### FUENTES ##################################### 
+* */
+
+.font-300{
+	font-weight: 300 !important;
+}
+
+.font-400{
+	font-weight: 400 !important;
+}
+
+.font-500{
+	font-weight: 500 !important;
+}
+
+.font-600{
+	font-weight: 600 !important;
+}
+
+
+
+.flex{
+    display: flex;
+}
+
+.grid{
+	display: grid;
+	height: 100%;
+}
+
+.gap-10{
+    grid-gap: 10px !important;
+}
+.gap-20{
+    grid-gap: 20px !important;
+}
+
+/* * 
+*   ###################### POSITIONS ##################################### 
+* */
+
+.text-right{
+	text-align: right;
+}
+.text-center{
+	text-align: center;
+}
+.text-left{
+  text-align: left;
+}
+
+
+.justify-items-center{
+	justify-items:center;
+}
+.justify-items-start{
+	justify-items:start;
+}
+.justify-items-end{
+	justify-items:end;
+}
+
+.align-items-start{
+	align-items: start;
+}
+.align-items-center{
+	align-items: center;
+}
+.align-items-end{
+	align-items: end;
+}
+
+
+.justify-self-center{
+	justify-self:center;
+}
+.justify-self-end{
+	justify-self:end;
+}
+.justify-self-start{
+	justify-self:start;
+}
+.justify-self-stretch{
+	justify-self:stretch;
+}
+
+.align-self-start{
+	align-self: start;
+}
+.align-self-center{
+	align-self: center;
+}
+.align-self-end{
+	align-self: end;
+}
+
+.align-content-start{
+	align-content: start;
+}
+.align-content-center{
+	align-content: center;
+}
+.align-content-end{
+	align-content: end;
+}
+
+.justify-content-center{
+	justify-content:center;
+}
+.justify-content-end{
+	justify-content:end;
+}
+.justify-content-start{
+	justify-content:start;
+}
+
+
+/* * 
+*   ###################### STYLING ##################################### 
+* */
+
+.card{
+    background-color: white;
+    min-width: 100px;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    filter: drop-shadow(0px 0px 9px rgba(102, 102, 102, 0.2));
+    -webkit-filter: drop-shadow(0px 0px 9px rgba(102, 102, 102, 0.2));
+    padding: 15px;
+}
