@@ -1,36 +1,31 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-investigators',
+  templateUrl: './investigators.component.html',
+  styleUrls: ['./investigators.component.scss']
 })
-export class LoginComponent {
+export class InvestigatorsComponent {
 
   constructor(
-    private router: Router,
     private dialog: MatDialog,
-
   ){
-    
   }
 
   @ViewChild('modal') modal!: TemplateRef<any>;
 
+  displayedColumns: string[] = ['Nombres', 'Apellidos', 'Cedula', 'Expediente', 'Opt.'];
+  dataSource:any = [{name:'Douglas', lastname:'Si', ci:'3213213', exp:'2135'}]
 
-  login(){
-    this.router.navigate(['/user'])
-  }
 
   openModal(){
     this.dialog.open(this.modal,
       {
-        maxWidth: '600px',
+        maxWidth: '800px',
         maxHeight: 'max-content',
         height: 'max-content',
-        width: 'max-content',
+        width: '100%',
         panelClass: 'full-screen-modal'
       }).beforeClosed()
       .subscribe(e=>{

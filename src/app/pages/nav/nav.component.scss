@@ -68,6 +68,7 @@
     display: grid;
     grid-area: section-content;
     width: 100%;
+    grid-template-rows: min-content auto;
 }
 
 .mat-expansion-panel{

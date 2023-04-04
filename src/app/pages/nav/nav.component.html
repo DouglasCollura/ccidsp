@@ -38,40 +38,78 @@
             </mat-expansion-panel>
         </mat-accordion>
 
-
         <mat-accordion>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title class="font-600" >
-                        GESTIÓN    
+                        GESTIÓN 
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                
-                <div class="body-expansion">
-                    <button class="btn"> <mat-icon class="material-symbols-outlined">group</mat-icon> Sujeto de estudio </button>
-                    <mat-divider></mat-divider>
-                    <button class="btn"> <mat-icon class="material-symbols-outlined">apartment</mat-icon> Comunidad </button>
-                    <mat-divider></mat-divider>
-                    <button class="btn"> <mat-icon class="material-symbols-outlined">school</mat-icon> Docente acompañante </button>
-                    <mat-divider></mat-divider>
-                    <button class="btn"> <mat-icon class="material-symbols-outlined">menu_book</mat-icon>PNF</button>
-                    <mat-divider></mat-divider>
-                    <button class="btn"> <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>SSECCIÓN</button>
-                    <mat-divider></mat-divider>
-                    <button class="btn"> <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>TRAYECTO</button>
-                    <mat-divider></mat-divider>
-                    <button class="btn"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>LINEA DE INVESTIGACIÓN</button>
-                    <mat-divider></mat-divider>
-                    <button class="btn"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>AREA PRIORITARIA    </button>
-                </div>
-                
+                    
+                    <mat-accordion>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="font-600" >
+                                    PERSONAL    
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            
+                            <div class="body-expansion">
+                                <button class="btn" routerLink="investigator" > <mat-icon class="material-symbols-outlined">group</mat-icon> Investigadores </button>
+                                <mat-divider></mat-divider>
+                                <button class="btn"> <mat-icon class="material-symbols-outlined">school</mat-icon> Docente acompañante </button>
+                                <mat-divider></mat-divider>
+                            </div>
+                            
+                        </mat-expansion-panel>
+                    </mat-accordion>
+
+
+                    <mat-accordion>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="font-600" >
+                                    INSTITUCIÓN    
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            
+                            <div class="body-expansion">
+
+                                <button class="btn"> <mat-icon class="material-symbols-outlined">menu_book</mat-icon>PNF</button>
+                                <mat-divider></mat-divider>
+                                <button class="btn"> <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>SSECCIÓN</button>
+                                <mat-divider></mat-divider>
+                                <button class="btn"> <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>TRAYECTO</button>
+                                <mat-divider></mat-divider>
+                            </div>
+                            
+                        </mat-expansion-panel>
+                    </mat-accordion>
+
+
+                    <mat-accordion>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="font-600" >
+                                    COMUNIDADES    
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            
+                            <div class="body-expansion">
+                                <button class="btn"> <mat-icon class="material-symbols-outlined">apartment</mat-icon> Comunidad </button>
+                                <mat-divider></mat-divider>
+                                <button class="btn"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>LINEA DE INVESTIGACIÓN</button>
+                                <mat-divider></mat-divider>
+                                <button class="btn"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>AREA PRIORITARIA    </button>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
             </mat-expansion-panel>
         </mat-accordion>
 
     </div>
 
     <div class="section-content">
-        <h1>asd</h1>
         <router-outlet></router-outlet>
     </div>
 

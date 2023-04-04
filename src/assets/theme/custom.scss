@@ -97,8 +97,9 @@ h5{@include font-size(13px)}
     margin-bottom: 20px;
   
     label {
-      font-weight: 500;
+      font-weight: 600;
       font-size: 14px;
+      color:#4d4d4d
     }
   
     textarea {
@@ -162,6 +163,7 @@ select{
     border-radius: 8px;
     background:#fff;
     width: 100%;
+    font-size: 13px;
     cursor: auto !important;
 } 
 
@@ -199,7 +201,7 @@ select{
     justify-content: center;
     align-items: center;
 
-    span{
+    span, *{
         color: inherit !important;
         font-size: 24px;
     }
@@ -207,6 +209,12 @@ select{
     &-primary{
         @extend .btn;
         background-color: #68bcd1;
+        color: white;
+    }
+
+    &-secondary{
+        @extend .btn;
+        background-color: #d16868;
         color: white;
     }
 
@@ -346,3 +354,16 @@ select{
     -webkit-filter: drop-shadow(0px 0px 9px rgba(102, 102, 102, 0.2));
     padding: 15px;
 }
+
+.content-two {
+    column-gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+@media only screen and (max-width: 768px) {
+    .content-two {
+        grid-template-columns: 1fr !important;
+    }
+}
+  

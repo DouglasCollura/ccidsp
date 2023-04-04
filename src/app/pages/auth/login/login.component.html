@@ -10,7 +10,7 @@
     <div class="card">
         <h2 class="text-center font-600 align-self-center">Inicia sesión</h2>
 
-        <form action="">
+        <form (submit)="login()">
 
             <div class="form-group">
                 <label for="">Correo</label>
@@ -23,9 +23,25 @@
             </div>
 
             <div class="form-group">
-                <button class="btn-primary btn-block"> Iniciar sesión </button>
+                <button type="button" class="btn-primary btn-block" (click)="login()"> Iniciar sesión </button>
             </div>
         </form>
 
     </div>
 </div>
+
+
+<!-- * MODAL CONFIRM EDIT -->
+<ng-template #modal>
+    <mat-dialog-actions class="modal">
+        <div class="header">
+            <span></span>
+            <button class="btn btn-close" mat-dialog-close="true"> <mat-icon class="material-symbols-outlined">close</mat-icon></button>
+        </div>
+        
+        <div class="modal-body" >
+            <h2 class="text-center font-600"> ¿Deseas actualizar tu perfil?</h2>
+        </div>
+
+    </mat-dialog-actions>
+</ng-template>
