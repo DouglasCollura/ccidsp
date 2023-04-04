@@ -16,7 +16,7 @@ export class InvestigatorsComponent {
   @ViewChild('modal') modal!: TemplateRef<any>;
 
   displayedColumns: string[] = ['Nombres', 'Apellidos', 'Cedula', 'Expediente', 'Opt.'];
-  dataSource:any = [{name:'Douglas', lastname:'Si', ci:'3213213', exp:'2135'}]
+  dataSource:any = [{name:'TestName', lastname:'testLastName', ci:'3213213', exp:'2135'}]
 
 
   openModal(){
