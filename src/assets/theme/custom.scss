@@ -53,11 +53,11 @@
         width: 7px !important;
         height: 7px;
     }
-    
+
     *::-webkit-scrollbar-track {
     background: rgba(69,69,69,.09);
     }
-    
+
     *::-webkit-scrollbar-thumb {
     background-color: red;
     border-radius: 20px;
@@ -92,29 +92,42 @@ h4{@include font-size(15px)}
 h5{@include font-size(13px)}
 
 
+.text-error {
+  color: #f24747;
+  position: absolute;
+  margin: 0;
+  font-size: 12px;
+}
+
+.text-rojo {
+  color: #f24747;
+  margin: 0;
+  font-size: 12px;
+}
+
 .form-group {
-    
-    margin-bottom: 20px;
-  
+
+    margin-bottom: 25px;
+
     label {
       font-weight: 600;
       font-size: 14px;
       color:#4d4d4d
     }
-  
+
     textarea {
       min-width: 100%
     }
-  
+
     .alone {
       min-width: 100%
     }
-  
+
     .color-negro {
       font-size: 16px;
       font-weight: 600;
       padding: 10px 5px;
-  
+
       .icon-upload {
         font-size: 22px;
         font-weight: 600;
@@ -165,13 +178,13 @@ select{
     width: 100%;
     font-size: 13px;
     cursor: auto !important;
-} 
+}
 
 
 
 
-/* * 
-*   ###################### BUTTONS ##################################### 
+/* *
+*   ###################### BUTTONS #####################################
 * */
 
 .btn-block{
@@ -220,8 +233,32 @@ select{
 
 }
 
-/* * 
-*   ###################### FUENTES ##################################### 
+.errorCampos{
+  border-color: red !important;
+}
+
+.append-group{
+  display: flex;
+
+  input:first-child, select:first-child{
+      min-width: 65px;
+      margin: 0px !important;
+      border-end-end-radius: 0px !important;
+      border-start-end-radius: 0px !important;
+      background-color: #eeeeee;
+      & *{
+          color: black !important;
+      }
+      outline: none !important;
+  }
+  *:nth-child(2){
+      border-start-start-radius: 0px !important;
+      border-end-start-radius: 0px !important;
+      border-left-width: 0px !important;
+  }
+}
+/* *
+*   ###################### FUENTES #####################################
 * */
 
 .font-300{
@@ -258,8 +295,8 @@ select{
     grid-gap: 20px !important;
 }
 
-/* * 
-*   ###################### POSITIONS ##################################### 
+/* *
+*   ###################### POSITIONS #####################################
 * */
 
 .text-right{
@@ -338,8 +375,8 @@ select{
 }
 
 
-/* * 
-*   ###################### STYLING ##################################### 
+/* *
+*   ###################### STYLING #####################################
 * */
 
 .card{
@@ -360,10 +397,32 @@ select{
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
+.table{
+  box-shadow: 0 5px 5px -3px #0003, 0 8px 10px 1px #00000024, 0 3px 14px 2px #0000001f !important;
+  background-color: white;
+}
+
+.mat-mdc-paginator{
+  box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.2), 0 10px 10px 1px rgba(0, 0, 0, 0.1411764706), 0 3px 10px 2px rgba(0, 0, 0, 0.1215686275) !important;
+  background-color: white;
+}
+
+
 
 @media only screen and (max-width: 768px) {
     .content-two {
         grid-template-columns: 1fr !important;
     }
 }
-  
+.loader{
+  animation: load 1.2s linear infinite reverse;
+  -webkit-animation: load 1.2s linear infinite reverse;
+}
+@keyframes load {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}

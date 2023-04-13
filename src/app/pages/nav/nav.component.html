@@ -3,9 +3,11 @@
     <div class="section-nav">
 
         <div class="head">
-            <div class="content-circle">
-                <span>D</span>
+            <div class="content-logo">
+              <img src="/assets/image/logo.jpeg" alt="">
             </div>
+
+            <h3>{{user?.email}}</h3>
         </div>
 
         <mat-accordion>
@@ -15,9 +17,9 @@
                         <mat-icon class="material-symbols-outlined">account_tree</mat-icon> <span  class="font-500">  PROCESOS </span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                
+
                 <div class="body-expansion">
-                    <button class="btn"> <mat-icon class="material-symbols-outlined">group_add</mat-icon> INSCRIPCIONES </button>
+                    <button class="btn"> <mat-icon class="material-symbols-outlined">group_add</mat-icon> Inscripciones </button>
                 </div>
                 <mat-divider></mat-divider>
             </mat-expansion-panel>
@@ -28,13 +30,13 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title >
-                        <mat-icon class="material-symbols-outlined">receipt_long</mat-icon> <span  class="font-500">  REPORTES </span>     
+                        <mat-icon class="material-symbols-outlined">receipt_long</mat-icon> <span  class="font-500">  REPORTES </span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-   
+
                 <div class="body-expansion">
                 </div>
-                
+
             </mat-expansion-panel>
         </mat-accordion>
 
@@ -42,25 +44,25 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title class="font-600" >
-                        GESTIÓN 
+                      <mat-icon class="material-symbols-outlined">home_storage</mat-icon> <span  class="font-500"> GESTIÓN </span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                    
+
                     <mat-accordion>
                         <mat-expansion-panel>
                             <mat-expansion-panel-header>
                                 <mat-panel-title class="font-600" >
-                                    PERSONAL    
+                                  <mat-icon class="material-symbols-outlined">groups_2</mat-icon>  <span  class="font-500">PERSONAL</span>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            
+
                             <div class="body-expansion">
                                 <button class="btn" routerLink="investigator" > <mat-icon class="material-symbols-outlined">group</mat-icon> Investigadores </button>
                                 <mat-divider></mat-divider>
                                 <button class="btn"> <mat-icon class="material-symbols-outlined">school</mat-icon> Docente acompañante </button>
                                 <mat-divider></mat-divider>
                             </div>
-                            
+
                         </mat-expansion-panel>
                     </mat-accordion>
 
@@ -69,20 +71,20 @@
                         <mat-expansion-panel>
                             <mat-expansion-panel-header>
                                 <mat-panel-title class="font-600" >
-                                    INSTITUCIÓN    
+                                  <mat-icon class="material-symbols-outlined">history_edu</mat-icon> <span  class="font-500">INSTITUCIÓN</span>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            
+
                             <div class="body-expansion">
 
                                 <button class="btn"> <mat-icon class="material-symbols-outlined">menu_book</mat-icon>PNF</button>
                                 <mat-divider></mat-divider>
-                                <button class="btn"> <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>SSECCIÓN</button>
+                                <button class="btn"> <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>Sección</button>
                                 <mat-divider></mat-divider>
-                                <button class="btn"> <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>TRAYECTO</button>
+                                <button class="btn"> <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>Trayecto</button>
                                 <mat-divider></mat-divider>
                             </div>
-                            
+
                         </mat-expansion-panel>
                     </mat-accordion>
 
@@ -91,16 +93,16 @@
                         <mat-expansion-panel>
                             <mat-expansion-panel-header>
                                 <mat-panel-title class="font-600" >
-                                    COMUNIDADES    
+                                  <mat-icon class="material-symbols-outlined">location_home</mat-icon><span  class="font-500">COMUNIDADES</span>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            
+
                             <div class="body-expansion">
                                 <button class="btn"> <mat-icon class="material-symbols-outlined">apartment</mat-icon> Comunidad </button>
                                 <mat-divider></mat-divider>
-                                <button class="btn"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>LINEA DE INVESTIGACIÓN</button>
+                                <button class="btn"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>Linea de investigación</button>
                                 <mat-divider></mat-divider>
-                                <button class="btn"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>AREA PRIORITARIA    </button>
+                                <button class="btn"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>Area prioritaria </button>
                             </div>
                         </mat-expansion-panel>
                     </mat-accordion>

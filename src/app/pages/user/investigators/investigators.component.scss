@@ -5,7 +5,7 @@
     height: 100%;
     padding: 20px;
     box-sizing: border-box;
-    align-content: space-between;
+    align-content: start;
 }
 
 
@@ -14,7 +14,7 @@
     display: grid;
     align-content: start;
     grid-gap: 30px;
-  
+
     input{
       max-width: none !important;
     }
