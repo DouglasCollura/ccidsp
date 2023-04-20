@@ -3,6 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { NavComponent } from './pages/nav/nav.component';
 import { InvestigatorsComponent } from './pages/user/investigators/investigators.component';
+import { EstadoComponent } from './pages/user/location/estado/estado.component';
+import { MunicipioComponent } from './pages/user/location/municipio/municipio.component';
+import { ParroquiaComponent } from './pages/user/location/parroquia/parroquia.component';
 
 const routes: Routes = [
   {
@@ -15,11 +18,9 @@ const routes: Routes = [
     component:NavComponent,
     children: [
       { path: 'investigator', component: InvestigatorsComponent },
-    //   // { path: 'details', component: BuyerDetailsComponent },
-    //   // { path: 'search', component: BuyerSearchComponent },
-    //   // { path: 'rental', component: BuyerRentalComponent },
-    //   // { path: 'garage', component: BuyerGarageComponent },
-    //   // { path: 'replacement', component: BuyerReplacementComponent },
+      { path: 'location/state', component: EstadoComponent },
+      { path: 'location/municipio', component: MunicipioComponent },
+      { path: 'location/parroquia', component: ParroquiaComponent },
     ]
   },
 ];

@@ -106,6 +106,25 @@
                             </div>
                         </mat-expansion-panel>
                     </mat-accordion>
+
+
+                    <mat-accordion>
+                      <mat-expansion-panel>
+                          <mat-expansion-panel-header>
+                              <mat-panel-title class="font-600" >
+                                <mat-icon class="material-symbols-outlined">pin_drop</mat-icon><span  class="font-500">LOCACIÓN</span>
+                              </mat-panel-title>
+                          </mat-expansion-panel-header>
+
+                          <div class="body-expansion">
+                              <button class="btn" routerLink="location/state" > <mat-icon class="material-symbols-outlined">person_pin</mat-icon> Estado </button>
+                              <mat-divider></mat-divider>
+                              <button class="btn" routerLink="location/municipio"> <mat-icon class="material-symbols-outlined">person_pin</mat-icon>Municipio</button>
+                              <mat-divider></mat-divider>
+                              <button class="btn" routerLink="location/parroquia"> <mat-icon class="material-symbols-outlined">person_pin</mat-icon>Parroquia </button>
+                          </div>
+                      </mat-expansion-panel>
+                  </mat-accordion>
             </mat-expansion-panel>
         </mat-accordion>
 

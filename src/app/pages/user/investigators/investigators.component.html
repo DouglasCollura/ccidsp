@@ -72,7 +72,7 @@
 
           <div class="form-group">
             <label>Expediente</label>
-            <input class="input-square" onlyNumbers placeholder="Expediente" formControlName="exp" maxlength="10">
+            <input class="input-square" onlyNumbers [ngClass]="{ 'errorCampos': getFieldInvalid('exp') }" placeholder="Expediente" formControlName="exp" maxlength="10">
             <p *ngIf="getFieldInvalid('exp')" class="text-error">Campo requerido</p>
           </div>
 
@@ -83,7 +83,7 @@
                 <option [value]="1" selected>V</option>
                 <option [value]="2">E</option>
               </select>
-              <input class="input-square" formControlName="cedula" maxlength="8" onlyNumbers placeholder="Cedula">
+              <input class="input-square" formControlName="cedula" [ngClass]="{ 'errorCampos': getFieldInvalid('people.cedula') }"  maxlength="8" onlyNumbers placeholder="Cedula">
             </div>
             <p *ngIf="getFieldInvalid('people.cedula')" class="text-error">Campo requerido</p>
           </div>
@@ -93,12 +93,15 @@
         <div class="content-two" formGroupName="people">
           <div class="form-group">
             <label>Nombres</label>
-            <input class="input-square" formControlName="name" placeholder="Nombres">
+            <input class="input-square" formControlName="name" [ngClass]="{ 'errorCampos': getFieldInvalid('people.name') }"  placeholder="Nombres">
+            <p *ngIf="getFieldInvalid('people.name')" class="text-error">Campo requerido</p>
+
           </div>
 
           <div class="form-group">
             <label>Apellidos</label>
-            <input class="input-square" formControlName="lastname" placeholder="Apellidos">
+            <input class="input-square" formControlName="lastname" [ngClass]="{ 'errorCampos': getFieldInvalid('people.lastname') }" placeholder="Apellidos">
+            <p *ngIf="getFieldInvalid('people.lastname')" class="text-error">Campo requerido</p>
           </div>
         </div>
 
@@ -119,3 +122,5 @@
 
 <swal #deleteSwal title="Desea eliminar?" [showDenyButton]="true" denyButtonText="Cancelar" confirmButtonColor="#d16868" denyButtonColor="#68bcd1" icon="warning" confirmButtonText="Continuar" ></swal>
 <swal #SuccessDeleteSwal title="Eliminado con exito" confirmButtonColor="#68bcd1" icon="success" confirmButtonText="Continuar" ></swal>
+<swal #SuccessRegisterSwal title="Registrado con exito" confirmButtonColor="#68bcd1" icon="success" confirmButtonText="Continuar" ></swal>
+<swal #SuccessUpdateSwal title="Modificado con exito" confirmButtonColor="#68bcd1" icon="success" confirmButtonText="Continuar" ></swal>

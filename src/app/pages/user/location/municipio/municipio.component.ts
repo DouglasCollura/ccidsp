@@ -1,83 +1,80 @@
-import { Component, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { InvestigatorService } from '../../services/investigator.service';
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import {MatPaginator, MatPaginatorIntl} from '@angular/material/paginator';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { LocationService } from 'src/app/pages/services/location.service';
 
 @Component({
-  selector: 'app-investigators',
-  templateUrl: './investigators.component.html',
-  styleUrls: ['./investigators.component.scss']
+  selector: 'app-municipio',
+  templateUrl: './municipio.component.html',
+  styleUrls: ['./municipio.component.scss']
 })
-export class InvestigatorsComponent implements OnInit, AfterViewInit {
+export class MunicipioComponent implements OnInit, AfterViewInit{
 
   constructor(
     private dialog: MatDialog,
-    private investigatorService: InvestigatorService,
     private formBuilder: FormBuilder,
     private paginator: MatPaginatorIntl,
+    private locationService:LocationService
   ){
   }
-
   @ViewChild('modal') modal!: TemplateRef<any>;
-  @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
+  @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
 
+
   ngOnInit(): void {
-    this.getInvestigators()
+    this.getMunicipios()
+    this.getEstados()
   }
 
   ngAfterViewInit(): void {
     this.paginator.itemsPerPageLabel = ""
   }
 
-  displayedColumns: string[] = ['Nombres', 'Apellidos', 'Cedula', 'Expediente', 'Opt.'];
-  investigators:any = [];
-
   form = this.formBuilder.group({
-    exp: [null, Validators.required],
-    people:this.formBuilder.group({
-      name: [null, Validators.required],
-      lastname: [null, Validators.required],
-      nationality: [1],
-      cedula: [null, Validators.required],
-    })
+    estadoId: [null, Validators.required],
+    name: [null, Validators.required],
   })
+
+  displayedColumns: string[] = ['Estado', 'Municipio', 'Opt.'];
+  estados:any=[];
+  municipios:any=[];
   modalActive: any;
-  loading:boolean = false;
-  error:number = 0;
   edit:boolean = false;
   idEdit:number=0;
+  loading:boolean = false;
+  error:number = 0;
 
-  getInvestigators(){
-    this.investigators = []
-    this.investigatorService.getInvestigators()
-    .subscribe(res=>{
-      this.investigators = res;
-      console.log('user', res)
+
+  getEstados(){
+    this.locationService.getEstados()
+    .subscribe(e=>{
+      this.estados = e;
+      console.log(e)
     })
   }
 
-  paginate(event:any){
-    console.log(event)
+  getMunicipios(){
+    this.locationService.getMunicipios()
+    .subscribe(e=>{
+      this.municipios = e
+    })
   }
 
   store(){
-    this.error = 0
-
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    let formData:any = this.form.value;
-    formData.people.nationality = parseInt(formData.people.nationality)
     this.loading = true;
-    this.investigatorService.storeInvestigators(formData)
+
+    this.locationService.storeMunicipio(this.form.value)
     .subscribe({
       next: (e)=>{
-        this.getInvestigators()
+        this.getMunicipios()
         this.modalActive.close()
         this.loading = false;
         this.SuccessRegisterSwal.fire()
@@ -87,16 +84,8 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
         this.error = 1;
       }
     })
-
   }
 
-  remove(id:number){
-    this.investigatorService.deleteInvestigator(id)
-    .subscribe(e=>{
-      this.getInvestigators()
-      this.successDeleteSwal.fire()
-    })
-  }
 
   update(){
     this.error = 0
@@ -106,14 +95,12 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    let formData:any = this.form.value;
-    formData.people.nationality = parseInt(formData.people.nationality)
     this.loading = true;
 
-    this.investigatorService.updateInvestigator(this.idEdit,formData)
+    this.locationService.updateMunicipio(this.idEdit,this.form.value)
     .subscribe({
       next: (e)=>{
-        this.getInvestigators()
+        this.getMunicipios()
         this.modalActive.close()
         this.loading = false;
         this.SuccessUpdateSwal.fire()
@@ -125,11 +112,23 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
     })
   }
 
+  remove(id:number){
+    this.locationService.deleteMunicipio(id)
+    .subscribe(e=>{
+      this.getMunicipios()
+      this.successDeleteSwal.fire()
+    })
+  }
+
   setEdit(data:any){
     this.form.patchValue(data)
     this.idEdit = data?.id;
     this.edit = true;
     this.openModal()
+  }
+
+  paginate(event:any){
+    console.log(event)
   }
 
   getFieldInvalid(field: string) {
@@ -139,7 +138,7 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
   openModal(){
     this.modalActive = this.dialog.open(this.modal,
       {
-        maxWidth: '800px',
+        maxWidth: '500px',
         maxHeight: 'max-content',
         height: 'max-content',
         width: '100%',
@@ -147,7 +146,7 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
       })
     this.modalActive.afterClosed().subscribe(()=>{
       this.edit = false;
-      this.form.reset({people:{nationality:1}})
+      this.form.reset()
     })
   }
 }

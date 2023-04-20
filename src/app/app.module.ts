@@ -11,6 +11,10 @@ import { HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OnlyNumbersDirective } from './directives/only-numbers.directive';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { EstadoComponent } from './pages/user/location/estado/estado.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { MunicipioComponent } from './pages/user/location/municipio/municipio.component';
+import { ParroquiaComponent } from './pages/user/location/parroquia/parroquia.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,10 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     NavComponent,
     InvestigatorsComponent,
     LoginComponent,
-    OnlyNumbersDirective
+    OnlyNumbersDirective,
+    EstadoComponent,
+    MunicipioComponent,
+    ParroquiaComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +35,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    NgSelectModule,
     SweetAlert2Module.forRoot()
   ],
   providers: [],
