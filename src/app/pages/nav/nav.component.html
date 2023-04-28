@@ -25,22 +25,24 @@
             </mat-expansion-panel>
         </mat-accordion>
 
+        <ng-container *ngIf="user?.role == 'admin'" >
+          <mat-accordion >
+              <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                      <mat-panel-title >
+                          <mat-icon class="material-symbols-outlined">receipt_long</mat-icon> <span  class="font-500">  REPORTES </span>
+                      </mat-panel-title>
+                  </mat-expansion-panel-header>
 
-        <mat-accordion>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title >
-                        <mat-icon class="material-symbols-outlined">receipt_long</mat-icon> <span  class="font-500">  REPORTES </span>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
+                  <div class="body-expansion">
+                  </div>
 
-                <div class="body-expansion">
-                </div>
+              </mat-expansion-panel>
+          </mat-accordion>
+        </ng-container>
 
-            </mat-expansion-panel>
-        </mat-accordion>
-
-        <mat-accordion>
+        <ng-container *ngIf="user?.role == 'admin'" >
+          <mat-accordion>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title class="font-600" >
@@ -65,7 +67,6 @@
 
                         </mat-expansion-panel>
                     </mat-accordion>
-
 
                     <mat-accordion>
                         <mat-expansion-panel>
@@ -107,7 +108,6 @@
                         </mat-expansion-panel>
                     </mat-accordion>
 
-
                     <mat-accordion>
                       <mat-expansion-panel>
                           <mat-expansion-panel-header>
@@ -126,7 +126,8 @@
                       </mat-expansion-panel>
                   </mat-accordion>
             </mat-expansion-panel>
-        </mat-accordion>
+          </mat-accordion>
+        </ng-container>
 
     </div>
 

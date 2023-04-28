@@ -6,6 +6,7 @@ import { MaterialModule } from 'src/app/material/material/material.module';
 
 @NgModule({
   declarations: [
+
   ],
   imports: [
     CommonModule,

@@ -91,7 +91,9 @@ h3{@include font-size(17px)}
 h4{@include font-size(15px)}
 h5{@include font-size(13px)}
 
-
+.text-blue{
+  color: #68bcd1
+}
 .text-error {
   color: #f24747;
   position: absolute;
@@ -257,6 +259,63 @@ select{
       border-left-width: 0px !important;
   }
 }
+
+
+
+::ng-deep.mat-mdc-dialog-actions{
+  display: grid !important;
+  justify-content: stretch !important;
+}
+
+::ng-deep .mdc-dialog__actions{
+  display: grid !important;
+  align-items: stretch !important;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface{
+  display: grid !important;
+  overflow: inherit !important;
+}
+
+
+::ng-deep .cdk-overlay-pane{
+  max-height: auto !important;
+  overflow-y: auto !important;
+}
+
+
+.modal{
+  align-content: start;
+  display: grid !important;
+  grid-gap: 15px;
+  padding: 20px;
+  overflow-y: auto !important;
+  .header{
+      display: flex;
+      align-self: start;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  &-body{
+      padding: 10px 20px;
+      display: grid;
+      grid-gap: 20px;
+      text-align: center;
+      justify-items: center;
+      .title{
+          font-size: 24px !important;
+      }
+  }
+
+  .footer{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 5px;
+  }
+}
+
 /* *
 *   ###################### FUENTES #####################################
 * */
@@ -397,6 +456,68 @@ select{
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
+
+
+.group-input-icon-left,
+.group-input-icon-right {
+	position: relative;
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
+.group-input-icon-left {
+	span {
+		position: absolute;
+		left: 10px;
+		font-size: 16px;
+	}
+
+	input {
+		padding-left: 35px;
+	}
+}
+
+.group-input-icon-right {
+	mat-icon {
+		position: absolute;
+		right: 10px;
+	}
+
+	input {
+		padding-right: 35px;
+	}
+}
+
+
+.append-group {
+	display: flex;
+
+	input:first-child,
+	.ng-select-container:first-child {
+		min-width: 65px;
+		border-end-end-radius: 0px !important;
+		border-start-end-radius: 0px !important;
+		background-color: #eeeeee;
+
+		& * {
+			color: black !important;
+		}
+	}
+
+	*:nth-child(2) {
+		border-start-start-radius: 0px !important;
+		border-end-start-radius: 0px !important;
+		border-left-width: 0px !important;
+	}
+
+	.input-square {
+		height: 44px !important;
+		margin: 0px !important;
+	}
+}
+
+
 .table{
   box-shadow: 0 5px 5px -3px #0003, 0 8px 10px 1px #00000024, 0 3px 14px 2px #0000001f !important;
   background-color: white;
@@ -406,7 +527,6 @@ select{
   box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.2), 0 10px 10px 1px rgba(0, 0, 0, 0.1411764706), 0 3px 10px 2px rgba(0, 0, 0, 0.1215686275) !important;
   background-color: white;
 }
-
 
 
 @media only screen and (max-width: 768px) {

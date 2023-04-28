@@ -6,11 +6,16 @@ import { InvestigatorsComponent } from './pages/user/investigators/investigators
 import { EstadoComponent } from './pages/user/location/estado/estado.component';
 import { MunicipioComponent } from './pages/user/location/municipio/municipio.component';
 import { ParroquiaComponent } from './pages/user/location/parroquia/parroquia.component';
+import { SignupComponent } from './pages/auth/signup/signup.component';
 
 const routes: Routes = [
   {
     path: '',
     component:LoginComponent,
+  },
+  {
+    path: 'signup',
+    component:SignupComponent,
   },
 
   {

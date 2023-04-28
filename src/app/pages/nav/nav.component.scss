@@ -20,7 +20,7 @@
     .head{
         >*{color: white};
         display: grid;
-        place-content: center;
+        justify-items: center;
         height: 160px;
         border-bottom: 1px solid #5F84A2;
         .content-circle{

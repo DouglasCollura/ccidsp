@@ -11,8 +11,11 @@ export class AuthService {
   constructor(private http: HttpClient) { }
   private url: string = environment.serverUrl;
 
-
   login(data:any): Observable<any> {
     return this.http.post(`${this.url}/auth/login`,data)
+  }
+
+  signUp(data:any): Observable<any> {
+    return this.http.post(`${this.url}/user`,data)
   }
 }

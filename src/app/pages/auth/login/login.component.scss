@@ -49,3 +49,30 @@
     color: white;
     line-height: 40px;
 }
+
+.card-option{
+  min-height: 0px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  cursor: pointer;
+
+  .content-circle{
+    display: grid;
+    place-content: center;
+    background-color: #f3f3f3;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+  }
+  &:hover{
+    h2{
+      color: #68bcd1 !important;
+    }
+    outline: 1px solid #d16868;
+  }
+}

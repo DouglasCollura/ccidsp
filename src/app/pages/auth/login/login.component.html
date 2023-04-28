@@ -29,7 +29,11 @@
             </div>
 
             <div class="form-group">
-                <button class="btn-primary btn-block"> Iniciar sesión <mat-icon class="loader" *ngIf="loading" >cached</mat-icon> </button>
+              <button class="btn-primary btn-block"> Iniciar sesión <mat-icon class="loader" *ngIf="loading" >cached</mat-icon> </button>
+            </div>
+
+            <div class="flex align-items-center justify-content-center">
+              <p>¿No posees cuenta?</p> <button type="button" class="btn text-blue" (click)="openModal()" >Registrarse</button>
             </div>
         </form>
 
@@ -46,7 +50,22 @@
         </div>
 
         <div class="modal-body" >
-            <h2 class="text-center font-600"> ¿Deseas actualizar tu perfil?</h2>
+            <h2 class="text-center font-600"> ¿Como quieres registrarte?</h2>
+
+            <div class="card card-option" mat-dialog-close="true" routerLink="signup" [queryParams]="{type:1}">
+                <div class="content-circle">
+                  <mat-icon class="material-symbols-outlined">school</mat-icon>
+                </div>
+
+                <h2 class="font-600">Docente acompañante</h2>
+            </div>
+
+            <div class="card card-option">
+              <div class="content-circle">
+                <mat-icon class="material-symbols-outlined">groups_2</mat-icon>
+              </div>
+              <h2 class="font-600">Investigador lider</h2>
+          </div>
         </div>
 
     </mat-dialog-actions>

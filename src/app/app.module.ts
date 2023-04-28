@@ -15,6 +15,7 @@ import { EstadoComponent } from './pages/user/location/estado/estado.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MunicipioComponent } from './pages/user/location/municipio/municipio.component';
 import { ParroquiaComponent } from './pages/user/location/parroquia/parroquia.component';
+import { SignupComponent } from './pages/auth/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ParroquiaComponent } from './pages/user/location/parroquia/parroquia.co
     OnlyNumbersDirective,
     EstadoComponent,
     MunicipioComponent,
-    ParroquiaComponent
+    ParroquiaComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
