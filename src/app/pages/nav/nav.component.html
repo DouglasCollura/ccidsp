@@ -1,6 +1,7 @@
 <div class="temp-nav">
 
     <div class="section-nav">
+      <button class="btn" (click)="logOut()"> <mat-icon class="material-symbols-outlined">logout</mat-icon> Cerrar sesión</button>
 
         <div class="head">
             <div class="content-logo">
@@ -59,7 +60,7 @@
                             </mat-expansion-panel-header>
 
                             <div class="body-expansion">
-                                <button class="btn" routerLink="investigator" > <mat-icon class="material-symbols-outlined">group</mat-icon> Investigadores </button>
+                                <button class="btn" routerLink="investigator" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">group</mat-icon> Investigadores </button>
                                 <mat-divider></mat-divider>
                                 <button class="btn"> <mat-icon class="material-symbols-outlined">school</mat-icon> Docente acompañante </button>
                                 <mat-divider></mat-divider>
@@ -78,11 +79,11 @@
 
                             <div class="body-expansion">
 
-                                <button class="btn"> <mat-icon class="material-symbols-outlined">menu_book</mat-icon>PNF</button>
+                                <button class="btn" routerLink="institution/pnf" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">menu_book</mat-icon>PNF</button>
                                 <mat-divider></mat-divider>
-                                <button class="btn"> <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>Sección</button>
+                                <button class="btn" routerLink="institution/seccion" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>Sección</button>
                                 <mat-divider></mat-divider>
-                                <button class="btn"> <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>Trayecto</button>
+                                <button class="btn" routerLink="institution/trayecto" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>Trayecto</button>
                                 <mat-divider></mat-divider>
                             </div>
 
@@ -117,11 +118,11 @@
                           </mat-expansion-panel-header>
 
                           <div class="body-expansion">
-                              <button class="btn" routerLink="location/state" > <mat-icon class="material-symbols-outlined">person_pin</mat-icon> Estado </button>
+                              <button class="btn" routerLink="location/state" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">person_pin</mat-icon> Estado </button>
                               <mat-divider></mat-divider>
-                              <button class="btn" routerLink="location/municipio"> <mat-icon class="material-symbols-outlined">person_pin</mat-icon>Municipio</button>
+                              <button class="btn" routerLink="location/municipio" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">person_pin</mat-icon>Municipio</button>
                               <mat-divider></mat-divider>
-                              <button class="btn" routerLink="location/parroquia"> <mat-icon class="material-symbols-outlined">person_pin</mat-icon>Parroquia </button>
+                              <button class="btn" routerLink="location/parroquia" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">person_pin</mat-icon>Parroquia </button>
                           </div>
                       </mat-expansion-panel>
                   </mat-accordion>

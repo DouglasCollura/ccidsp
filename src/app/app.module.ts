@@ -16,6 +16,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { MunicipioComponent } from './pages/user/location/municipio/municipio.component';
 import { ParroquiaComponent } from './pages/user/location/parroquia/parroquia.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
+import { OnlyLetterDirective } from './directives/only-letter.directive';
+import { HomeComponent } from './pages/user/home/home.component';
+import { PnfComponent } from './pages/user/pnf/pnf.component';
+import { TrayectoComponent } from './pages/user/trayecto/trayecto.component';
+import { SeccionComponent } from './pages/user/seccion/seccion.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +32,12 @@ import { SignupComponent } from './pages/auth/signup/signup.component';
     EstadoComponent,
     MunicipioComponent,
     ParroquiaComponent,
-    SignupComponent
+    SignupComponent,
+    OnlyLetterDirective,
+    HomeComponent,
+    PnfComponent,
+    TrayectoComponent,
+    SeccionComponent
   ],
   imports: [
     BrowserModule,

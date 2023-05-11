@@ -63,6 +63,7 @@
             -o-border-radius: 0px;
         }
     }
+
 }
 
 .section-content {
@@ -77,12 +78,22 @@
     max-width: 275px;
     background-color: #355c7d;
     *{
-        color: white !important;
+        color: white;
     }
     span{
       font-size: 14px !important;
 
     }
+}
+
+.active{
+  color: #68bcd1 !important;
+  background-color: #2f516e;
+  .mat-expansion-panel{
+    *{
+      color: #68bcd1 !important;
+    }
+  }
 }
 
 .content-logo{

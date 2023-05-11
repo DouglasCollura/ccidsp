@@ -199,12 +199,8 @@ select{
     cursor: pointer;
     padding: 8px 15px;
     max-height: 45px;
-    border-radius: 100px;
     width: max-content;
-    -webkit-border-radius: 100px;
-    -moz-border-radius: 100px;
-    -ms-border-radius: 100px;
-    -o-border-radius: 100px;
+
     transition: all .15s;
     -webkit-transition: all .15s;
     -moz-transition: all .15s;
@@ -232,7 +228,11 @@ select{
         background-color: #d16868;
         color: white;
     }
-
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
 }
 
 .errorCampos{
@@ -301,7 +301,6 @@ select{
       padding: 10px 20px;
       display: grid;
       grid-gap: 20px;
-      text-align: center;
       justify-items: center;
       .title{
           font-size: 24px !important;

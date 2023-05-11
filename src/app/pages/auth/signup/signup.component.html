@@ -20,14 +20,14 @@
 
         <div class="form-group" formGroupName="people">
           <label>Nombres</label>
-          <input class="input-square input-block" formControlName="name" [ngClass]="{ 'errorCampos': getFieldInvalid('people.name') }"  placeholder="Nombres">
+          <input class="input-square input-block" formControlName="name" onlyLetter [ngClass]="{ 'errorCampos': getFieldInvalid('people.name') }"  placeholder="Nombres">
           <p *ngIf="getFieldInvalid('people.name')" class="text-error">Campo requerido</p>
 
         </div>
 
         <div class="form-group" formGroupName="people">
           <label>Apellidos</label>
-          <input class="input-square input-block" formControlName="lastname" [ngClass]="{ 'errorCampos': getFieldInvalid('people.lastname') }" placeholder="Apellidos">
+          <input class="input-square input-block" formControlName="lastname" onlyLetter [ngClass]="{ 'errorCampos': getFieldInvalid('people.lastname') }" placeholder="Apellidos">
           <p *ngIf="getFieldInvalid('people.lastname')" class="text-error">Campo requerido</p>
         </div>
 

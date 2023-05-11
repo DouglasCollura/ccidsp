@@ -28,11 +28,12 @@ export class SignupComponent implements OnInit{
     this.rutaActiva.queryParams
     .subscribe((e:any)=>{
       this.type = parseInt(e?.type)
+      this.form.get('role')?.setValue(this.type == 1 ? 'teacher' : 'student')
     })
   }
 
   form = this.formBuilder.group({
-    role: ['teacher', Validators.required],
+    role: ['', Validators.required],
     email: [null, Validators.required],
     password: [null, Validators.required],
     people:this.formBuilder.group({

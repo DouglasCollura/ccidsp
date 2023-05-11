@@ -1,0 +1,24 @@
+.temp-home{
+  min-height: 100%;
+  //background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url('/assets/image/background-blur.webp');
+  backdrop-filter: blur(4px);
+  display: grid;
+  align-content: start;
+  grid-gap: 40px;
+  padding: 20px;
+  place-content: center;
+  .title{
+    font-size: 35px;
+    font-weight: 600;
+  }
+
+  .card{
+    padding: 40px;
+    display: grid;
+    grid-gap: 30px;
+  }
+}
+
