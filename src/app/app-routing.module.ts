@@ -13,6 +13,7 @@ import { HomeComponent } from './pages/user/home/home.component';
 import { PnfComponent } from './pages/user/pnf/pnf.component';
 import { TrayectoComponent } from './pages/user/trayecto/trayecto.component';
 import { SeccionComponent } from './pages/user/seccion/seccion.component';
+import { BulkImportComponent } from './pages/user/bulk-import/bulk-import.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,7 @@ const routes: Routes = [
       { path: 'institution/pnf', component: PnfComponent },
       { path: 'institution/trayecto', component: TrayectoComponent },
       { path: 'institution/seccion', component: SeccionComponent },
+      { path: 'bulk-import', component: BulkImportComponent },
     ]
   },
 ];

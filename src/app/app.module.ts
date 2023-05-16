@@ -21,6 +21,7 @@ import { HomeComponent } from './pages/user/home/home.component';
 import { PnfComponent } from './pages/user/pnf/pnf.component';
 import { TrayectoComponent } from './pages/user/trayecto/trayecto.component';
 import { SeccionComponent } from './pages/user/seccion/seccion.component';
+import { BulkImportComponent } from './pages/user/bulk-import/bulk-import.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { SeccionComponent } from './pages/user/seccion/seccion.component';
     HomeComponent,
     PnfComponent,
     TrayectoComponent,
-    SeccionComponent
+    SeccionComponent,
+    BulkImportComponent
   ],
   imports: [
     BrowserModule,
