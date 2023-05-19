@@ -33,6 +33,9 @@ export class ParroquiaComponent implements OnInit, AfterViewInit{
   ngAfterViewInit(): void {
     this.paginator.itemsPerPageLabel = ""
 
+    this.form.get('name')
+    .valueChanges.subscribe(()=> this.error = '')
+
     this.form.get('estadoId')?.valueChanges.
     subscribe((e:any)=>{
       console.log(e)
@@ -45,7 +48,7 @@ export class ParroquiaComponent implements OnInit, AfterViewInit{
   form = this.formBuilder.group({
     estadoId: [null, Validators.required],
     municipioId: [null, Validators.required],
-    name: [null, Validators.required],
+    name: ['', Validators.required],
   })
 
   displayedColumns: string[] = ['Estado', 'Municipio', 'Parroquia', 'Opt.'];
@@ -56,7 +59,7 @@ export class ParroquiaComponent implements OnInit, AfterViewInit{
   edit:boolean = false;
   idEdit:number=0;
   loading:boolean = false;
-  error:number = 0;
+  error:string = '';
 
 
   getEstados(){
@@ -89,6 +92,9 @@ export class ParroquiaComponent implements OnInit, AfterViewInit{
     this.loading = true;
     let data = this.form.value;
     delete data.estadoId;
+    let name:string = this.form.get('name').value;
+    this.form.get('name').setValue(name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
+
     this.locationService.storeParroquia(data)
     .subscribe({
       next: (e)=>{
@@ -97,16 +103,16 @@ export class ParroquiaComponent implements OnInit, AfterViewInit{
         this.loading = false;
         this.SuccessRegisterSwal.fire()
       },
-      error: (error) => {
+      error: ({error}) => {
+        this.error = error.message
+
         this.loading = false;
-        this.error = 1;
       }
     })
   }
 
 
   update(){
-    this.error = 0
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -126,7 +132,6 @@ export class ParroquiaComponent implements OnInit, AfterViewInit{
       },
       error: (error) => {
         this.loading = false;
-        this.error = 1;
       }
     })
   }

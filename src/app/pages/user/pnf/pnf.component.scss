@@ -134,3 +134,13 @@
   max-height: auto !important;
   overflow-y: auto !important;
 }
+
+.modal{
+  .modal-body{
+    justify-items: stretch !important;
+  }
+  .footer{
+    justify-content: center;
+  }
+}
+

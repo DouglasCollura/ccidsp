@@ -31,10 +31,13 @@ export class PnfComponent implements OnInit, AfterViewInit{
 
   ngAfterViewInit(): void {
     this.paginator.itemsPerPageLabel = ""
+
+    this.form.get('name')
+    .valueChanges.subscribe(()=> this.error = '')
   }
 
   form = this.formBuilder.group({
-    name: [null, Validators.required],
+    name: ['', Validators.required],
   })
 
   displayedColumns: string[] = ['Nombre', 'Opt.'];
@@ -43,7 +46,7 @@ export class PnfComponent implements OnInit, AfterViewInit{
   edit:boolean = false;
   idEdit:number=0;
   loading:boolean = false;
-  error:number = 0;
+  error:string = '';
 
 
   getPnfs(){
@@ -55,12 +58,15 @@ export class PnfComponent implements OnInit, AfterViewInit{
   }
 
   store(){
+    this.error = ''
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
     this.loading = true;
 
+    let name:string = this.form.get('name').value;
+    this.form.get('name').setValue(name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
     this.pnfServices.storePnf(this.form.value)
     .subscribe({
       next: (e)=>{
@@ -69,16 +75,17 @@ export class PnfComponent implements OnInit, AfterViewInit{
         this.loading = false;
         this.SuccessRegisterSwal.fire()
       },
-      error: (error) => {
+      error: ({error}) => {
+        console.log(error)
+        this.error = error.message
         this.loading = false;
-        this.error = 1;
       }
     })
   }
 
 
   update(){
-    this.error = 0
+    this.error = ''
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -97,7 +104,6 @@ export class PnfComponent implements OnInit, AfterViewInit{
       },
       error: (error) => {
         this.loading = false;
-        this.error = 1;
       }
     })
   }

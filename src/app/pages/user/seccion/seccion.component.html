@@ -1,7 +1,7 @@
 <div class="temp-state">
 
   <div class="content">
-    <h1 class="title"> Municipio </h1>
+    <h1 class="title"> Sección </h1>
     <div class="grid justify-content-end">
       <button class="btn-primary" (click)="openModal()"> Registrar <mat-icon>add_box</mat-icon> </button>
     </div>
@@ -61,6 +61,7 @@
           <label>Sección</label>
           <input class="input-square input-block" onlyNumbers [ngClass]="{ 'errorCampos': getFieldInvalid('name') }" placeholder="Nombre" formControlName="name">
           <p *ngIf="getFieldInvalid('name')" class="text-error">Campo requerido</p>
+          <p *ngIf="error != ''"  class="text-error"> {{error}}</p>
         </div>
       </form>
 

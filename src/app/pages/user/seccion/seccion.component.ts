@@ -49,7 +49,7 @@ export class SeccionComponent implements OnInit, AfterViewInit{
   edit:boolean = false;
   idEdit:number=0;
   loading:boolean = false;
-  error:number = 0;
+  error:string = '';
 
 
   getPnf(){
@@ -68,6 +68,7 @@ export class SeccionComponent implements OnInit, AfterViewInit{
   }
 
   store(){
+    this.error = ''
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -82,16 +83,16 @@ export class SeccionComponent implements OnInit, AfterViewInit{
         this.loading = false;
         this.SuccessRegisterSwal.fire()
       },
-      error: (error) => {
+      error: ({error}) => {
+        this.error = error.message
+
         this.loading = false;
-        this.error = 1;
       }
     })
   }
 
 
   update(){
-    this.error = 0
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -110,7 +111,6 @@ export class SeccionComponent implements OnInit, AfterViewInit{
       },
       error: (error) => {
         this.loading = false;
-        this.error = 1;
       }
     })
   }

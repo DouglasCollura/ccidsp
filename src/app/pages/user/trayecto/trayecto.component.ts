@@ -31,10 +31,13 @@ export class TrayectoComponent  implements OnInit, AfterViewInit{
 
   ngAfterViewInit(): void {
     this.paginator.itemsPerPageLabel = ""
+
+    this.form.get('name')
+    .valueChanges.subscribe(()=> this.error = '')
   }
 
   form = this.formBuilder.group({
-    name: [null, Validators.required],
+    name: ['', Validators.required],
   })
 
   displayedColumns: string[] = ['Nombre', 'Opt.'];
@@ -43,7 +46,7 @@ export class TrayectoComponent  implements OnInit, AfterViewInit{
   edit:boolean = false;
   idEdit:number=0;
   loading:boolean = false;
-  error:number = 0;
+  error:string = '';
 
 
   getPnfs(){
@@ -55,12 +58,13 @@ export class TrayectoComponent  implements OnInit, AfterViewInit{
   }
 
   store(){
+    this.error = ''
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
     this.loading = true;
-
+    this.form.get('name').setValue(this.form.value.name.toUpperCase())
     this.trayectoServices.storeTrayecto(this.form.value)
     .subscribe({
       next: (e)=>{
@@ -69,16 +73,15 @@ export class TrayectoComponent  implements OnInit, AfterViewInit{
         this.loading = false;
         this.SuccessRegisterSwal.fire()
       },
-      error: (error) => {
+      error: ({error}) => {
+        this.error = error.message
         this.loading = false;
-        this.error = 1;
       }
     })
   }
 
 
   update(){
-    this.error = 0
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -97,7 +100,6 @@ export class TrayectoComponent  implements OnInit, AfterViewInit{
       },
       error: (error) => {
         this.loading = false;
-        this.error = 1;
       }
     })
   }

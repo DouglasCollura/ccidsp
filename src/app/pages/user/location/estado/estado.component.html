@@ -50,6 +50,7 @@
           <label>Nombre</label>
           <input class="input-square input-block" onlyLetter  [ngClass]="{ 'errorCampos': getFieldInvalid('name') }" placeholder="Nombre" formControlName="name">
           <p *ngIf="getFieldInvalid('name')" class="text-error">Campo requerido</p>
+          <p *ngIf="error != ''"  class="text-error"> {{error}}</p>
         </div>
       </form>
 
