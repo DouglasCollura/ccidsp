@@ -105,6 +105,36 @@
           </div>
         </div>
 
+        <h2 class="text-center font-600">Datos academicos</h2>
+
+        <div class="content-two">
+          <div class="form-group">
+            <label>PNF</label>
+            <ng-select notFoundText="Sin Resultados" placeholder="Selecciona el PNF" formControlName="pnfId">
+              <ng-option *ngFor="let pnf of pnfs?.data" [value]="pnf?.id">{{ pnf?.name }}</ng-option>
+            </ng-select>
+            <p *ngIf="getFieldInvalid('pnfId')" class="text-error">Campo requerido</p>
+
+          </div>
+
+          <div class="form-group">
+            <label>Trayecto  </label>
+            <ng-select [readonly]="!getFieldValue('pnfId')" notFoundText="Sin Resultados" placeholder="Selecciona el trayecto" formControlName="trayectoId">
+              <ng-option *ngFor="let trayecto of trayectos?.data" [value]="trayecto?.id">{{ trayecto?.name }}</ng-option>
+            </ng-select>
+            <p *ngIf="getFieldInvalid('trayectoId')" class="text-error">Campo requerido</p>
+          </div>
+        </div>
+
+        <div class="content-two">
+          <div class="form-group">
+            <label>Sección</label>
+            <ng-select notFoundText="Sin Resultados" [readonly]="!getFieldValue('pnfId') || !getFieldValue('trayectoId') " placeholder="Selecciona la sección" formControlName="seccionId">
+              <ng-option *ngFor="let seccion of secciones?.data" [value]="seccion?.id">{{ seccion?.name }}</ng-option>
+            </ng-select>
+            <p *ngIf="getFieldInvalid('seccionId')" class="text-error">Campo requerido</p>
+          </div>
+        </div>
       </form>
 
       <h2 class="text-rojo text-center" *ngIf="error == 1" > esta cedula ya existe. </h2>

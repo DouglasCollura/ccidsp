@@ -22,6 +22,9 @@ import { PnfComponent } from './pages/user/pnf/pnf.component';
 import { TrayectoComponent } from './pages/user/trayecto/trayecto.component';
 import { SeccionComponent } from './pages/user/seccion/seccion.component';
 import { BulkImportComponent } from './pages/user/bulk-import/bulk-import.component';
+import { ProjectComponent } from './pages/user/project/project.component';
+import { TeacherComponent } from './pages/user/teacher/teacher.component';
+import { ProjectInvestigatorComponent } from './pages/user/project-investigator/project-investigator.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,10 @@ import { BulkImportComponent } from './pages/user/bulk-import/bulk-import.compon
     PnfComponent,
     TrayectoComponent,
     SeccionComponent,
-    BulkImportComponent
+    BulkImportComponent,
+    ProjectComponent,
+    TeacherComponent,
+    ProjectInvestigatorComponent
   ],
   imports: [
     BrowserModule,

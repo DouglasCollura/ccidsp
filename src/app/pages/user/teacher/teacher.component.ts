@@ -1,50 +1,43 @@
-import { Component, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../services/auth.service';
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import {MatPaginator, MatPaginatorIntl} from '@angular/material/paginator';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import { PnfService } from '../../services/pnf.service';
+import { MatDialog } from '@angular/material/dialog';
+import { PnfService } from 'src/app/pages/services/pnf.service';
 import { TrayectoService } from '../../services/trayecto.service';
 import { SeccionService } from '../../services/seccion.service';
 import { TeacherService } from '../../services/teacher.service';
 
-
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  selector: 'app-teacher',
+  templateUrl: './teacher.component.html',
+  styleUrls: ['./teacher.component.scss']
 })
-export class SignupComponent implements OnInit, AfterViewInit{
+export class TeacherComponent implements OnInit, AfterViewInit{
 
   constructor(
-    private router: Router,
     private dialog: MatDialog,
-    private authServices:AuthService,
     private formBuilder: FormBuilder,
-    private rutaActiva: ActivatedRoute,
+    private paginator: MatPaginatorIntl,
     private pnfServices:PnfService,
     private trayectoServices:TrayectoService,
     private seccionService: SeccionService,
     private teacherService: TeacherService,
-  ){}
-
+  ){
+  }
   @ViewChild('modal') modal!: TemplateRef<any>;
-  @ViewChild('SuccessSwal') SuccessSwal!: SwalComponent;
+  @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
+  @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
+  @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
 
   ngOnInit(): void {
-    this.rutaActiva.queryParams
-    .subscribe((e:any)=>{
-      this.type = parseInt(e?.type)
-      this.form.get('role')?.setValue(this.type == 1 ? 'teacher' : 'student')
-      if(this.type == 1){
-        this.getPnfs()
-        this.getTrayectos()
-      }
-    })
+    this.getPnfs()
+    this.getTrayectos()
+    this.getTeachers()
   }
 
   ngAfterViewInit(): void {
+    this.paginator.itemsPerPageLabel = ""
     this.formTeacher.get('trayectosId')
     .valueChanges.subscribe(e=>{
       this.formTeacher.get('seccionesId').reset()
@@ -59,16 +52,15 @@ export class SignupComponent implements OnInit, AfterViewInit{
 
     this.formTeacher.get('seccionesId')
     .valueChanges.subscribe(e=>{
-      this.error = false;
+      this.error = '';
       e ? this.canAdd = true : this.canAdd = false
     })
   }
 
 
   form = this.formBuilder.group({
-    role: ['', Validators.required],
+    role: ['teacher', Validators.required],
     email: [null, Validators.required],
-    password: [null, Validators.required],
     people:this.formBuilder.group({
       name: [null, Validators.required],
       lastname: [null, Validators.required],
@@ -84,20 +76,21 @@ export class SignupComponent implements OnInit, AfterViewInit{
     seccionesId: [null, Validators.required],
   })
 
+  teachers:any=[];
+
   trayectos:any=[];
   secciones:any=[];
   pnfs:any=[];
 
   asignaturas:any = []
-
-  trayectoId=null;
-  seccionId=null;
   peopleId:number = 0;
 
-  type:number=0
-  error: boolean = false;
-  loading: boolean = false;
-  viewPass:boolean = false;
+  displayedColumns: string[] = ['Cedula','Nombre', 'Apellido', 'Email', 'Opt.'];
+  modalActive: any;
+  edit:boolean = false;
+  idEdit:number=0;
+  loading:boolean = false;
+  error:string = '';
   step:number = 0
   canAdd:boolean=false
 
@@ -116,31 +109,92 @@ export class SignupComponent implements OnInit, AfterViewInit{
       console.log(e)
     })
   }
+  getSecciones(){
+    this.seccionService.getSeccionesById(this.getFieldTeacher('pnfId'),this.getFieldTeacher('trayectosId'))
+    .subscribe(e=>{
+      this.secciones = e
+    })
+  }
 
-  signup(){
-    this.error =false;
+  getTeachers(){
+    this.teacherService.getTeachers()
+    .subscribe(e=>{
+      this.teachers = e;
+      console.log(e)
+    })
+  }
+
+  store(){
+    this.error = ''
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
     this.loading = true;
-    this.authServices.signUp(this.form.value)
+
+    let name:string = this.form.get('name').value;
+    this.pnfServices.storePnf(this.form.value)
     .subscribe({
-      next:({data})=>{
-        if(this.type == 2){
-          this.SuccessSwal.fire()
-          this.router.navigate(['/'])
-        }else{
-          this.loading = false;
-          this.step = 1
-          this.peopleId = data.people.id
-        }
+      next: (e)=>{
+        this.getPnfs()
+        this.modalActive.close()
+        this.loading = false;
+        this.SuccessRegisterSwal.fire()
       },
-      error:({error})=>{
-        this.error = true;
+      error: ({error}) => {
+        console.log(error)
+        this.error = error.message
         this.loading = false;
       }
     })
+  }
+
+  update(){
+    this.error = ''
+
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.loading = true;
+
+    this.pnfServices.updatePnf(this.idEdit,this.form.value)
+    .subscribe({
+      next: (e)=>{
+        this.getPnfs()
+        this.modalActive.close()
+        this.loading = false;
+        this.SuccessUpdateSwal.fire()
+      },
+      error: (error) => {
+        this.loading = false;
+      }
+    })
+  }
+
+  remove(id:number){
+    this.pnfServices.deletePnf(id)
+    .subscribe(e=>{
+      this.getPnfs()
+      this.successDeleteSwal.fire()
+    })
+  }
+
+  setEdit(data:any){
+    this.form.patchValue(data)
+    this.asignaturas = data.people.teacher
+    this.idEdit = data?.id;
+    this.edit = true;
+    this.openModal()
+  }
+
+  paginate(event:any){
+    console.log(event)
+  }
+
+  getFieldInvalid(field: string) {
+    return this.form.get(field)?.invalid && this.form.get(field)?.touched
   }
 
   storeSignatures(){
@@ -157,8 +211,7 @@ export class SignupComponent implements OnInit, AfterViewInit{
     this.teacherService.storeTeacher(data)
     .subscribe({
       next:e=>{
-        this.SuccessSwal.fire()
-        this.router.navigate(['/'])
+        this.SuccessRegisterSwal.fire()
         this.loading = false;
       },
       error:(e)=>{
@@ -175,7 +228,7 @@ export class SignupComponent implements OnInit, AfterViewInit{
     }
     console.log()
     if(this.asignaturas.findIndex(e=> e.seccion.id === asignatura.seccion.id) ==0){
-      this.error = true;
+      this.error = '';
       return
     }
     this.asignaturas.push(asignatura)
@@ -188,33 +241,25 @@ export class SignupComponent implements OnInit, AfterViewInit{
     this.asignaturas.splice(index,1)
   }
 
-  getSecciones(){
-    this.seccionService.getSeccionesById(this.getFieldTeacher('pnfId'),this.getFieldTeacher('trayectosId'))
-    .subscribe(e=>{
-      this.secciones = e
-    })
-  }
 
-  getFieldInvalid(field: string) {
-    return this.form.get(field)?.invalid && this.form.get(field)?.touched
-  }
+
 
   getFieldTeacher(field: string) {
     return this.formTeacher.get(field)?.value
   }
 
   openModal(){
-    this.dialog.open(this.modal,
+    this.modalActive = this.dialog.open(this.modal,
       {
-        maxWidth: '600px',
+        maxWidth: 'max-content',
         maxHeight: 'max-content',
         height: 'max-content',
-        width: 'max-content',
+        width: '100%',
         panelClass: 'full-screen-modal'
-      }).beforeClosed()
-      .subscribe(e=>{
       })
+    this.modalActive.afterClosed().subscribe(()=>{
+      this.edit = false;
+      this.form.reset()
+    })
   }
-
-
 }

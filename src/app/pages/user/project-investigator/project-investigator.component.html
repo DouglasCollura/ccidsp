@@ -1,0 +1,199 @@
+<div class="temp-project-investigator">
+
+  <div class="content">
+    <h1 class="title"> Proyectos </h1>
+
+
+    <div class="section">
+      <div class="header">
+        <h1>Cursante</h1>
+        <button class="btn-primary" (click)="openModal()"> Inscribir <mat-icon>add_box</mat-icon> </button>
+      </div>
+
+      <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title >
+                  <mat-icon class="material-symbols-outlined">folder</mat-icon>
+                  <span  class="font-500"> CCIPS </span>
+                </mat-panel-title>
+                <mat-chip
+                    class="chip-status-yellow"
+                    cdkDrag
+                  >
+                  En proceso
+                </mat-chip>
+            </mat-expansion-panel-header>
+
+            <div class="body-expansion">
+
+              <div class="section-card">
+                <div class="header-section-card">
+                  <mat-icon class="material-symbols-outlined">group</mat-icon> <h3>Investigadores</h3>
+                </div>
+                <mat-divider></mat-divider>
+
+                <div class="list-investigators">
+
+                  <ng-container  *ngFor="let item of [1,2,3]">
+                    <div class="card-investigator">
+                        <h3>Cedula: 24332123</h3>
+                        <h3>Nombre: Fulanito</h3>
+                        <h3>Apellido: Cosme</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                  </ng-container>
+                </div>
+              </div>
+
+
+              <div class="section-card">
+                <div class="header-section-card">
+                  <mat-icon class="material-symbols-outlined">info</mat-icon> <h3>Información</h3>
+                </div>
+                <mat-divider></mat-divider>
+
+                <div class="list-investigators">
+
+                    <div class="card-investigator">
+                      <mat-icon class="material-symbols-outlined">info</mat-icon> <h3>Proyecto: Sistema informatico sexo anal</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="card-investigator">
+                      <mat-icon class="material-symbols-outlined">info</mat-icon> <h3>Institución: YUTI</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+
+                    <div class="card-investigator">
+                      <mat-icon class="material-symbols-outlined">info</mat-icon> <h3>Area: Tal</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <div class="header-section-card">
+                  <mat-icon class="material-symbols-outlined">info</mat-icon> <h3>Datos académicos</h3>
+                </div>
+                <mat-divider></mat-divider>
+
+                <div class="list-investigators">
+
+                    <div class="card-investigator">
+                      <mat-icon class="material-symbols-outlined">info</mat-icon> <h3>PNF: Informática</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="card-investigator">
+                      <mat-icon class="material-symbols-outlined">info</mat-icon> <h3>Trayecto: 1</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+
+                    <div class="card-investigator">
+                      <mat-icon class="material-symbols-outlined">info</mat-icon> <h3>Sección: 502503</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+              </div>
+
+            </div>
+            <mat-divider></mat-divider>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+    </div>
+
+    <mat-divider></mat-divider>
+
+
+    <h1>Anteriores</h1>
+    <mat-accordion>
+      <mat-expansion-panel>
+          <mat-expansion-panel-header>
+              <mat-panel-title >
+                <mat-icon class="material-symbols-outlined">folder</mat-icon>
+                <span  class="font-500">  Proyecto 2 </span>
+              </mat-panel-title>
+              <mat-chip
+                  class="chip-status-green"
+                  cdkDrag
+                >
+                Aprobado
+              </mat-chip>
+          </mat-expansion-panel-header>
+
+          <div class="body-expansion">
+            <button class="btn" routerLink="project-investigator" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">folder</mat-icon> Proyectos </button>
+            <mat-divider></mat-divider>
+
+          </div>
+          <mat-divider></mat-divider>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion>
+      <mat-expansion-panel>
+          <mat-expansion-panel-header>
+              <mat-panel-title >
+                <mat-icon class="material-symbols-outlined">folder</mat-icon>
+                <span  class="font-500">  Proyecto 2 </span>
+              </mat-panel-title>
+              <mat-chip
+                  class="chip-status-red"
+                  cdkDrag
+                >
+                Reprobado
+              </mat-chip>
+          </mat-expansion-panel-header>
+
+          <div class="body-expansion">
+            <button class="btn" routerLink="project-investigator" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">folder</mat-icon> Proyectos </button>
+            <mat-divider></mat-divider>
+
+          </div>
+          <mat-divider></mat-divider>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+
+
+<!-- * MODAL CONFIRM EDIT -->
+<ng-template #modal>
+  <mat-dialog-actions class="modal">
+    <div class="header">
+      <span></span>
+      <button class="btn btn-close" mat-dialog-close="true"> <mat-icon
+          class="material-symbols-outlined">close</mat-icon></button>
+    </div>
+
+    <div class="modal-body">
+      <h2 class="text-center font-600">PNF</h2>
+
+      <form class="grid" [formGroup]="form">
+        <div class="form-group">
+          <label>Código</label>
+          <input class="input-square input-block" maxlength="3" onlyNumbers [ngClass]="{ 'errorCampos': getFieldInvalid('code') }" placeholder="Código" formControlName="code">
+          <p *ngIf="getFieldInvalid('code')" class="text-error">Campo requerido</p>
+        </div>
+        <div class="form-group">
+          <label>Nombre</label>
+          <input class="input-square input-block" onlyLetter  [ngClass]="{ 'errorCampos': getFieldInvalid('name') }" placeholder="Nombre" formControlName="name">
+          <p *ngIf="getFieldInvalid('name')" class="text-error">Campo requerido</p>
+          <p *ngIf="error != ''"  class="text-error"> {{error}}</p>
+        </div>
+      </form>
+
+      <div class="footer">
+        <button mat-dialog-close="true" class="btn-secondary">Cancelar</button>
+        <button *ngIf="!edit" class="btn-primary" (click)="store()" >Registrar <mat-icon class="loader" *ngIf="loading" >cached</mat-icon> </button>
+        <button *ngIf="edit" class="btn-primary" (click)="update()" >Editar <mat-icon class="loader" *ngIf="loading" >cached</mat-icon> </button>
+      </div>
+    </div>
+
+  </mat-dialog-actions>
+</ng-template>
+
+<swal #deleteSwal title="Desea eliminar?" [showDenyButton]="true" denyButtonText="Cancelar" confirmButtonColor="#d16868" denyButtonColor="#68bcd1" icon="warning" confirmButtonText="Continuar" ></swal>
+<swal #SuccessRegisterSwal title="Registrado con exito" confirmButtonColor="#68bcd1" icon="success" confirmButtonText="Continuar" ></swal>
+<swal #SuccessDeleteSwal title="Eliminado con exito" confirmButtonColor="#68bcd1" icon="success" confirmButtonText="Continuar" ></swal>
+<swal #SuccessUpdateSwal title="Modificado con exito" confirmButtonColor="#68bcd1" icon="success" confirmButtonText="Continuar" ></swal>

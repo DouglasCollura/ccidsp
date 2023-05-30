@@ -5,6 +5,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { SeccionService } from 'src/app/pages/services/seccion.service';
 import { PnfService } from 'src/app/pages/services/pnf.service';
+import { TrayectoService } from '../../services/trayecto.service';
 
 @Component({
   selector: 'app-seccion',
@@ -18,8 +19,8 @@ export class SeccionComponent implements OnInit, AfterViewInit{
     private formBuilder: FormBuilder,
     private paginator: MatPaginatorIntl,
     private pnfService:PnfService,
-    private seccionService: SeccionService
-
+    private seccionService: SeccionService,
+    private trayectoServices:TrayectoService
   ){
   }
   @ViewChild('modal') modal!: TemplateRef<any>;
@@ -31,6 +32,7 @@ export class SeccionComponent implements OnInit, AfterViewInit{
   ngOnInit(): void {
     this.getSecciones()
     this.getPnf()
+    this.getTrayectos()
   }
 
   ngAfterViewInit(): void {
@@ -39,11 +41,15 @@ export class SeccionComponent implements OnInit, AfterViewInit{
 
   form = this.formBuilder.group({
     pnfId: [null, Validators.required],
+    trayectoId: [null, Validators.required],
     name: [null, Validators.required],
   })
 
-  displayedColumns: string[] = ['PNF', 'Seccion', 'Opt.'];
+  status:any = null;
+
+  displayedColumns: string[] = ['PNF', 'Trayecto', 'Seccion', 'Opt.'];
   pnfs:any=[];
+  trayectos:any=[];
   secciones:any=[];
   modalActive: any;
   edit:boolean = false;
@@ -56,6 +62,14 @@ export class SeccionComponent implements OnInit, AfterViewInit{
     this.pnfService.getPnf()
     .subscribe(e=>{
       this.pnfs = e;
+      console.log(e)
+    })
+  }
+
+  getTrayectos(){
+    this.trayectoServices.getTrayecto()
+    .subscribe(e=>{
+      this.trayectos = e;
       console.log(e)
     })
   }

@@ -14,6 +14,9 @@ import { PnfComponent } from './pages/user/pnf/pnf.component';
 import { TrayectoComponent } from './pages/user/trayecto/trayecto.component';
 import { SeccionComponent } from './pages/user/seccion/seccion.component';
 import { BulkImportComponent } from './pages/user/bulk-import/bulk-import.component';
+import { ProjectComponent } from './pages/user/project/project.component';
+import { TeacherComponent } from './pages/user/teacher/teacher.component';
+import { ProjectInvestigatorComponent } from './pages/user/project-investigator/project-investigator.component';
 
 const routes: Routes = [
   {
@@ -41,6 +44,9 @@ const routes: Routes = [
       { path: 'institution/trayecto', component: TrayectoComponent },
       { path: 'institution/seccion', component: SeccionComponent },
       { path: 'bulk-import', component: BulkImportComponent },
+      { path: 'project', component: ProjectComponent },
+      { path: 'teacher', component: TeacherComponent },
+      { path: 'project-investigator', component: ProjectInvestigatorComponent },
     ]
   },
 ];

@@ -4,6 +4,9 @@ import { InvestigatorService } from '../../services/investigator.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import {MatPaginator, MatPaginatorIntl} from '@angular/material/paginator';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { PnfService } from '../../services/pnf.service';
+import { TrayectoService } from '../../services/trayecto.service';
+import { SeccionService } from '../../services/seccion.service';
 
 @Component({
   selector: 'app-investigators',
@@ -17,6 +20,9 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
     private investigatorService: InvestigatorService,
     private formBuilder: FormBuilder,
     private paginator: MatPaginatorIntl,
+    private pnfServices:PnfService,
+    private trayectoServices:TrayectoService,
+    private seccionService: SeccionService,
   ){
   }
 
@@ -27,17 +33,31 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getInvestigators()
+    this.getPnfs()
+    this.getTrayectos()
   }
 
   ngAfterViewInit(): void {
     this.paginator.itemsPerPageLabel = ""
+
+    this.form.get('trayectoId').valueChanges.subscribe(e=>{
+      e ? this.getSecciones() : this.secciones = [];
+      this.form.get('seccionId').reset()
+      console.log(e)
+    })
   }
 
   displayedColumns: string[] = ['Nombres', 'Apellidos', 'Cedula', 'Expediente', 'Opt.'];
   investigators:any = [];
+  trayectos:any=[];
+  secciones:any=[];
+  pnfs:any=[];
 
   form = this.formBuilder.group({
     exp: [null, Validators.required],
+    trayectoId: [null, Validators.required],
+    pnfId: [null, Validators.required],
+    seccionId: [null, Validators.required],
     people:this.formBuilder.group({
       name: [null, Validators.required],
       lastname: [null, Validators.required],
@@ -57,6 +77,30 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
     .subscribe(res=>{
       this.investigators = res;
       console.log('user', res)
+    })
+  }
+
+  getPnfs(){
+    this.pnfServices.getPnf()
+    .subscribe(e=>{
+      this.pnfs = e;
+      console.log(e)
+    })
+  }
+
+  getTrayectos(){
+    this.trayectoServices.getTrayecto()
+    .subscribe(e=>{
+      this.trayectos = e;
+      console.log(e)
+    })
+  }
+
+  getSecciones(){
+
+    this.seccionService.getSeccionesById(this.getFieldValue('pnfId'),this.getFieldValue('trayectoId'))
+    .subscribe(e=>{
+      this.secciones = e
     })
   }
 
@@ -127,6 +171,7 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
 
   setEdit(data:any){
     this.form.patchValue(data)
+    this.getSecciones()
     this.idEdit = data?.id;
     this.edit = true;
     this.openModal()
@@ -134,6 +179,10 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
 
   getFieldInvalid(field: string) {
     return this.form.get(field)?.invalid && this.form.get(field)?.touched
+  }
+
+  getFieldValue(field:string){
+    return this.form.get(field).value;
   }
 
   openModal(){

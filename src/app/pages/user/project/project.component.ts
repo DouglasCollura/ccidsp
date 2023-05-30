@@ -5,13 +5,12 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { PnfService } from 'src/app/pages/services/pnf.service';
 
-
 @Component({
-  selector: 'app-pnf',
-  templateUrl: './pnf.component.html',
-  styleUrls: ['./pnf.component.scss']
+  selector: 'app-project',
+  templateUrl: './project.component.html',
+  styleUrls: ['./project.component.scss']
 })
-export class PnfComponent implements OnInit, AfterViewInit{
+export class ProjectComponent implements OnInit, AfterViewInit{
 
   constructor(
     private dialog: MatDialog,
@@ -35,6 +34,7 @@ export class PnfComponent implements OnInit, AfterViewInit{
     this.form.get('name')
     .valueChanges.subscribe(()=> this.error = '')
   }
+
 
   form = this.formBuilder.group({
     name: ['', Validators.required],
@@ -83,7 +83,6 @@ export class PnfComponent implements OnInit, AfterViewInit{
       }
     })
   }
-
 
   update(){
     this.error = ''

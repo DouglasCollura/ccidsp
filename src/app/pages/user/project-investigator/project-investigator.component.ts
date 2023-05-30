@@ -5,14 +5,12 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { PnfService } from 'src/app/pages/services/pnf.service';
 
-
 @Component({
-  selector: 'app-pnf',
-  templateUrl: './pnf.component.html',
-  styleUrls: ['./pnf.component.scss']
+  selector: 'app-project-investigator',
+  templateUrl: './project-investigator.component.html',
+  styleUrls: ['./project-investigator.component.scss']
 })
-export class PnfComponent implements OnInit, AfterViewInit{
-
+export class ProjectInvestigatorComponent  implements OnInit, AfterViewInit{
   constructor(
     private dialog: MatDialog,
     private formBuilder: FormBuilder,

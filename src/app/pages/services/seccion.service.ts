@@ -4,7 +4,6 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -18,8 +17,8 @@ export class SeccionService {
     return this.http.get(`${this.url}/seccion`)
   }
 
-  getSeccionesById(id:number): Observable<any> {
-    return this.http.get(`${this.url}/seccion/${id}`)
+  getSeccionesById(id:number,idTrayecto:number): Observable<any> {
+    return this.http.get(`${this.url}/seccion/${id}/${idTrayecto}`)
   }
 
   storeSeccion(data:any): Observable<any> {

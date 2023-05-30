@@ -20,11 +20,21 @@
                 </mat-expansion-panel-header>
 
                 <div class="body-expansion">
-                    <button class="btn"> <mat-icon class="material-symbols-outlined">group_add</mat-icon> Inscripciones </button>
+                  <button class="btn" routerLink="project-investigator" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">folder</mat-icon> Proyectos </button>
+                  <mat-divider></mat-divider>
+
                 </div>
                 <mat-divider></mat-divider>
             </mat-expansion-panel>
         </mat-accordion>
+
+        <ng-container *ngIf="user?.role == 'teacher'" >
+
+            <div class="body-expansion">
+              <button class="btn" routerLink="project" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">home_storage</mat-icon> PROYECTOS </button>
+              <mat-divider></mat-divider>
+            </div>
+        </ng-container>
 
         <ng-container *ngIf="user?.role == 'admin'" >
           <mat-accordion >
@@ -62,7 +72,7 @@
                             <div class="body-expansion">
                                 <button class="btn" routerLink="investigator" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">group</mat-icon> Investigadores </button>
                                 <mat-divider></mat-divider>
-                                <button class="btn"> <mat-icon class="material-symbols-outlined">school</mat-icon> Docente acompañante </button>
+                                <button class="btn" routerLink="teacher" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">school</mat-icon> Docente acompañante </button>
                                 <mat-divider></mat-divider>
                             </div>
                         </mat-expansion-panel>
@@ -80,9 +90,9 @@
 
                                 <button class="btn" routerLink="institution/pnf" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">menu_book</mat-icon>PNF</button>
                                 <mat-divider></mat-divider>
-                                <button class="btn" routerLink="institution/seccion" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>Sección</button>
-                                <mat-divider></mat-divider>
                                 <button class="btn" routerLink="institution/trayecto" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>Trayecto</button>
+                                <mat-divider></mat-divider>
+                                <button class="btn" routerLink="institution/seccion" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>Sección</button>
                                 <mat-divider></mat-divider>
                             </div>
 

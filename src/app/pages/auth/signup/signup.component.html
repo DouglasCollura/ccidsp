@@ -4,7 +4,7 @@
   <div class="card">
       <h2 class="text-center font-600 align-self-center">Registro de {{ type == 1 ? 'docente' : 'investigador'}}</h2>
 
-      <form class="form"  [formGroup]="form" (submit)="signup()">
+      <form class="form"  *ngIf="type == 2" [formGroup]="form" (submit)="signup()">
 
         <div class="form-group" formGroupName="people">
           <label>Cedula</label>
@@ -59,6 +59,117 @@
             <p>¿Ya tienes una cuenta?</p> <button type="button" class="btn text-blue" routerLink="/" >Inicia sesión</button>
           </div>
       </form>
+
+      <mat-stepper [selectedIndex]="step" *ngIf="type == 1"  #stepper [linear]="true">
+        <mat-step [stepControl]="form" [editable]="false">
+          <ng-template matStepLabel class="text-blue" >Datos de la cuenta</ng-template>
+          <form class="form"  [formGroup]="form" (submit)="signup()">
+
+            <div class="form-group" formGroupName="people">
+              <label>Cedula</label>
+              <div class="append-group">
+                <select name="" id="" formControlName="nationality">
+                  <option [value]="1" selected>V</option>
+                  <option [value]="2">E</option>
+                </select>
+                <input class="input-square input-block" formControlName="cedula" [ngClass]="{ 'errorCampos': getFieldInvalid('people.cedula') }"  maxlength="8" onlyNumbers placeholder="Cedula">
+              </div>
+              <p *ngIf="getFieldInvalid('people.cedula')" class="text-error">Campo requerido</p>
+            </div>
+
+            <div class="form-group" formGroupName="people">
+              <label>Nombres</label>
+              <input class="input-square input-block" formControlName="name" onlyLetter [ngClass]="{ 'errorCampos': getFieldInvalid('people.name') }"  placeholder="Nombres">
+              <p *ngIf="getFieldInvalid('people.name')" class="text-error">Campo requerido</p>
+
+            </div>
+
+            <div class="form-group" formGroupName="people">
+              <label>Apellidos</label>
+              <input class="input-square input-block" formControlName="lastname" onlyLetter [ngClass]="{ 'errorCampos': getFieldInvalid('people.lastname') }" placeholder="Apellidos">
+              <p *ngIf="getFieldInvalid('people.lastname')" class="text-error">Campo requerido</p>
+            </div>
+
+            <div class="form-group">
+              <label>Email</label>
+              <input class="input-square input-block" formControlName="email" [ngClass]="{ 'errorCampos': getFieldInvalid('email') }"  placeholder="Email">
+              <p *ngIf="getFieldInvalid('email')" class="text-error">Campo requerido</p>
+            </div>
+
+            <div class="form-group">
+              <div class="group-input-icon-right">
+                <mat-icon class="icon" [ngClass]="" (click)="viewPass = !viewPass"> {{viewPass?'visibility':'visibility_off'}} </mat-icon>
+                <input [type]="viewPass ? 'text' : 'password'" formControlName="password"
+                  [ngClass]="{ 'errorCampos': getFieldInvalid('password') }" class="input-square input-block"
+                  placeholder="Contraseña" maxlength="25">
+              </div>
+              <p *ngIf="getFieldInvalid('password')" class="text-error">Campo requerido</p>
+            </div>
+
+              <div class="form-group" *ngIf="error">
+                <p class="text-rojo text-center">Credenciales invalidas.</p>
+              </div>
+
+              <div class="form-group justify-self-center">
+                <button class="btn-primary  btn-block"> Continuar <mat-icon class="loader" *ngIf="loading" >cached</mat-icon> </button>
+              </div>
+
+              <div class="flex align-items-center justify-content-center">
+                <p>¿Ya tienes una cuenta?</p> <button type="button" class="btn text-blue" routerLink="/" >Inicia sesión</button>
+              </div>
+          </form>
+        </mat-step>
+
+        <mat-step >
+          <ng-template matStepLabel class="text-blue" >Datos academicos</ng-template>
+
+          <form class="form gap-20 content-teacher" [formGroup]="formTeacher">
+
+            <div class="form-group justify-self-start" >
+              <label for="">PNF</label>
+              <ng-select notFoundText="Sin Resultados"  placeholder="Selecciona el PNF" formControlName="pnfId">
+                <ng-option *ngFor="let pnf of pnfs?.data" [value]="pnf?.id">{{ pnf?.name }}</ng-option>
+              </ng-select>
+            </div>
+
+            <mat-divider></mat-divider>
+            <div class="flex align-items-center gap-10">
+              <div class="form-group" >
+                <label for="">Trayecto</label>
+                <ng-select notFoundText="Sin Resultados" [readonly]="!getFieldTeacher('pnfId')" formControlName="trayectosId"  placeholder="Selecciona el trayecto" >
+                  <ng-option *ngFor="let trayecto of trayectos?.data" [value]="trayecto.id">{{ trayecto?.name }}</ng-option>
+                </ng-select>
+              </div>
+
+              <div class="form-group" >
+                <label for="">Sección</label>
+                <ng-select notFoundText="Sin Resultados" [readonly]="!getFieldTeacher('trayectosId')" formControlName="seccionesId" placeholder="Selecciona la sección" >
+                  <ng-option *ngFor="let seccion of secciones?.data" [value]="seccion.id">{{ seccion?.name }}</ng-option>
+                </ng-select>
+                <div class="text-error" *ngIf="error">esta sección ya está listada</div>
+              </div>
+
+              <button class="btn-primary" [class.disabled]="!canAdd" style="margin: 0px !important" [disabled]="!canAdd"  (click)="setList()"> Agregar</button>
+
+            </div>
+            <mat-divider></mat-divider>
+
+            <div class="content-list">
+                <div class="card card-list"  *ngFor="let asignatura of asignaturas; let index = index">
+
+                  <div class="card-list-body">
+                    <h3>PNF: {{asignatura.pnf.name}} </h3>
+                    <h3>Trayecto: {{asignatura.trayecto.name}}</h3>
+                    <h3>Sección: {{asignatura.seccion.name}}</h3>
+                  </div>
+                  <button class="btn-secondary" (click)="removeList(index)"> <mat-icon>delete</mat-icon> </button>
+                </div>
+            </div>
+
+            <button class="btn-primary justify-self-end" [class.disabled]="asignaturas.length == 0" [disabled]="asignaturas.length == 0" (click)="storeSignatures()" > Registrar  <mat-icon class="loader" *ngIf="loading" >cached</mat-icon></button>
+          </form>
+        </mat-step>
+      </mat-stepper>
 
   </div>
 </div>

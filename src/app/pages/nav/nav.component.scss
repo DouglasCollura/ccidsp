@@ -5,6 +5,10 @@
         275px auto;
         min-height: 100%;
         height: 100%;
+
+
+
+
 }
 
 .section-nav {
@@ -52,7 +56,7 @@
             flex-wrap: nowrap;
             max-height: none !important;
             min-height: 48px;
-
+            color: white;
             &:hover{
                 background-color: #2f516e;
             }
@@ -128,6 +132,11 @@
     padding-left: 10px !important;
 }
 
-::ng-deep .mat-expansion-indicator{
-    color: white !important;
+::ng-deep {
+    .temp-nav mat-expansion-panel-header{
+      *::after{
+        color: white !important;
+      }
+        color: white !important;
+    }
 }

@@ -61,3 +61,33 @@ cursor: pointer;
   outline: 1px solid #d16868;
 }
 }
+
+
+.content-teacher{
+  ng-select{
+    min-width: 200px !important;
+  }
+}
+
+.disabled{
+  background-color: #f3f3f3;
+}
+
+.content-list{
+  padding: 30px 0px;
+  display: grid;
+  grid-gap: 10px;
+}
+
+.card-list{
+  min-height: auto !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &-body{
+    display: flex;
+    gap: 15px;
+    justify-content: space-around;
+  }
+
+}

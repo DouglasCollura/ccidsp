@@ -7,8 +7,8 @@ import {MatTableModule} from '@angular/material/table';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
-
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatChipsModule} from '@angular/material/chips';
 @NgModule({
   declarations: [],
   imports: [
@@ -21,7 +21,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTableModule,
     MatMenuModule,
     MatDialogModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatStepperModule,
+    MatChipsModule
   ]
 })
 export class MaterialModule { }
