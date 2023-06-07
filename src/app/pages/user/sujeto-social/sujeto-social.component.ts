@@ -3,20 +3,23 @@ import { FormBuilder, Validators } from '@angular/forms';
 import {MatPaginator, MatPaginatorIntl} from '@angular/material/paginator';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { PnfService } from 'src/app/pages/services/pnf.service';
-import * as dayjs from 'dayjs'
+import { SujetoSocialService } from 'src/app/pages/services/sujeto-social.service';
+import { DimensionEspacialService } from '../../services/dimension-espacial.service';
+
+
 @Component({
-  selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss']
+  selector: 'app-sujeto-social',
+  templateUrl: './sujeto-social.component.html',
+  styleUrls: ['./sujeto-social.component.scss']
 })
-export class ProjectComponent implements OnInit, AfterViewInit{
+export class SujetoSocialComponent implements OnInit, AfterViewInit{
 
   constructor(
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private paginator: MatPaginatorIntl,
-    private pnfServices:PnfService
+    private sujetoSocialService:SujetoSocialService,
+    private dimensionEspacialService:DimensionEspacialService,
   ){
   }
   @ViewChild('modal') modal!: TemplateRef<any>;
@@ -24,25 +27,26 @@ export class ProjectComponent implements OnInit, AfterViewInit{
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
 
+
   ngOnInit(): void {
-    this.getPnfs()
+    this.getDimensionEspacial()
+    this.getSujetoSocial()
   }
 
   ngAfterViewInit(): void {
     this.paginator.itemsPerPageLabel = ""
-
     this.form.get('name')
     .valueChanges.subscribe(()=> this.error = '')
   }
 
-
   form = this.formBuilder.group({
+    DimensionEspacialId: [null, Validators.required],
     name: ['', Validators.required],
-    code: ['', Validators.required],
   })
 
-  displayedColumns: string[] = ['Codigo','Nombre', 'Opt.'];
-  pnfs:any=[];
+  displayedColumns: string[] = ['Dimensión espacial', 'Sujeto social', 'Opt.'];
+  dimensiones:any=[];
+  sujetos:any=[];
   modalActive: any;
   edit:boolean = false;
   idEdit:number=0;
@@ -50,20 +54,26 @@ export class ProjectComponent implements OnInit, AfterViewInit{
   error:string = '';
 
 
-  getYear(){
-    return `${dayjs().format('YYYY')}-${dayjs().add(1,'year').format('YYYY')}`
-  }
-
-  getPnfs(){
-    this.pnfServices.getPnf()
+  getDimensionEspacial(){
+    this.dimensionEspacialService.getDimensionEspacial()
     .subscribe(e=>{
-      this.pnfs = e;
+      this.dimensiones = e;
       console.log(e)
     })
   }
 
+  getSujetoSocial(){
+    this.sujetoSocialService.getSujetoSocial()
+    .subscribe(e=>{
+      this.sujetos = e;
+      console.log(e)
+    })
+  }
+
+
   store(){
     this.error = ''
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -72,24 +82,24 @@ export class ProjectComponent implements OnInit, AfterViewInit{
 
     let name:string = this.form.get('name').value;
     this.form.get('name').setValue(name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
-    this.pnfServices.storePnf(this.form.value)
+
+    this.sujetoSocialService.storeSujetoSocial(this.form.value)
     .subscribe({
       next: (e)=>{
-        this.getPnfs()
         this.modalActive.close()
         this.loading = false;
         this.SuccessRegisterSwal.fire()
+        this.getSujetoSocial()
       },
       error: ({error}) => {
-        console.log(error)
         this.error = error.message
         this.loading = false;
       }
     })
   }
 
+
   update(){
-    this.error = ''
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -98,13 +108,13 @@ export class ProjectComponent implements OnInit, AfterViewInit{
 
     this.loading = true;
 
-    this.pnfServices.updatePnf(this.idEdit,this.form.value)
+    this.sujetoSocialService.updateSujetoSocial(this.idEdit,this.form.value)
     .subscribe({
       next: (e)=>{
-        this.getPnfs()
         this.modalActive.close()
         this.loading = false;
         this.SuccessUpdateSwal.fire()
+        this.getSujetoSocial()
       },
       error: (error) => {
         this.loading = false;
@@ -113,10 +123,10 @@ export class ProjectComponent implements OnInit, AfterViewInit{
   }
 
   remove(id:number){
-    this.pnfServices.deletePnf(id)
+    this.sujetoSocialService.deleteSujetoSocialo(id)
     .subscribe(e=>{
-      this.getPnfs()
       this.successDeleteSwal.fire()
+      this.getSujetoSocial()
     })
   }
 

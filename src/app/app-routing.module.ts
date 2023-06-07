@@ -17,6 +17,10 @@ import { BulkImportComponent } from './pages/user/bulk-import/bulk-import.compon
 import { ProjectComponent } from './pages/user/project/project.component';
 import { TeacherComponent } from './pages/user/teacher/teacher.component';
 import { ProjectInvestigatorComponent } from './pages/user/project-investigator/project-investigator.component';
+import { AreaPrioritariaComponent } from './pages/user/area-prioritaria/area-prioritaria.component';
+import { LineaInvestigacionComponent } from './pages/user/linea-investigacion/linea-investigacion.component';
+import { DimensionEspacialComponent } from './pages/user/dimension-espacial/dimension-espacial.component';
+import { SujetoSocialComponent } from './pages/user/sujeto-social/sujeto-social.component';
 
 const routes: Routes = [
   {
@@ -43,6 +47,10 @@ const routes: Routes = [
       { path: 'institution/pnf', component: PnfComponent },
       { path: 'institution/trayecto', component: TrayectoComponent },
       { path: 'institution/seccion', component: SeccionComponent },
+      { path: 'area-prioritaria', component: AreaPrioritariaComponent },
+      { path: 'linea-investigacion', component: LineaInvestigacionComponent },
+      { path: 'dimension-espacial', component: DimensionEspacialComponent },
+      { path: 'sujeto-social', component: SujetoSocialComponent },
       { path: 'bulk-import', component: BulkImportComponent },
       { path: 'project', component: ProjectComponent },
       { path: 'teacher', component: TeacherComponent },

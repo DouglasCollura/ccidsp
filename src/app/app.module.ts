@@ -25,6 +25,10 @@ import { BulkImportComponent } from './pages/user/bulk-import/bulk-import.compon
 import { ProjectComponent } from './pages/user/project/project.component';
 import { TeacherComponent } from './pages/user/teacher/teacher.component';
 import { ProjectInvestigatorComponent } from './pages/user/project-investigator/project-investigator.component';
+import { AreaPrioritariaComponent } from './pages/user/area-prioritaria/area-prioritaria.component';
+import { LineaInvestigacionComponent } from './pages/user/linea-investigacion/linea-investigacion.component';
+import { DimensionEspacialComponent } from './pages/user/dimension-espacial/dimension-espacial.component';
+import { SujetoSocialComponent } from './pages/user/sujeto-social/sujeto-social.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +49,11 @@ import { ProjectInvestigatorComponent } from './pages/user/project-investigator/
     BulkImportComponent,
     ProjectComponent,
     TeacherComponent,
-    ProjectInvestigatorComponent
+    ProjectInvestigatorComponent,
+    AreaPrioritariaComponent,
+    LineaInvestigacionComponent,
+    DimensionEspacialComponent,
+    SujetoSocialComponent
   ],
   imports: [
     BrowserModule,

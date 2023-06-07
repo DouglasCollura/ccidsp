@@ -10,22 +10,17 @@
 
       <ng-container matColumnDef="Cedula">
         <th mat-header-cell *matHeaderCellDef> Cedula </th>
-        <td mat-cell *matCellDef="let element"> {{element?.people?.cedula}} </td>
+        <td mat-cell *matCellDef="let element"> {{element?.cedula}} </td>
       </ng-container>
 
       <ng-container matColumnDef="Nombre">
         <th mat-header-cell *matHeaderCellDef> Nombre </th>
-        <td mat-cell *matCellDef="let element"> {{element?.people?.name}} </td>
+        <td mat-cell *matCellDef="let element"> {{element?.name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="Apellido">
         <th mat-header-cell *matHeaderCellDef> Apellido </th>
-        <td mat-cell *matCellDef="let element"> {{element?.people?.lastname}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="Email">
-        <th mat-header-cell *matHeaderCellDef> Email </th>
-        <td mat-cell *matCellDef="let element"> {{element?.email}} </td>
+        <td mat-cell *matCellDef="let element"> {{element?.lastname}} </td>
       </ng-container>
 
       <ng-container matColumnDef="Opt.">
@@ -52,37 +47,31 @@
     <mat-stepper [selectedIndex]="step"  #stepper [linear]="!edit">
       <mat-step [stepControl]="form" [editable]="edit">
         <ng-template matStepLabel class="text-blue" >Datos de la cuenta</ng-template>
-        <form class="form"  [formGroup]="form" (submit)="store()">
+        <form class="form"  [formGroup]="form" (submit)="storePeople()">
 
-          <div class="form-group" formGroupName="people">
+          <div class="form-group" >
             <label>Cedula</label>
             <div class="append-group">
               <select name="" id="" formControlName="nationality">
                 <option [value]="1" selected>V</option>
                 <option [value]="2">E</option>
               </select>
-              <input class="input-square input-block" formControlName="cedula" [ngClass]="{ 'errorCampos': getFieldInvalid('people.cedula') }"  maxlength="8" onlyNumbers placeholder="Cedula">
+              <input class="input-square input-block" formControlName="cedula" [ngClass]="{ 'errorCampos': getFieldInvalid('cedula') }"  maxlength="8" onlyNumbers placeholder="Cedula">
             </div>
-            <p *ngIf="getFieldInvalid('people.cedula')" class="text-error">Campo requerido</p>
+            <p *ngIf="getFieldInvalid('cedula')" class="text-error">Campo requerido</p>
           </div>
 
-          <div class="form-group" formGroupName="people">
+          <div class="form-group" >
             <label>Nombres</label>
-            <input class="input-square input-block" formControlName="name" onlyLetter [ngClass]="{ 'errorCampos': getFieldInvalid('people.name') }"  placeholder="Nombres">
-            <p *ngIf="getFieldInvalid('people.name')" class="text-error">Campo requerido</p>
+            <input class="input-square input-block" formControlName="name" onlyLetter [ngClass]="{ 'errorCampos': getFieldInvalid('name') }"  placeholder="Nombres">
+            <p *ngIf="getFieldInvalid('name')" class="text-error">Campo requerido</p>
 
           </div>
 
-          <div class="form-group" formGroupName="people">
+          <div class="form-group" >
             <label>Apellidos</label>
-            <input class="input-square input-block" formControlName="lastname" onlyLetter [ngClass]="{ 'errorCampos': getFieldInvalid('people.lastname') }" placeholder="Apellidos">
-            <p *ngIf="getFieldInvalid('people.lastname')" class="text-error">Campo requerido</p>
-          </div>
-
-          <div class="form-group">
-            <label>Email</label>
-            <input class="input-square input-block" formControlName="email" [ngClass]="{ 'errorCampos': getFieldInvalid('email') }"  placeholder="Email">
-            <p *ngIf="getFieldInvalid('email')" class="text-error">Campo requerido</p>
+            <input class="input-square input-block" formControlName="lastname" onlyLetter [ngClass]="{ 'errorCampos': getFieldInvalid('lastname') }" placeholder="Apellidos">
+            <p *ngIf="getFieldInvalid('lastname')" class="text-error">Campo requerido</p>
           </div>
 
             <div class="form-group" *ngIf="error">
@@ -92,7 +81,6 @@
             <div class="form-group justify-self-center">
               <button class="btn-primary  btn-block"> Continuar <mat-icon class="loader" *ngIf="loading" >cached</mat-icon> </button>
             </div>
-
         </form>
       </mat-step>
 

@@ -47,7 +47,7 @@
     @include font-size(16px);
 
     scrollbar-width: thin !important;
-    scrollbar-color:  red rgba(69,69,69,.09) !important;
+    scrollbar-color:  #00BCD4 #090c1073 !important;
 
     *::-webkit-scrollbar {
         width: 7px !important;
@@ -55,11 +55,11 @@
     }
 
     *::-webkit-scrollbar-track {
-    background: rgba(69,69,69,.09);
+    background: #090c1073;
     }
 
     *::-webkit-scrollbar-thumb {
-    background-color: red;
+    background-color: #00BCD4;
     border-radius: 20px;
     // border: 3px solid rgba(69,69,69,.09);
     }

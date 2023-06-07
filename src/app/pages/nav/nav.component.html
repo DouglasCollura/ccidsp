@@ -1,164 +1,205 @@
 <div class="temp-nav">
 
-    <div class="section-nav">
-      <button class="btn" (click)="logOut()"> <mat-icon class="material-symbols-outlined">logout</mat-icon> Cerrar sesión</button>
+  <div class="section-nav">
+    <button class="btn" (click)="logOut()"> <mat-icon class="material-symbols-outlined">logout</mat-icon> Cerrar
+      sesión</button>
 
-        <div class="head">
-            <div class="content-logo">
-              <img src="/assets/image/logo.jpeg" alt="">
+    <div class="head">
+      <div class="content-logo">
+        <img src="/assets/image/logo.jpeg" alt="">
+      </div>
+
+      <h3>{{user?.email}}</h3>
+    </div>
+
+    <div class="content-menu-nav">
+
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon class="material-symbols-outlined">account_tree</mat-icon> <span class="font-500"> PROCESOS
+              </span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="body-expansion">
+            <button class="btn" routerLink="project-investigator" routerLinkActive="active"> <mat-icon
+                class="material-symbols-outlined">folder</mat-icon> Proyectos </button>
+            <mat-divider></mat-divider>
+
+          </div>
+          <mat-divider></mat-divider>
+        </mat-expansion-panel>
+        <mat-divider></mat-divider>
+      </mat-accordion>
+
+      <ng-container *ngIf="user?.role == 'teacher'">
+
+        <div class="body-expansion">
+          <button class="btn" routerLink="project" routerLinkActive="active"> <mat-icon
+              class="material-symbols-outlined">home_storage</mat-icon> PROYECTOS </button>
+          <mat-divider></mat-divider>
+        </div>
+        <mat-divider></mat-divider>
+      </ng-container>
+
+      <ng-container *ngIf="user?.role == 'admin'">
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon class="material-symbols-outlined">receipt_long</mat-icon> <span class="font-500"> REPORTES
+                </span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="body-expansion">
             </div>
 
-            <h3>{{user?.email}}</h3>
-        </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <mat-divider></mat-divider>
+      </ng-container>
 
+      <ng-container *ngIf="user?.role == 'admin'">
         <mat-accordion>
-            <mat-expansion-panel>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title class="font-600">
+                <mat-icon class="material-symbols-outlined">home_storage</mat-icon> <span class="font-500"> GESTIÓN
+                </span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-accordion>
+              <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                    <mat-panel-title >
-                        <mat-icon class="material-symbols-outlined">account_tree</mat-icon> <span  class="font-500">  PROCESOS </span>
-                    </mat-panel-title>
+                  <mat-panel-title class="font-600">
+                    <mat-icon class="material-symbols-outlined">groups_2</mat-icon> <span
+                      class="font-500">PERSONAL</span>
+                  </mat-panel-title>
                 </mat-expansion-panel-header>
 
                 <div class="body-expansion">
-                  <button class="btn" routerLink="project-investigator" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">folder</mat-icon> Proyectos </button>
+                  <button class="btn" routerLink="investigator" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">group</mat-icon> Investigadores </button>
+                  <mat-divider></mat-divider>
+                  <button class="btn" routerLink="teacher" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">school</mat-icon> Docente acompañante </button>
+                  <mat-divider></mat-divider>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+            <mat-divider></mat-divider>
+
+            <mat-accordion>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="font-600">
+                    <mat-icon class="material-symbols-outlined">history_edu</mat-icon> <span
+                      class="font-500">INSTITUCIÓN</span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="body-expansion">
+
+                  <button class="btn" routerLink="institution/pnf" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">menu_book</mat-icon>PNF</button>
+                  <mat-divider></mat-divider>
+                  <button class="btn" routerLink="institution/trayecto" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">auto_stories</mat-icon>Trayecto</button>
+                  <mat-divider></mat-divider>
+                  <button class="btn" routerLink="institution/seccion" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">auto_stories</mat-icon>Sección</button>
+                  <mat-divider></mat-divider>
+                </div>
+
+              </mat-expansion-panel>
+            </mat-accordion>
+            <mat-divider></mat-divider>
+
+            <mat-accordion>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="font-600">
+                    <mat-icon class="material-symbols-outlined">location_home</mat-icon><span
+                      class="font-500">COMUNIDADES</span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="body-expansion">
+                  <button class="btn" routerLink="area-prioritaria" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">plagiarism</mat-icon>Area prioritaria
+                  </button>
+                  <mat-divider></mat-divider>
+                  <mat-divider></mat-divider>
+                  <button class="btn" routerLink="linea-investigacion" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>Linea
+                    de
+                    investigación</button>
+                  <mat-divider></mat-divider>
+                  <button class="btn" routerLink="dimension-espacial" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">villa</mat-icon>Dimensión
+                    espacial</button>
+                  <mat-divider></mat-divider>
+                  <button class="btn" routerLink="sujeto-social" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">family_restroom</mat-icon>Sujeto
+                    social</button>
                   <mat-divider></mat-divider>
 
                 </div>
-                <mat-divider></mat-divider>
-            </mat-expansion-panel>
-        </mat-accordion>
-
-        <ng-container *ngIf="user?.role == 'teacher'" >
-
-            <div class="body-expansion">
-              <button class="btn" routerLink="project" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">home_storage</mat-icon> PROYECTOS </button>
-              <mat-divider></mat-divider>
-            </div>
-        </ng-container>
-
-        <ng-container *ngIf="user?.role == 'admin'" >
-          <mat-accordion >
-              <mat-expansion-panel>
-                  <mat-expansion-panel-header>
-                      <mat-panel-title >
-                          <mat-icon class="material-symbols-outlined">receipt_long</mat-icon> <span  class="font-500">  REPORTES </span>
-                      </mat-panel-title>
-                  </mat-expansion-panel-header>
-
-                  <div class="body-expansion">
-                  </div>
-
               </mat-expansion-panel>
-          </mat-accordion>
-        </ng-container>
+            </mat-accordion>
+            <mat-divider></mat-divider>
 
-        <ng-container *ngIf="user?.role == 'admin'" >
-          <mat-accordion>
-            <mat-expansion-panel>
+            <mat-accordion>
+              <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                    <mat-panel-title class="font-600" >
-                      <mat-icon class="material-symbols-outlined">home_storage</mat-icon> <span  class="font-500"> GESTIÓN </span>
-                    </mat-panel-title>
+                  <mat-panel-title class="font-600">
+                    <mat-icon class="material-symbols-outlined">pin_drop</mat-icon><span
+                      class="font-500">LOCACIÓN</span>
+                  </mat-panel-title>
                 </mat-expansion-panel-header>
 
-                    <mat-accordion>
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title class="font-600" >
-                                  <mat-icon class="material-symbols-outlined">groups_2</mat-icon>  <span  class="font-500">PERSONAL</span>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
+                <div class="body-expansion">
+                  <button class="btn" routerLink="location/state" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">map</mat-icon> Estado </button>
+                  <mat-divider></mat-divider>
+                  <button class="btn" routerLink="location/municipio" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">location_on</mat-icon>Municipio</button>
+                  <mat-divider></mat-divider>
+                  <button class="btn" routerLink="location/parroquia" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">home_pin</mat-icon>Parroquia </button>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </mat-expansion-panel>
+          <mat-divider></mat-divider>
+        </mat-accordion>
 
-                            <div class="body-expansion">
-                                <button class="btn" routerLink="investigator" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">group</mat-icon> Investigadores </button>
-                                <mat-divider></mat-divider>
-                                <button class="btn" routerLink="teacher" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">school</mat-icon> Docente acompañante </button>
-                                <mat-divider></mat-divider>
-                            </div>
-                        </mat-expansion-panel>
-                    </mat-accordion>
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title class="font-600">
+                <mat-icon class="material-symbols-outlined">home_storage</mat-icon> <span class="font-500"> IMPOTACIÓN
+                  MASIVA </span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
 
-                    <mat-accordion>
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title class="font-600" >
-                                  <mat-icon class="material-symbols-outlined">history_edu</mat-icon> <span  class="font-500">INSTITUCIÓN</span>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-
-                            <div class="body-expansion">
-
-                                <button class="btn" routerLink="institution/pnf" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">menu_book</mat-icon>PNF</button>
-                                <mat-divider></mat-divider>
-                                <button class="btn" routerLink="institution/trayecto" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>Trayecto</button>
-                                <mat-divider></mat-divider>
-                                <button class="btn" routerLink="institution/seccion" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">auto_stories</mat-icon>Sección</button>
-                                <mat-divider></mat-divider>
-                            </div>
-
-                        </mat-expansion-panel>
-                    </mat-accordion>
-
-
-                    <mat-accordion>
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title class="font-600" >
-                                  <mat-icon class="material-symbols-outlined">location_home</mat-icon><span  class="font-500">COMUNIDADES</span>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-
-                            <div class="body-expansion">
-                                <button class="btn"> <mat-icon class="material-symbols-outlined">apartment</mat-icon> Comunidad </button>
-                                <mat-divider></mat-divider>
-                                <button class="btn"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>Linea de investigación</button>
-                                <mat-divider></mat-divider>
-                                <button class="btn"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>Area prioritaria </button>
-                            </div>
-                        </mat-expansion-panel>
-                    </mat-accordion>
-
-                    <mat-accordion>
-                      <mat-expansion-panel>
-                          <mat-expansion-panel-header>
-                              <mat-panel-title class="font-600" >
-                                <mat-icon class="material-symbols-outlined">pin_drop</mat-icon><span  class="font-500">LOCACIÓN</span>
-                              </mat-panel-title>
-                          </mat-expansion-panel-header>
-
-                          <div class="body-expansion">
-                              <button class="btn" routerLink="location/state" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">person_pin</mat-icon> Estado </button>
-                              <mat-divider></mat-divider>
-                              <button class="btn" routerLink="location/municipio" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">person_pin</mat-icon>Municipio</button>
-                              <mat-divider></mat-divider>
-                              <button class="btn" routerLink="location/parroquia" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">person_pin</mat-icon>Parroquia </button>
-                          </div>
-                      </mat-expansion-panel>
-                  </mat-accordion>
-            </mat-expansion-panel>
-          </mat-accordion>
-
-          <mat-accordion>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                  <mat-panel-title class="font-600" >
-                    <mat-icon class="material-symbols-outlined">home_storage</mat-icon> <span  class="font-500"> IMPOTACIÓN MASIVA </span>
-                  </mat-panel-title>
-              </mat-expansion-panel-header>
-
-              <div class="body-expansion">
-                <button class="btn" routerLink="bulk-import" [queryParams]="{type:'1'}" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">group</mat-icon> Investigador </button>
-                <button class="btn" routerLink="bulk-import" [queryParams]="{type:'2'}" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">school</mat-icon> Profesor </button>
-                <mat-divider></mat-divider>
-              </div>
-            </mat-expansion-panel>
-          </mat-accordion>
-        </ng-container>
-
+            <div class="body-expansion">
+              <button class="btn" routerLink="bulk-import" [queryParams]="{type:'1'}" routerLinkActive="active">
+                <mat-icon class="material-symbols-outlined">group</mat-icon> Investigador </button>
+              <button class="btn" routerLink="bulk-import" [queryParams]="{type:'2'}" routerLinkActive="active">
+                <mat-icon class="material-symbols-outlined">school</mat-icon> Profesor </button>
+              <mat-divider></mat-divider>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <mat-divider></mat-divider>
+      </ng-container>
     </div>
 
-    <div class="section-content">
-        <router-outlet></router-outlet>
-    </div>
+  </div>
+
+  <div class="section-content">
+    <router-outlet></router-outlet>
+  </div>
 
 </div>

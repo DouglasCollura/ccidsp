@@ -7,6 +7,7 @@ import { PnfService } from 'src/app/pages/services/pnf.service';
 import { TrayectoService } from '../../services/trayecto.service';
 import { SeccionService } from '../../services/seccion.service';
 import { TeacherService } from '../../services/teacher.service';
+import { PeopleService } from '../../services/people.service';
 
 @Component({
   selector: 'app-teacher',
@@ -23,6 +24,7 @@ export class TeacherComponent implements OnInit, AfterViewInit{
     private trayectoServices:TrayectoService,
     private seccionService: SeccionService,
     private teacherService: TeacherService,
+    private peopleService:PeopleService
   ){
   }
   @ViewChild('modal') modal!: TemplateRef<any>;
@@ -59,14 +61,10 @@ export class TeacherComponent implements OnInit, AfterViewInit{
 
 
   form = this.formBuilder.group({
-    role: ['teacher', Validators.required],
-    email: [null, Validators.required],
-    people:this.formBuilder.group({
-      name: [null, Validators.required],
-      lastname: [null, Validators.required],
-      nationality: [1],
-      cedula: [null, Validators.required],
-    })
+    name: [null, Validators.required],
+    lastname: [null, Validators.required],
+    nationality: [1],
+    cedula: [null, Validators.required],
   })
 
   formTeacher = this.formBuilder.group({
@@ -77,7 +75,6 @@ export class TeacherComponent implements OnInit, AfterViewInit{
   })
 
   teachers:any=[];
-
   trayectos:any=[];
   secciones:any=[];
   pnfs:any=[];
@@ -85,7 +82,7 @@ export class TeacherComponent implements OnInit, AfterViewInit{
   asignaturas:any = []
   peopleId:number = 0;
 
-  displayedColumns: string[] = ['Cedula','Nombre', 'Apellido', 'Email', 'Opt.'];
+  displayedColumns: string[] = ['Cedula','Nombre', 'Apellido', 'Opt.'];
   modalActive: any;
   edit:boolean = false;
   idEdit:number=0;
@@ -120,7 +117,22 @@ export class TeacherComponent implements OnInit, AfterViewInit{
     this.teacherService.getTeachers()
     .subscribe(e=>{
       this.teachers = e;
-      console.log(e)
+      console.log('teacher ',e)
+    })
+  }
+
+  storePeople(){
+    this.error = ''
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.peopleService.storePeople(this.form.value)
+    .subscribe(({data})=>{
+      console.log(data.id)
+      this.peopleId =data.id
+      console.log('peopleid', this.peopleId)
+      this.step=1
     })
   }
 
@@ -130,24 +142,24 @@ export class TeacherComponent implements OnInit, AfterViewInit{
       this.form.markAllAsTouched();
       return;
     }
-    this.loading = true;
 
-    let name:string = this.form.get('name').value;
-    this.pnfServices.storePnf(this.form.value)
-    .subscribe({
-      next: (e)=>{
-        this.getPnfs()
-        this.modalActive.close()
-        this.loading = false;
-        this.SuccessRegisterSwal.fire()
-      },
-      error: ({error}) => {
-        console.log(error)
-        this.error = error.message
-        this.loading = false;
-      }
-    })
+    this.loading = true;
+    // this.authServices.signUp(this.form.value)
+    // .subscribe({
+    //   next:({data})=>{
+
+    //     this.loading = false;
+    //     this.step = 1
+    //     this.peopleId = data.people.id
+    //   },
+    //   error:({error})=>{
+    //     this.error = true;
+    //     this.loading = false;
+    //   }
+    // })
   }
+
+
 
   update(){
     this.error = ''
@@ -183,7 +195,7 @@ export class TeacherComponent implements OnInit, AfterViewInit{
 
   setEdit(data:any){
     this.form.patchValue(data)
-    this.asignaturas = data.people.teacher
+    this.asignaturas = data.teacher
     this.idEdit = data?.id;
     this.edit = true;
     this.openModal()
@@ -259,7 +271,9 @@ export class TeacherComponent implements OnInit, AfterViewInit{
       })
     this.modalActive.afterClosed().subscribe(()=>{
       this.edit = false;
-      this.form.reset()
+      this.form.reset({nationality:1})
+      this.formTeacher.reset()
+      this.step = 0
     })
   }
 }

@@ -3,20 +3,20 @@ import { FormBuilder, Validators } from '@angular/forms';
 import {MatPaginator, MatPaginatorIntl} from '@angular/material/paginator';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { PnfService } from 'src/app/pages/services/pnf.service';
-import * as dayjs from 'dayjs'
+import { DimensionEspacialService } from '../../services/dimension-espacial.service';
+
 @Component({
-  selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss']
+  selector: 'app-dimension-espacial',
+  templateUrl: './dimension-espacial.component.html',
+  styleUrls: ['./dimension-espacial.component.scss']
 })
-export class ProjectComponent implements OnInit, AfterViewInit{
+export class DimensionEspacialComponent  implements OnInit, AfterViewInit {
 
   constructor(
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private paginator: MatPaginatorIntl,
-    private pnfServices:PnfService
+    private dimensionEspacialService:DimensionEspacialService
   ){
   }
   @ViewChild('modal') modal!: TemplateRef<any>;
@@ -25,7 +25,7 @@ export class ProjectComponent implements OnInit, AfterViewInit{
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
 
   ngOnInit(): void {
-    this.getPnfs()
+    this.getLienas()
   }
 
   ngAfterViewInit(): void {
@@ -35,14 +35,12 @@ export class ProjectComponent implements OnInit, AfterViewInit{
     .valueChanges.subscribe(()=> this.error = '')
   }
 
-
   form = this.formBuilder.group({
     name: ['', Validators.required],
-    code: ['', Validators.required],
   })
 
-  displayedColumns: string[] = ['Codigo','Nombre', 'Opt.'];
-  pnfs:any=[];
+  displayedColumns: string[] = ['Nombre', 'Opt.'];
+  lineas:any=[];
   modalActive: any;
   edit:boolean = false;
   idEdit:number=0;
@@ -50,14 +48,10 @@ export class ProjectComponent implements OnInit, AfterViewInit{
   error:string = '';
 
 
-  getYear(){
-    return `${dayjs().format('YYYY')}-${dayjs().add(1,'year').format('YYYY')}`
-  }
-
-  getPnfs(){
-    this.pnfServices.getPnf()
+  getLienas(){
+    this.dimensionEspacialService.getDimensionEspacial()
     .subscribe(e=>{
-      this.pnfs = e;
+      this.lineas = e;
       console.log(e)
     })
   }
@@ -69,13 +63,11 @@ export class ProjectComponent implements OnInit, AfterViewInit{
       return;
     }
     this.loading = true;
-
     let name:string = this.form.get('name').value;
-    this.form.get('name').setValue(name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
-    this.pnfServices.storePnf(this.form.value)
+    this.dimensionEspacialService.storeDimensionEspacial(this.form.value)
     .subscribe({
       next: (e)=>{
-        this.getPnfs()
+        this.getLienas()
         this.modalActive.close()
         this.loading = false;
         this.SuccessRegisterSwal.fire()
@@ -88,6 +80,7 @@ export class ProjectComponent implements OnInit, AfterViewInit{
     })
   }
 
+
   update(){
     this.error = ''
 
@@ -98,10 +91,10 @@ export class ProjectComponent implements OnInit, AfterViewInit{
 
     this.loading = true;
 
-    this.pnfServices.updatePnf(this.idEdit,this.form.value)
+    this.dimensionEspacialService.updateDimensionEspacial(this.idEdit,this.form.value)
     .subscribe({
       next: (e)=>{
-        this.getPnfs()
+        this.getLienas()
         this.modalActive.close()
         this.loading = false;
         this.SuccessUpdateSwal.fire()
@@ -113,9 +106,9 @@ export class ProjectComponent implements OnInit, AfterViewInit{
   }
 
   remove(id:number){
-    this.pnfServices.deletePnf(id)
+    this.dimensionEspacialService.deleteDimensionEspacial(id)
     .subscribe(e=>{
-      this.getPnfs()
+      this.getLienas()
       this.successDeleteSwal.fire()
     })
   }

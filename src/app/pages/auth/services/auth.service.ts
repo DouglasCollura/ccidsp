@@ -18,4 +18,8 @@ export class AuthService {
   signUp(data:any): Observable<any> {
     return this.http.post(`${this.url}/user`,data)
   }
+
+  signUpInvestigator(data:any): Observable<any> {
+    return this.http.post(`${this.url}/investigator/register`,data)
+  }
 }

@@ -11,11 +11,20 @@ export class TeacherService {
   constructor(private http: HttpClient) { }
   private url: string = environment.serverUrl;
 
+  findTeacherCi(cedula): Observable<any> {
+    return this.http.get(`${this.url}/teacher/find/${cedula}`)
+  }
+
+
   getTeachers(): Observable<any> {
     return this.http.get(`${this.url}/teacher`)
   }
 
   storeTeacher(data:any): Observable<any> {
     return this.http.post(`${this.url}/teacher`, data)
+  }
+
+  deleteTeacher(data:any): Observable<any> {
+    return this.http.post(`${this.url}/teacher/delete`, data)
   }
 }

@@ -1,17 +1,13 @@
 <div class="temp-state">
 
   <div class="content">
-    <h1 class="title"> PROYECTOS ACTIVOS ({{getYear()}}) </h1>
-    <!-- <div class="grid justify-content-end">
+    <h1 class="title"> Area prioritaria </h1>
+    <div class="grid justify-content-end">
       <button class="btn-primary" (click)="openModal()"> Registrar <mat-icon>add_box</mat-icon> </button>
-    </div> -->
+    </div>
 
-    <table mat-table [dataSource]="pnfs?.data" class="table">
+    <table mat-table [dataSource]="areas?.data" class="table">
 
-      <ng-container matColumnDef="Codigo">
-        <th mat-header-cell *matHeaderCellDef> Código </th>
-        <td mat-cell *matCellDef="let element"> {{element?.code}} </td>
-      </ng-container>
 
       <ng-container matColumnDef="Nombre">
         <th mat-header-cell *matHeaderCellDef> Nombre </th>
@@ -33,7 +29,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </div>
-  <mat-paginator [length]="pnfs?.total" [pageSize]="20" aria-describedby="asd" (page)="paginate($event)" aria-label=""></mat-paginator>
+  <mat-paginator [length]="areas?.total" [pageSize]="20" aria-describedby="asd" (page)="paginate($event)" aria-label=""></mat-paginator>
 </div>
 
 
@@ -47,14 +43,10 @@
     </div>
 
     <div class="modal-body">
-      <h2 class="text-center font-600">PNF</h2>
+      <h2 class="text-center font-600">Are prioritaria</h2>
 
       <form class="grid" [formGroup]="form">
-        <div class="form-group">
-          <label>Código</label>
-          <input class="input-square input-block" maxlength="3" onlyNumbers [ngClass]="{ 'errorCampos': getFieldInvalid('code') }" placeholder="Código" formControlName="code">
-          <p *ngIf="getFieldInvalid('code')" class="text-error">Campo requerido</p>
-        </div>
+
         <div class="form-group">
           <label>Nombre</label>
           <input class="input-square input-block" onlyLetter  [ngClass]="{ 'errorCampos': getFieldInvalid('name') }" placeholder="Nombre" formControlName="name">

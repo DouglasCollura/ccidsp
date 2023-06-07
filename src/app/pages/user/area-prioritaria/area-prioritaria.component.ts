@@ -3,20 +3,20 @@ import { FormBuilder, Validators } from '@angular/forms';
 import {MatPaginator, MatPaginatorIntl} from '@angular/material/paginator';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { PnfService } from 'src/app/pages/services/pnf.service';
-import * as dayjs from 'dayjs'
+import { AreaPrioritariaService } from '../../services/area-prioritaria.service';
+
 @Component({
-  selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss']
+  selector: 'app-area-prioritaria',
+  templateUrl: './area-prioritaria.component.html',
+  styleUrls: ['./area-prioritaria.component.scss']
 })
-export class ProjectComponent implements OnInit, AfterViewInit{
+export class AreaPrioritariaComponent implements OnInit, AfterViewInit{
 
   constructor(
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private paginator: MatPaginatorIntl,
-    private pnfServices:PnfService
+    private areaPrioritariaService:AreaPrioritariaService
   ){
   }
   @ViewChild('modal') modal!: TemplateRef<any>;
@@ -25,7 +25,7 @@ export class ProjectComponent implements OnInit, AfterViewInit{
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
 
   ngOnInit(): void {
-    this.getPnfs()
+    this.getAreas()
   }
 
   ngAfterViewInit(): void {
@@ -35,14 +35,12 @@ export class ProjectComponent implements OnInit, AfterViewInit{
     .valueChanges.subscribe(()=> this.error = '')
   }
 
-
   form = this.formBuilder.group({
     name: ['', Validators.required],
-    code: ['', Validators.required],
   })
 
-  displayedColumns: string[] = ['Codigo','Nombre', 'Opt.'];
-  pnfs:any=[];
+  displayedColumns: string[] = ['Nombre', 'Opt.'];
+  areas:any=[];
   modalActive: any;
   edit:boolean = false;
   idEdit:number=0;
@@ -50,14 +48,10 @@ export class ProjectComponent implements OnInit, AfterViewInit{
   error:string = '';
 
 
-  getYear(){
-    return `${dayjs().format('YYYY')}-${dayjs().add(1,'year').format('YYYY')}`
-  }
-
-  getPnfs(){
-    this.pnfServices.getPnf()
+  getAreas(){
+    this.areaPrioritariaService.getAreaPrioritaria()
     .subscribe(e=>{
-      this.pnfs = e;
+      this.areas = e;
       console.log(e)
     })
   }
@@ -71,11 +65,11 @@ export class ProjectComponent implements OnInit, AfterViewInit{
     this.loading = true;
 
     let name:string = this.form.get('name').value;
-    this.form.get('name').setValue(name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
-    this.pnfServices.storePnf(this.form.value)
+    this.form.get('name').setValue(name.toUpperCase())
+    this.areaPrioritariaService.storeAreaPrioritaria(this.form.value)
     .subscribe({
       next: (e)=>{
-        this.getPnfs()
+        this.getAreas()
         this.modalActive.close()
         this.loading = false;
         this.SuccessRegisterSwal.fire()
@@ -88,6 +82,7 @@ export class ProjectComponent implements OnInit, AfterViewInit{
     })
   }
 
+
   update(){
     this.error = ''
 
@@ -98,10 +93,10 @@ export class ProjectComponent implements OnInit, AfterViewInit{
 
     this.loading = true;
 
-    this.pnfServices.updatePnf(this.idEdit,this.form.value)
+    this.areaPrioritariaService.updateAreaPrioritaria(this.idEdit,this.form.value)
     .subscribe({
       next: (e)=>{
-        this.getPnfs()
+        this.getAreas()
         this.modalActive.close()
         this.loading = false;
         this.SuccessUpdateSwal.fire()
@@ -113,9 +108,9 @@ export class ProjectComponent implements OnInit, AfterViewInit{
   }
 
   remove(id:number){
-    this.pnfServices.deletePnf(id)
+    this.areaPrioritariaService.deleteAreaPrioritaria(id)
     .subscribe(e=>{
-      this.getPnfs()
+      this.getAreas()
       this.successDeleteSwal.fire()
     })
   }

@@ -58,7 +58,7 @@
             min-height: 48px;
             color: white;
             &:hover{
-                background-color: #2f516e;
+                background-color: #243d53;
             }
             border-radius: 0px;
             -webkit-border-radius: 0px;
@@ -80,7 +80,7 @@
 .mat-expansion-panel{
     padding: 15px 0px;
     max-width: 275px;
-    background-color: #355c7d;
+    background-color: #2a5070;
     *{
         color: white;
     }
@@ -92,7 +92,7 @@
 
 .active{
   color: #68bcd1 !important;
-  background-color: #2f516e;
+  background-color: #26455e;
   .mat-expansion-panel{
     *{
       color: #68bcd1 !important;
@@ -129,7 +129,6 @@
 
 ::ng-deep .mat-expansion-panel-body{
     padding: 0px !important;
-    padding-left: 10px !important;
 }
 
 ::ng-deep {
@@ -139,4 +138,11 @@
       }
         color: white !important;
     }
+}
+
+.content-menu-nav{
+  display: grid;
+  overflow-y: auto;
+  align-content: start;
+  height: calc(100vh - 270px);
 }
