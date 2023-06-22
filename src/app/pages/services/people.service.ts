@@ -16,11 +16,15 @@ export class PeopleService {
     return this.http.post(`${this.url}/people`, data)
   }
 
+  update(id:number,data:any): Observable<any> {
+    return this.http.patch(`${this.url}/people/${id}`, data)
+  }
+
   updatePnf(id:number,data:any): Observable<any> {
     return this.http.patch(`${this.url}/pnf/${id}`, data)
   }
 
-  deletePnf(id:number): Observable<any> {
-    return this.http.delete(`${this.url}/pnf/${id}`)
+  delete(id:number): Observable<any> {
+    return this.http.delete(`${this.url}/people/${id}`)
   }
 }

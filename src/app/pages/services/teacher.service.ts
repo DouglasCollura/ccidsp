@@ -24,6 +24,10 @@ export class TeacherService {
     return this.http.post(`${this.url}/teacher`, data)
   }
 
+  updateTeacher(data:any): Observable<any> {
+    return this.http.patch(`${this.url}/teacher`, data)
+  }
+
   deleteTeacher(data:any): Observable<any> {
     return this.http.post(`${this.url}/teacher/delete`, data)
   }

@@ -282,7 +282,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
         trayectoId: e.trayecto.id,
         pnfId: e.pnf.id,
         peopleId: this.peopleId,
-        id: e?.id
       };
       return col
     })
