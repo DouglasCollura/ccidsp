@@ -13,7 +13,7 @@
             <option [value]="1" selected>V</option>
             <option [value]="2">E</option>
           </select>
-          <input class="input-square input-block" formControlName="cedula"
+          <input class="input-square input-block" formControlName="cedula" (blur)="findTeacherCi()"
             [ngClass]="{ 'errorCampos': getFieldInvalidInv('people.cedula') }" maxlength="8" onlyNumbers
             placeholder="Cedula">
         </div>
@@ -24,6 +24,7 @@
         <div class="form-group" formGroupName="people">
           <label>Nombres</label>
           <input class="input-square input-block" formControlName="name" onlyLetter
+            [readOnly]="disableInputs || peopleId" [class.disabled]="disableInputs || peopleId"
             [ngClass]="{ 'errorCampos': getFieldInvalidInv('people.name') }" placeholder="Nombres">
           <p *ngIf="getFieldInvalidInv('people.name')" class="text-error">Campo requerido</p>
 
@@ -32,6 +33,7 @@
         <div class="form-group" formGroupName="people">
           <label>Apellidos</label>
           <input class="input-square input-block" formControlName="lastname" onlyLetter
+            [readOnly]="disableInputs || peopleId" [class.disabled]="disableInputs || peopleId"
             [ngClass]="{ 'errorCampos': getFieldInvalidInv('people.lastname') }" placeholder="Apellidos">
           <p *ngIf="getFieldInvalidInv('people.lastname')" class="text-error">Campo requerido</p>
         </div>
@@ -41,7 +43,7 @@
         <label>Email</label>
         <input class="input-square input-block" formControlName="email"
           [ngClass]="{ 'errorCampos': getFieldInvalidInv('user.email') }" placeholder="Email">
-        <p *ngIf="getFieldInvalidInv('email')" class="text-error">Campo requerido</p>
+        <p *ngIf="getFieldInvalidInv('user.email')" class="text-error">Campo requerido</p>
       </div>
 
       <div class="form-group">
@@ -60,41 +62,45 @@
 
       <div class="form-group">
         <label>Expediente</label>
-        <input class="input-square input-block" onlyNumbers [ngClass]="{ 'errorCampos': getFieldInvalidInv('exp') }" placeholder="Expediente" formControlName="exp" maxlength="10">
+        <input class="input-square input-block" onlyNumbers
+          [readOnly]="disableInputs || peopleId" [class.disabled]="disableInputs || peopleId"
+          [ngClass]="{ 'errorCampos': getFieldInvalidInv('exp') }" placeholder="Expediente" formControlName="exp" maxlength="10">
         <p *ngIf="getFieldInvalidInv('exp')" class="text-error">Campo requerido</p>
       </div>
 
       <div class="form-group">
         <label>PNF</label>
-        <ng-select notFoundText="Sin Resultados" placeholder="Selecciona el PNF" formControlName="pnfId">
-          <ng-option *ngFor="let pnf of pnfs?.data" [value]="pnf?.id">{{ pnf?.name }}</ng-option>
-        </ng-select>
-        <p *ngIf="getFieldInvalidInv('pnfId')" class="text-error">Campo requerido</p>
+        <input class="input-square input-block"
+          [class.disabled]="disableInputs || peopleId" [readOnly]="disableInputs || peopleId"
+          [ngClass]="{ 'errorCampos': getFieldInvalidInv('pnf') }" placeholder="PNF" formControlName="pnf" >
+        <p *ngIf="getFieldInvalidInv('pnf')" class="text-error">Campo requerido</p>
 
       </div>
 
       <div class="form-group">
         <label>Trayecto </label>
-        <ng-select [readonly]="!getFieldValueInv('pnfId')" notFoundText="Sin Resultados"
-          placeholder="Selecciona el trayecto" formControlName="trayectoId">
-          <ng-option *ngFor="let trayecto of trayectos?.data" [value]="trayecto?.id">{{ trayecto?.name }}</ng-option>
-        </ng-select>
-        <p *ngIf="getFieldInvalidInv('trayectoId')" class="text-error">Campo requerido</p>
+        <input class="input-square input-block"
+          [readOnly]="disableInputs || peopleId" [class.disabled]="disableInputs || peopleId"
+          [ngClass]="{ 'errorCampos': getFieldInvalidInv('trayecto') }" placeholder="Trayecto" formControlName="trayecto">
+        <p *ngIf="getFieldInvalidInv('trayecto')" class="text-error">Campo requerido</p>
       </div>
 
       <div class="form-group">
         <label>Sección</label>
-        <ng-select notFoundText="Sin Resultados"
-          [readonly]="!getFieldValueInv('pnfId') || !getFieldValueInv('trayectoId') "
-          placeholder="Selecciona la sección" formControlName="seccionId">
-          <ng-option *ngFor="let seccion of secciones?.data" [value]="seccion?.id">{{ seccion?.name }}</ng-option>
-        </ng-select>
-        <p *ngIf="getFieldInvalidInv('seccionId')" class="text-error">Campo requerido</p>
+        <input class="input-square input-block"
+          [readOnly]="disableInputs || peopleId" [class.disabled]="disableInputs || peopleId"
+          [ngClass]="{ 'errorCampos': getFieldInvalidInv('seccion') }" placeholder="Seccion" formControlName="seccion">
+        <p *ngIf="getFieldInvalidInv('seccion')" class="text-error">Campo requerido</p>
       </div>
 
+      <div class="form-group" *ngIf="errorT > 0">
+        <p class="text-rojo text-center" *ngIf="errorT == 1">Esta cedula no ha sido registrada en el sistema.</p>
+        <p class="text-rojo text-center" *ngIf="errorT == 2">La cedula ingresada no pertenece a un estudiante.</p>
+        <p class="text-rojo text-center" *ngIf="errorT == 3">Esta cuenta ya ha sido creada.</p>
+      </div>
 
-      <div class="form-group" *ngIf="error">
-        <p class="text-rojo text-center">Credenciales invalidas.</p>
+      <div class="form-group" *ngIf="err">
+        <p class="text-rojo text-center">{{err}}</p>
       </div>
 
       <div class="form-group justify-self-center">
@@ -123,7 +129,8 @@
                 [ngClass]="{ 'errorCampos': getFieldInvalid('people.cedula') }" maxlength="8" onlyNumbers
                 placeholder="Cedula">
             </div>
-            <p *ngIf="getFieldInvalid('people.cedula')" class="text-error">Campo requerido</p>
+            <p *ngIf="getFieldInvalid('people.cedula') && getField('people.cedula').hasError('required')" class="text-error">Campo requerido</p>
+            <p *ngIf="getFieldInvalid('people.cedula') && getField('people.cedula').hasError('minlength')" class="text-error">la longitud minima es 7</p>
           </div>
 
           <div class="form-group" formGroupName="people">
@@ -161,12 +168,13 @@
             <p *ngIf="getFieldInvalid('password')" class="text-error">Campo requerido</p>
           </div>
 
-          <div class="form-group" *ngIf="error">
-            <p class="text-rojo text-center">Credenciales invalidas.</p>
+          <div class="form-group" *ngIf="err">
+            <p class="text-rojo text-center">{{err}}</p>
           </div>
           <div class="form-group" *ngIf="errorT > 0">
-            <p class="text-rojo text-center" *ngIf="errorT == 1">Esta cuenta ya ha sido registrada.</p>
+            <p class="text-rojo text-center" *ngIf="errorT == 1">Esta cedula no ha sido registrada en el sistema.</p>
             <p class="text-rojo text-center" *ngIf="errorT == 2">La cedula ingresada no pertenece a un docente.</p>
+            <p class="text-rojo text-center" *ngIf="errorT == 3">Esta cuenta ya ha sido creada.</p>
           </div>
 
           <div class="form-group justify-self-center">

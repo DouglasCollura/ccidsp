@@ -21,6 +21,7 @@ import { AreaPrioritariaComponent } from './pages/user/area-prioritaria/area-pri
 import { LineaInvestigacionComponent } from './pages/user/linea-investigacion/linea-investigacion.component';
 import { DimensionEspacialComponent } from './pages/user/dimension-espacial/dimension-espacial.component';
 import { SujetoSocialComponent } from './pages/user/sujeto-social/sujeto-social.component';
+import { AcademicYearComponent } from './pages/user/academic-year/academic-year.component';
 
 const routes: Routes = [
   {
@@ -54,6 +55,7 @@ const routes: Routes = [
       { path: 'bulk-import', component: BulkImportComponent },
       { path: 'project', component: ProjectComponent },
       { path: 'teacher', component: TeacherComponent },
+      { path: 'academic-year', component: AcademicYearComponent },
       { path: 'project-investigator', component: ProjectInvestigatorComponent },
     ]
   },

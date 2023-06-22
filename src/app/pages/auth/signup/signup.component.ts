@@ -37,7 +37,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       .subscribe((e: any) => {
         this.type = parseInt(e?.type)
         this.form.get('role')?.setValue(this.type == 1 ? 'teacher' : 'student')
-        this.type == 1 && (this.disableInputs = true)
+        this.disableInputs = true
         this.getPnfs()
         this.getTrayectos()
       })
@@ -62,23 +62,23 @@ export class SignupComponent implements OnInit, AfterViewInit {
         e ? this.canAdd = true : this.canAdd = false
       })
 
-    this.formInvestigator.get('trayectoId')
-      .valueChanges.subscribe(e => {
-        this.formInvestigator.get('seccionId').reset()
-        e && this.getSecciones()
-      })
+    // this.formInvestigator.get('trayectoId')
+    //   .valueChanges.subscribe(e => {
+    //     this.formInvestigator.get('seccionId').reset()
+    //     e && this.getSecciones()
+    //   })
 
-    this.formInvestigator.get('pnfId')
-      .valueChanges.subscribe(e => {
-        this.formInvestigator.get('seccionId').reset()
-        this.formInvestigator.get('trayectoId').reset()
-      })
+    // this.formInvestigator.get('pnfId')
+    //   .valueChanges.subscribe(e => {
+    //     this.formInvestigator.get('seccionId').reset()
+    //     this.formInvestigator.get('trayectoId').reset()
+    //   })
 
-    this.formInvestigator.get('seccionId')
-      .valueChanges.subscribe(e => {
-        this.error = false;
-        e ? this.canAdd = true : this.canAdd = false
-      })
+    // this.formInvestigator.get('seccionId')
+    //   .valueChanges.subscribe(e => {
+    //     this.error = false;
+    //     e ? this.canAdd = true : this.canAdd = false
+    //   })
   }
 
   form = this.formBuilder.group({
@@ -89,20 +89,20 @@ export class SignupComponent implements OnInit, AfterViewInit {
       name: [null, Validators.required],
       lastname: [null, Validators.required],
       nationality: [1],
-      cedula: [null, Validators.required],
+      cedula: [null,[ Validators.required, Validators.minLength(7)]],
     }),
   })
 
   formInvestigator = this.formBuilder.group({
-    exp: [null, Validators.required],
-    trayectoId: [null, Validators.required],
-    pnfId: [null, Validators.required],
-    seccionId: [null, Validators.required],
+    exp: [null],
+    trayecto: [null],
+    pnf: [''],
+    seccion: [null],
     people: this.formBuilder.group({
-      name: [null, Validators.required],
-      lastname: [null, Validators.required],
+      name: [null],
+      lastname: [null],
       nationality: [1],
-      cedula: [null, Validators.required],
+      cedula: [null],
     }),
     user: this.formBuilder.group({
       role: ['student', Validators.required],
@@ -133,6 +133,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   type: number = 0
   error: boolean = false;
   errorT: number = 0;
+  err:string =null;
   loading: boolean = false;
   viewPass: boolean = false;
   step: number = 0
@@ -158,35 +159,53 @@ export class SignupComponent implements OnInit, AfterViewInit {
   findTeacherCi() {
     this.errorT = 0
     this.dataTeacher = null;
-    const ci = this.form.value.people.cedula;
-
+    const ci = this.type == 1 ? this.form.value.people.cedula : this.formInvestigator.value.people.cedula ;
     this.form.reset({ role: 'teacher', people: { nationality: 1, cedula: ci } })
+    this.formInvestigator.reset({ user:{role: 'student'}, people: { nationality: 1, cedula: ci } })
 
     if (!ci) {
       return
     }
     this.loading = true;
 
-    this.teacherService.findTeacherCi(this.form.value.people.cedula)
+    this.teacherService.findTeacherCi(ci)
       .subscribe(e => {
 
         this.loading = false;
+        if(this.type == 1 && e.type == 3){
+          this.errorT = 2;
+          return
+        }
 
-        if (e.data?.user !== null && e.data?.teacher.length > 0) {
+        if( e.type == 1){
           this.errorT = 1;
           return
         }
 
-        if (e.data?.user !== null && e.data?.teacher.length == 0) {
+        if( this.type == 2 && !e.data.investigator){
           this.errorT = 2;
           return
         }
+
+        if(e.data?.user !== null){
+          this.errorT = 3;
+          return
+        }
+
         this.disableInputs = false;
         if (e.data) {
-          this.dataTeacher = e.data;
+          this.type == 1 && (this.dataTeacher = e.data);
           this.peopleId = e.data.id;
-          this.form.patchValue({ people: e.data })
-          this.asignaturas = e.data.teacher
+          this.type == 1 && this.form.patchValue({ people: e.data })
+
+          this.type == 1 && (this.asignaturas = e.data.teacher)
+          if(this.type == 2){
+            this.formInvestigator.patchValue({people:e.data}, e.data.investigator)
+            this.formInvestigator.patchValue(e.data.investigator)
+            this.formInvestigator.get('pnf').setValue(e.data.investigator.pnf.name)
+            this.formInvestigator.get('trayecto').setValue(e.data.investigator.trayecto.name)
+            this.formInvestigator.get('seccion').setValue(e.data.investigator.seccion.name)
+          }
         }
         console.log(e)
       })
@@ -202,11 +221,14 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.loading = true;
 
     let formData: any = this.form.value;
+    // formData.people.cedula.length == 7 && (formData.people.cedula = `0${formData.people.cedula}`);
 
     if (this.dataTeacher) {
       delete formData.people;
       formData.peopleId = this.peopleId
+    }else{
     }
+
 
 
     this.authServices.signUp(formData)
@@ -221,29 +243,33 @@ export class SignupComponent implements OnInit, AfterViewInit {
             data?.people?.id && (this.peopleId = data?.people?.id)
           }
         },
-        error: ({ error }) => {
-          this.error = true;
+        error: ({error:{error}}) => {
           this.loading = false;
+          this.err = error.mensaje;
         }
       })
   }
 
   signupInvestigator(){
+    console.log(this.formInvestigator.value)
+
     if (this.formInvestigator.invalid) {
       this.formInvestigator.markAllAsTouched();
       return;
     }
     this.loading = true;
     let formData: any = this.formInvestigator.value;
+    formData.user.peopleId = this.peopleId
+
     this.authServices.signUpInvestigator(formData)
     .subscribe({
       next: ({ data }) => {
         this.SuccessSwal.fire()
         this.router.navigate(['/'])
       },
-      error: ({ error }) => {
-        this.error = true;
+      error: ({error:{error}}) => {
         this.loading = false;
+        this.err = error.mensaje;
       }
     })
   }
@@ -339,6 +365,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   getFieldValue(field: string) {
     return this.form.get(field).value;
+  }
+
+  getField(field:string){
+    return this.form.get(field)
   }
 
   openModal() {

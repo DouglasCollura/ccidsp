@@ -9,6 +9,10 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [],
   imports: [
@@ -23,7 +27,14 @@ import {MatChipsModule} from '@angular/material/chips';
     MatDialogModule,
     MatPaginatorModule,
     MatStepperModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatNativeDateModule
+  ],
+  providers: [
+
   ]
 })
 export class MaterialModule { }

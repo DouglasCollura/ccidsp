@@ -7,6 +7,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { PnfService } from '../../services/pnf.service';
 import { TrayectoService } from '../../services/trayecto.service';
 import { SeccionService } from '../../services/seccion.service';
+import { AcademicYearService } from '../../services/academic-year.service';
 
 @Component({
   selector: 'app-investigators',
@@ -23,6 +24,7 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
     private pnfServices:PnfService,
     private trayectoServices:TrayectoService,
     private seccionService: SeccionService,
+    private academicYearService: AcademicYearService,
   ){
   }
 
@@ -35,6 +37,7 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
     this.getInvestigators()
     this.getPnfs()
     this.getTrayectos()
+    this.getAcademicYear()
   }
 
   ngAfterViewInit(): void {
@@ -52,22 +55,24 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
   trayectos:any=[];
   secciones:any=[];
   pnfs:any=[];
+  academicYears:any =[];
 
   form = this.formBuilder.group({
-    exp: [null, Validators.required],
+    exp: [null],
     trayectoId: [null, Validators.required],
     pnfId: [null, Validators.required],
     seccionId: [null, Validators.required],
+    academicYearId: [null, Validators.required],
     people:this.formBuilder.group({
       name: [null, Validators.required],
       lastname: [null, Validators.required],
       nationality: [1],
-      cedula: [null, Validators.required],
+      cedula: [null, [Validators.required, Validators.minLength(7)]],
     })
   })
   modalActive: any;
   loading:boolean = false;
-  error:number = 0;
+  error:string = '';
   edit:boolean = false;
   idEdit:number=0;
 
@@ -96,6 +101,14 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
     })
   }
 
+  getAcademicYear(){
+    this.academicYearService.getAcademicYear()
+    .subscribe(e=>{
+      this.academicYears = e;
+      console.log(e)
+    })
+  }
+
   getSecciones(){
 
     this.seccionService.getSeccionesById(this.getFieldValue('pnfId'),this.getFieldValue('trayectoId'))
@@ -109,13 +122,15 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
   }
 
   store(){
-    this.error = 0
+    this.error = ''
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
     let formData:any = this.form.value;
+    !formData.exp && delete formData.exp;
+    formData.people.cedula.length == 7 && (formData.people.cedula = `0${formData.people.cedula}`);
     formData.people.nationality = parseInt(formData.people.nationality)
     this.loading = true;
     this.investigatorService.storeInvestigators(formData)
@@ -126,9 +141,11 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
         this.loading = false;
         this.SuccessRegisterSwal.fire()
       },
-      error: (error) => {
+      error: ({error:{error}}) => {
+        console.log(error)
+
         this.loading = false;
-        this.error = 1;
+        this.error = error.mensaje;
       }
     })
 
@@ -143,7 +160,7 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
   }
 
   update(){
-    this.error = 0
+    this.error = ''
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -162,9 +179,9 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
         this.loading = false;
         this.SuccessUpdateSwal.fire()
       },
-      error: (error) => {
+      error: ({error:{error}}) => {
         this.loading = false;
-        this.error = 1;
+        this.error = error.mensaje;
       }
     })
   }
@@ -181,11 +198,16 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
     return this.form.get(field)?.invalid && this.form.get(field)?.touched
   }
 
+  getField(field:string){
+    return this.form.get(field)
+  }
+
   getFieldValue(field:string){
     return this.form.get(field).value;
   }
 
   openModal(){
+    this.error = null;
     this.modalActive = this.dialog.open(this.modal,
       {
         maxWidth: '800px',

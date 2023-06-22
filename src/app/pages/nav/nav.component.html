@@ -14,7 +14,7 @@
 
     <div class="content-menu-nav">
 
-      <mat-accordion>
+      <mat-accordion *ngIf="user?.role == 'student'">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -62,9 +62,9 @@
         <mat-divider></mat-divider>
       </ng-container>
 
-      <ng-container *ngIf="user?.role == 'admin'">
+      <ng-container>
         <mat-accordion>
-          <mat-expansion-panel>
+          <mat-expansion-panel *ngIf="user?.role == 'admin' || user?.role == 'teacher'">
             <mat-expansion-panel-header>
               <mat-panel-title class="font-600">
                 <mat-icon class="material-symbols-outlined">home_storage</mat-icon> <span class="font-500"> GESTIÓN
@@ -85,39 +85,48 @@
                   <button class="btn" routerLink="investigator" routerLinkActive="active"> <mat-icon
                       class="material-symbols-outlined">group</mat-icon> Investigadores </button>
                   <mat-divider></mat-divider>
-                  <button class="btn" routerLink="teacher" routerLinkActive="active"> <mat-icon
-                      class="material-symbols-outlined">school</mat-icon> Docente acompañante </button>
-                  <mat-divider></mat-divider>
+
+                  <ng-container *ngIf="user?.role == 'admin'">
+                    <button class="btn" routerLink="teacher" routerLinkActive="active"> <mat-icon
+                        class="material-symbols-outlined">school</mat-icon> Docente acompañante </button>
+                    <mat-divider></mat-divider>
+                  </ng-container>
+
                 </div>
               </mat-expansion-panel>
             </mat-accordion>
             <mat-divider></mat-divider>
 
-            <mat-accordion>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title class="font-600">
-                    <mat-icon class="material-symbols-outlined">history_edu</mat-icon> <span
-                      class="font-500">INSTITUCIÓN</span>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
+            <ng-container *ngIf="user?.role == 'admin'">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title class="font-600">
+                      <mat-icon class="material-symbols-outlined">history_edu</mat-icon> <span
+                        class="font-500">INSTITUCIÓN</span>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
 
-                <div class="body-expansion">
+                  <div class="body-expansion">
 
-                  <button class="btn" routerLink="institution/pnf" routerLinkActive="active"> <mat-icon
-                      class="material-symbols-outlined">menu_book</mat-icon>PNF</button>
-                  <mat-divider></mat-divider>
-                  <button class="btn" routerLink="institution/trayecto" routerLinkActive="active"> <mat-icon
-                      class="material-symbols-outlined">auto_stories</mat-icon>Trayecto</button>
-                  <mat-divider></mat-divider>
-                  <button class="btn" routerLink="institution/seccion" routerLinkActive="active"> <mat-icon
-                      class="material-symbols-outlined">auto_stories</mat-icon>Sección</button>
-                  <mat-divider></mat-divider>
-                </div>
+                    <button class="btn" routerLink="academic-year" routerLinkActive="active"> <mat-icon
+                        class="material-symbols-outlined">event_available</mat-icon>Año académico</button>
+                    <mat-divider></mat-divider>
+                    <button class="btn" routerLink="institution/pnf" routerLinkActive="active"> <mat-icon
+                        class="material-symbols-outlined">menu_book</mat-icon>PNF</button>
+                    <mat-divider></mat-divider>
+                    <button class="btn" routerLink="institution/trayecto" routerLinkActive="active"> <mat-icon
+                        class="material-symbols-outlined">auto_stories</mat-icon>Trayecto</button>
+                    <mat-divider></mat-divider>
+                    <button class="btn" routerLink="institution/seccion" routerLinkActive="active"> <mat-icon
+                        class="material-symbols-outlined">auto_stories</mat-icon>Sección</button>
+                    <mat-divider></mat-divider>
+                  </div>
 
-              </mat-expansion-panel>
-            </mat-accordion>
-            <mat-divider></mat-divider>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-divider></mat-divider>
+            </ng-container>
 
             <mat-accordion>
               <mat-expansion-panel>
@@ -129,18 +138,22 @@
                 </mat-expansion-panel-header>
 
                 <div class="body-expansion">
-                  <button class="btn" routerLink="area-prioritaria" routerLinkActive="active" > <mat-icon class="material-symbols-outlined">plagiarism</mat-icon>Area prioritaria
+                  <button class="btn" routerLink="area-prioritaria" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">plagiarism</mat-icon>Area prioritaria
                   </button>
                   <mat-divider></mat-divider>
                   <mat-divider></mat-divider>
-                  <button class="btn" routerLink="linea-investigacion" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">content_paste_search</mat-icon>Linea
+                  <button class="btn" routerLink="linea-investigacion" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">content_paste_search</mat-icon>Linea
                     de
                     investigación</button>
                   <mat-divider></mat-divider>
-                  <button class="btn" routerLink="dimension-espacial" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">villa</mat-icon>Dimensión
+                  <button class="btn" routerLink="dimension-espacial" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">villa</mat-icon>Dimensión
                     espacial</button>
                   <mat-divider></mat-divider>
-                  <button class="btn" routerLink="sujeto-social" routerLinkActive="active"> <mat-icon class="material-symbols-outlined">family_restroom</mat-icon>Sujeto
+                  <button class="btn" routerLink="sujeto-social" routerLinkActive="active"> <mat-icon
+                      class="material-symbols-outlined">family_restroom</mat-icon>Sujeto
                     social</button>
                   <mat-divider></mat-divider>
 
@@ -149,7 +162,7 @@
             </mat-accordion>
             <mat-divider></mat-divider>
 
-            <mat-accordion>
+            <mat-accordion *ngIf="user?.role == 'admin'">
               <mat-expansion-panel>
                 <mat-expansion-panel-header>
                   <mat-panel-title class="font-600">
@@ -174,7 +187,7 @@
           <mat-divider></mat-divider>
         </mat-accordion>
 
-        <mat-accordion>
+        <mat-accordion *ngIf="user?.role == 'admin'">
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title class="font-600">
