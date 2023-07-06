@@ -131,7 +131,11 @@ export class TeacherComponent implements OnInit, AfterViewInit {
       this.form.markAllAsTouched();
       return;
     }
-    this.peopleService.storePeople(this.form.value)
+    
+    let formData:any = this.form.value;
+    formData.cedula.length == 7 && (formData.cedula = `0${formData.cedula}`);
+
+    this.peopleService.storePeople(formData)
       .subscribe({
         next: ({ data }) => {
           console.log(data.id)
