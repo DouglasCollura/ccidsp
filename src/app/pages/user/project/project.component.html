@@ -41,18 +41,18 @@
 <ng-template #modal>
   <mat-dialog-actions class="modal">
     <div class="header">
-      <span></span>
-      <button class="btn btn-close" mat-dialog-close="true"> <mat-icon
+      <span>Proyecto</span>
+      <button class="btn btn-close" mat-dialog-close="true">  <mat-icon
           class="material-symbols-outlined">close</mat-icon></button>
     </div>
 
     <div class="modal-body">
-      <h2 class="text-center font-600">PNF</h2>
+      <h2 class="text-center font-600">Proyecto</h2>
 
       <form class="grid" [formGroup]="form">
         <div class="form-group">
           <label>Código</label>
-          <input class="input-square input-block" maxlength="3" onlyNumbers [ngClass]="{ 'errorCampos': getFieldInvalid('code') }" placeholder="Código" formControlName="code">
+          <input class="input-square input-block" maxlength="3" onlyNumbers [ngClass]="{ 'errorCampos': getFieldInvalid('code') }" placeholder="Nombre de  proyecto" formControlName="code">
           <p *ngIf="getFieldInvalid('code')" class="text-error">Campo requerido</p>
         </div>
         <div class="form-group">

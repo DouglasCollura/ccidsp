@@ -189,6 +189,14 @@
 }
 
 .modal{
+  .input-square{
+    margin: 0px !important;
+  }
+
+  input{
+    max-width: none !important;
+  }
+
   .modal-body{
     justify-items: stretch !important;
   }

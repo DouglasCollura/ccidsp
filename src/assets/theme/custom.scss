@@ -466,10 +466,10 @@ select{
 }
 
 .group-input-icon-left {
-	span {
+	mat-icon {
 		position: absolute;
 		left: 10px;
-		font-size: 16px;
+		// font-size: 16px;
 	}
 
 	input {

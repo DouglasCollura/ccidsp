@@ -18,7 +18,7 @@ export class SujetoSocialService {
   }
 
   getSujetoSocialById(id:number): Observable<any> {
-    return this.http.get(`${this.url}/sujeto-social/${id}`)
+    return this.http.get(`${this.url}/sujeto-social/find/${id}`)
   }
 
   storeSujetoSocial(data:any): Observable<any> {

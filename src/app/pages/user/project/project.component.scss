@@ -136,8 +136,12 @@
 }
 
 .modal{
+
   .modal-body{
+    min-width: 600px;
     justify-items: stretch !important;
+
+
   }
   .footer{
     justify-content: center;
