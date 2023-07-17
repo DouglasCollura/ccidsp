@@ -10,15 +10,165 @@
         <button class="btn-primary" (click)="openModal()"> Inscribir <mat-icon>add_box</mat-icon> </button>
       </div>
 
+      <ng-container *ngFor="let proyecto of proyectos_cursantes">
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon class="material-symbols-outlined">folder</mat-icon>
+                <span class="font-500"> {{proyecto.name}} </span>
+              </mat-panel-title>
+              <mat-chip
+                [class]="
+                  proyecto.status == 0 ? 'chip-status-grey' :
+                  proyecto.status == 1 ? 'chip-status-yellow' :
+                  proyecto.status == 2 ? 'chip-status-green' :'chip-status-red'"
+                  cdkDrag>
+
+                  {{
+                    proyecto.status == 0 ? 'En revisión' :
+                    proyecto.status == 1 ? 'En proceso' :
+                    proyecto.status == 2 ? 'Aprobado' : 'Reprobado'
+                  }}
+
+              </mat-chip>
+            </mat-expansion-panel-header>
+
+            <div class="body-expansion">
+
+              <div class="section-card">
+                <div class="header-section-card">
+                  <mat-icon class="material-symbols-outlined">group</mat-icon>
+                  <h3>Investigadores</h3>
+                </div>
+                <mat-divider></mat-divider>
+
+                <div class="list-investigators">
+
+                  <ng-container *ngFor="let inv of proyecto.projectStudent">
+                    <div class="card-investigator">
+                      <h3>Cedula: {{inv.investigator.people.cedula}}</h3>
+                      <h3>Nombre: {{inv.investigator.people.name}}</h3>
+                      <h3>Apellido: {{inv.investigator.people.lastname}}</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                  </ng-container>
+                </div>
+              </div>
+
+
+              <div class="section-card">
+                <div class="header-section-card">
+                  <mat-icon class="material-symbols-outlined">info</mat-icon>
+                  <h3>Información</h3>
+                </div>
+                <mat-divider></mat-divider>
+
+                <div class="list-investigators">
+
+                  <div class="card-investigator">
+                    <mat-icon class="material-symbols-outlined">info</mat-icon>
+                    <h3>Proyecto: {{proyecto.name}}</h3>
+                  </div>
+                  <mat-divider></mat-divider>
+
+                  <div class="card-investigator">
+                    <mat-icon class="material-symbols-outlined">info</mat-icon>
+                    <h3>Area prioritaria: {{proyecto.AreaPrioritaria.name}} </h3>
+                  </div>
+                  <mat-divider></mat-divider>
+
+                  <div class="card-investigator">
+                    <mat-icon class="material-symbols-outlined">info</mat-icon>
+                    <h3>Linea de investigación: {{proyecto.LineaInvestigacion.name}} </h3>
+                  </div>
+                  <mat-divider></mat-divider>
+
+                  <div class="card-investigator">
+                    <mat-icon class="material-symbols-outlined">info</mat-icon>
+                    <h3>Dimensión espacial: {{proyecto.DimensionEspacial.name}} </h3>
+                  </div>
+                  <mat-divider></mat-divider>
+
+                  <div class="card-investigator">
+                    <mat-icon class="material-symbols-outlined">info</mat-icon>
+                    <h3>Sujeto social: {{proyecto.SujetoSocial.name}} </h3>
+                  </div>
+                  <mat-divider></mat-divider>
+
+                  <div class="card-investigator">
+                    <mat-icon class="material-symbols-outlined">info</mat-icon>
+                    <h3>Area: Tal</h3>
+                  </div>
+                  <mat-divider></mat-divider>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <div class="header-section-card">
+                  <mat-icon class="material-symbols-outlined">info</mat-icon>
+                  <h3>Datos académicos</h3>
+                </div>
+                <mat-divider></mat-divider>
+
+                <div class="list-investigators">
+
+                  <div class="card-investigator">
+                    <mat-icon class="material-symbols-outlined">info</mat-icon>
+                    <h3>PNF: {{proyecto.pnf.name}} </h3>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div class="card-investigator">
+                    <mat-icon class="material-symbols-outlined">info</mat-icon>
+                    <h3>Trayecto: {{proyecto.trayecto.name}} </h3>
+                  </div>
+                  <mat-divider></mat-divider>
+
+                  <div class="card-investigator">
+                    <mat-icon class="material-symbols-outlined">info</mat-icon>
+                    <h3>Sección: {{proyecto.seccion.name}} </h3>
+                  </div>
+                  <mat-divider></mat-divider>
+                </div>
+              </div>
+
+            </div>
+            <mat-divider></mat-divider>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </ng-container>
+
+
+    </div>
+
+    <mat-divider></mat-divider>
+
+
+    <h1>Anteriores</h1>
+    <ng-container *ngFor="let proyecto of proyectos_cerrados">
       <mat-accordion>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
               <mat-icon class="material-symbols-outlined">folder</mat-icon>
-              <span class="font-500"> CCIPS </span>
+              <span class="font-500"> {{proyecto.name}} </span>
+              <span class="font-500" style="margin-left: 10px;"> ({{proyecto.AcademicYear.year}}) </span>
+
             </mat-panel-title>
-            <mat-chip class="chip-status-yellow" cdkDrag>
-              En proceso
+
+            <mat-chip
+              [class]="
+                proyecto.status == 0 ? 'chip-status-grey' :
+                proyecto.status == 1 ? 'chip-status-yellow' :
+                proyecto.status == 2 ? 'chip-status-green' :'chip-status-red'"
+                cdkDrag>
+
+                {{
+                  proyecto.status == 0 ? 'En revisión' :
+                  proyecto.status == 1 ? 'En proceso' :
+                  proyecto.status == 2 ? 'Aprobado' : 'Reprobado'
+                }}
+
             </mat-chip>
           </mat-expansion-panel-header>
 
@@ -33,11 +183,11 @@
 
               <div class="list-investigators">
 
-                <ng-container *ngFor="let item of [1,2,3]">
+                <ng-container *ngFor="let inv of proyecto.projectStudent">
                   <div class="card-investigator">
-                    <h3>Cedula: 24332123</h3>
-                    <h3>Nombre: Fulanito</h3>
-                    <h3>Apellido: Cosme</h3>
+                    <h3>Cedula: {{inv.investigator.people.cedula}}</h3>
+                    <h3>Nombre: {{inv.investigator.people.name}}</h3>
+                    <h3>Apellido: {{inv.investigator.people.lastname}}</h3>
                   </div>
                   <mat-divider></mat-divider>
                 </ng-container>
@@ -56,12 +206,31 @@
 
                 <div class="card-investigator">
                   <mat-icon class="material-symbols-outlined">info</mat-icon>
-                  <h3>Proyecto: Sistema informatico sexo anal</h3>
+                  <h3>Proyecto: {{proyecto.name}}</h3>
                 </div>
                 <mat-divider></mat-divider>
+
                 <div class="card-investigator">
                   <mat-icon class="material-symbols-outlined">info</mat-icon>
-                  <h3>Institución: YUTI</h3>
+                  <h3>Area prioritaria: {{proyecto.AreaPrioritaria.name}} </h3>
+                </div>
+                <mat-divider></mat-divider>
+
+                <div class="card-investigator">
+                  <mat-icon class="material-symbols-outlined">info</mat-icon>
+                  <h3>Linea de investigación: {{proyecto.LineaInvestigacion.name}} </h3>
+                </div>
+                <mat-divider></mat-divider>
+
+                <div class="card-investigator">
+                  <mat-icon class="material-symbols-outlined">info</mat-icon>
+                  <h3>Dimensión espacial: {{proyecto.DimensionEspacial.name}} </h3>
+                </div>
+                <mat-divider></mat-divider>
+
+                <div class="card-investigator">
+                  <mat-icon class="material-symbols-outlined">info</mat-icon>
+                  <h3>Sujeto social: {{proyecto.SujetoSocial.name}} </h3>
                 </div>
                 <mat-divider></mat-divider>
 
@@ -84,18 +253,18 @@
 
                 <div class="card-investigator">
                   <mat-icon class="material-symbols-outlined">info</mat-icon>
-                  <h3>PNF: Informática</h3>
+                  <h3>PNF: {{proyecto.pnf.name}} </h3>
                 </div>
                 <mat-divider></mat-divider>
                 <div class="card-investigator">
                   <mat-icon class="material-symbols-outlined">info</mat-icon>
-                  <h3>Trayecto: 1</h3>
+                  <h3>Trayecto: {{proyecto.trayecto.name}} </h3>
                 </div>
                 <mat-divider></mat-divider>
 
                 <div class="card-investigator">
                   <mat-icon class="material-symbols-outlined">info</mat-icon>
-                  <h3>Sección: 502503</h3>
+                  <h3>Sección: {{proyecto.seccion.name}} </h3>
                 </div>
                 <mat-divider></mat-divider>
               </div>
@@ -105,56 +274,7 @@
           <mat-divider></mat-divider>
         </mat-expansion-panel>
       </mat-accordion>
-
-    </div>
-
-    <mat-divider></mat-divider>
-
-
-    <h1>Anteriores</h1>
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <mat-icon class="material-symbols-outlined">folder</mat-icon>
-            <span class="font-500"> Proyecto 2 </span>
-          </mat-panel-title>
-          <mat-chip class="chip-status-green" cdkDrag>
-            Aprobado
-          </mat-chip>
-        </mat-expansion-panel-header>
-
-        <div class="body-expansion">
-          <button class="btn" routerLink="project-investigator" routerLinkActive="active"> <mat-icon
-              class="material-symbols-outlined">folder</mat-icon> Proyectos </button>
-          <mat-divider></mat-divider>
-
-        </div>
-        <mat-divider></mat-divider>
-      </mat-expansion-panel>
-    </mat-accordion>
-
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <mat-icon class="material-symbols-outlined">folder</mat-icon>
-            <span class="font-500"> Proyecto 2 </span>
-          </mat-panel-title>
-          <mat-chip class="chip-status-red" cdkDrag>
-            Reprobado
-          </mat-chip>
-        </mat-expansion-panel-header>
-
-        <div class="body-expansion">
-          <button class="btn" routerLink="project-investigator" routerLinkActive="active"> <mat-icon
-              class="material-symbols-outlined">folder</mat-icon> Proyectos </button>
-          <mat-divider></mat-divider>
-
-        </div>
-        <mat-divider></mat-divider>
-      </mat-expansion-panel>
-    </mat-accordion>
+    </ng-container>
   </div>
 </div>
 
@@ -183,8 +303,7 @@
         <div class="content-two">
           <div class="form-group">
             <label>Area prioritaria </label>
-            <ng-select notFoundText="Sin Resultados" placeholder="Area prioritaria"
-              formControlName="AreaPrioritariaId">
+            <ng-select notFoundText="Sin Resultados" placeholder="Area prioritaria" formControlName="AreaPrioritariaId">
               <ng-option *ngFor="let area of areas?.data" [value]="area?.id">{{
                 area?.name }}</ng-option>
             </ng-select>
@@ -193,10 +312,11 @@
 
           <div class="form-group">
             <label>Linea de investigación</label>
-            <ng-select notFoundText="Sin Resultados" placeholder="Linea de investigación" formControlName="lineaInvestigacionId">
+            <ng-select notFoundText="Sin Resultados" placeholder="Linea de investigación"
+              formControlName="LineaInvestigacionId">
               <ng-option *ngFor="let linea of lineas?.data" [value]="linea?.id">{{ linea?.name }}</ng-option>
             </ng-select>
-            <p *ngIf="getFieldInvalid('lineaInvestigacionId')" class="text-error">Campo requerido</p>
+            <p *ngIf="getFieldInvalid('LineaInvestigacionId')" class="text-error">Campo requerido</p>
 
           </div>
         </div>
@@ -214,10 +334,10 @@
 
           <div class="form-group">
             <label>Sujeto social</label>
-            <ng-select notFoundText="Sin Resultados" placeholder="Sujeto social" formControlName="sujetoSocialId">
+            <ng-select notFoundText="Sin Resultados" placeholder="Sujeto social" formControlName="SujetoSocialId">
               <ng-option *ngFor="let sujeto of sujetos?.data" [value]="sujeto?.id">{{ sujeto?.name }}</ng-option>
             </ng-select>
-            <p *ngIf="getFieldInvalid('sujetoSocialId')" class="text-error">Campo requerido</p>
+            <p *ngIf="getFieldInvalid('SujetoSocialId')" class="text-error">Campo requerido</p>
 
           </div>
         </div>
@@ -229,11 +349,11 @@
           <div class="form-group">
             <label>Año académico </label>
             <ng-select notFoundText="Sin Resultados" placeholder="Selecciona el año academico"
-              formControlName="academicYearId">
+              formControlName="AcademicYearId">
               <ng-option *ngFor="let academicYear of academicYears?.data" [value]="academicYear?.id">{{
                 academicYear?.year }}</ng-option>
             </ng-select>
-            <p *ngIf="getFieldInvalid('academicYearId')" class="text-error">Campo requerido</p>
+            <p *ngIf="getFieldInvalid('AcademicYearId')" class="text-error">Campo requerido</p>
           </div>
           <div class="form-group">
             <label>PNF</label>
@@ -257,8 +377,8 @@
           <div class="form-group">
             <label>Sección</label>
             <ng-select notFoundText="Sin Resultados"
-              [readonly]="!getFieldValue('pnfId') || !getFieldValue('trayectoId') " placeholder="Selecciona la sección"
-              formControlName="seccionId">
+              [readonly]="!getFieldValue('pnfId') || !getFieldValue('trayectoId') " (change)="getIvestigators()"
+              placeholder="Selecciona la sección" formControlName="seccionId">
               <ng-option *ngFor="let seccion of secciones?.data" [value]="seccion?.id">{{ seccion?.name }}</ng-option>
             </ng-select>
             <p *ngIf="getFieldInvalid('seccionId')" class="text-error">Campo requerido</p>
@@ -269,7 +389,7 @@
 
       <mat-divider></mat-divider>
       <div class="group-input-icon-left">
-        <input class="input-search" type="text">
+        <input class="input-search" onlyNumbers (input)="onInputChange($event)" placeholder="Cedula o Expediente" type="text">
         <mat-icon class="blue">search</mat-icon>
       </div>
       <table mat-table [dataSource]="investigators?.data" class="table">
@@ -319,7 +439,8 @@
 
       <div class="footer">
         <button mat-dialog-close="true" class="btn-secondary">Cancelar</button>
-        <button *ngIf="!edit" class="btn-primary">Registrar <mat-icon class="loader" *ngIf="loading">cached</mat-icon>
+        <button *ngIf="!edit" class="btn-primary" (click)="storeProject()">Registrar <mat-icon class="loader"
+            *ngIf="loading">cached</mat-icon>
         </button>
         <button *ngIf="edit" class="btn-primary" (click)="update()">Editar <mat-icon class="loader"
             *ngIf="loading">cached</mat-icon> </button>

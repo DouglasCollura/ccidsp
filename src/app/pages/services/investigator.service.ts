@@ -15,9 +15,18 @@ export class InvestigatorService {
     return this.http.get(`${this.url}/investigator`)
   }
 
+  getStudentByPeopleId(id:number): Observable<any> {
+    return this.http.get(`${this.url}/investigator/getByPeopleId/${id}`)
+  }
+
   getInvestigatorList(data:any): Observable<any> {
     return this.http.post(`${this.url}/investigator/list`, data)
   }
+
+  searchInvestigator(data:any): Observable<any> {
+    return this.http.post(`${this.url}/investigator/search`, data)
+  }
+
 
   storeInvestigators(data:any): Observable<any> {
     return this.http.post(`${this.url}/investigator`, data)

@@ -15,6 +15,9 @@ export class TeacherService {
     return this.http.get(`${this.url}/teacher/find/${cedula}`)
   }
 
+  getProjectsById(id:number): Observable<any> {
+    return this.http.get(`${this.url}/teacher/get-projects/${id}`)
+  }
 
   getTeachers(): Observable<any> {
     return this.http.get(`${this.url}/teacher`)

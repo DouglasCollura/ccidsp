@@ -1,4 +1,4 @@
-.temp-state{
+.temp-project-investigator{
   min-height: 100%;
   display: grid;
   width: 100%;
@@ -6,8 +6,29 @@
   padding: 20px;
   box-sizing: border-box;
   align-content: start;
+
+  ::ng-deep {
+    mat-expansion-panel-header{
+      *::after{
+        color: #5F84A2 !important;
+      }
+    }
+}
 }
 
+
+.list-investigators{
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 10px;
+  padding-left: 20px;
+  .card-investigator{
+    display: flex;
+    gap: 20px;
+  }
+
+}
 
 .content {
   width: 100%;
@@ -23,6 +44,19 @@
   margin: 0px !important;
 }
 
+.section{
+  margin: 20px 0px;
+}
+
+.header{
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
 .title{
   font-weight: 600;
 
@@ -32,6 +66,25 @@
   display: flex;
 }
 
+.section-card{
+  margin-bottom: 10px;
+}
+.header-section-card{
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  background-color: #5F84A2;
+  *{
+    color: white !important;
+  }
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
 
 ::ng-deep.mat-mdc-dialog-actions{
   justify-content: stretch !important;
@@ -51,7 +104,7 @@
   align-content: start;
   grid-gap: 15px;
   padding: 20px;
-  max-height: 100vh !important;
+  max-height: 95vh !important;
   overflow-y: auto !important;
   .header{
       display: flex;
@@ -130,21 +183,56 @@
   }
 }
 
+.card-footer{
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+}
+
 ::ng-deep .cdk-overlay-pane{
   max-height: auto !important;
   overflow-y: auto !important;
 }
 
 .modal{
+  .input-square{
+    margin: 0px !important;
+  }
+
+  input{
+    max-width: none !important;
+  }
 
   .modal-body{
-    min-width: 600px;
     justify-items: stretch !important;
-
-
   }
   .footer{
     justify-content: center;
   }
 }
 
+.chip-status{
+  margin-right: 20px;
+  --mdc-chip-label-text-color: #fff;
+  &-green{
+    @extend .chip-status;
+    background-color: #49BC62 !important;
+  }
+
+  &-yellow{
+    @extend .chip-status;
+    background-color: #FCB712 !important;
+  }
+
+  &-red{
+    @extend .chip-status;
+    background-color: #f24747 !important;
+  }
+
+  &-grey{
+    @extend .chip-status;
+    background-color: #b1b1b1 !important;
+  }
+}
