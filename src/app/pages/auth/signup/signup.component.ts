@@ -310,7 +310,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
       trayecto: this.trayectos.data.find(e => e.id == this.formTeacher.get('trayectosId').value),
       seccion: this.secciones.data.find(e => e.id == this.formTeacher.get('seccionesId').value)
     }
-    console.log()
     if (this.asignaturas.findIndex(e => e.seccion.id === asignatura.seccion.id) == 0) {
       this.error = true;
       return

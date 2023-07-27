@@ -168,6 +168,8 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
     }
 
     let formData:any = this.form.value;
+    !formData.exp && delete formData.exp;
+    formData.people.cedula.length == 7 && (formData.people.cedula = `0${formData.people.cedula}`);
     formData.people.nationality = parseInt(formData.people.nationality)
     this.loading = true;
 
