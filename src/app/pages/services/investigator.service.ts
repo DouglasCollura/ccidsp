@@ -27,6 +27,9 @@ export class InvestigatorService {
     return this.http.post(`${this.url}/investigator/search`, data)
   }
 
+  getInvestigatorProject(data:any): Observable<any> {
+    return this.http.post(`${this.url}/investigator/listProject`, data)
+  }
 
   storeInvestigators(data:any): Observable<any> {
     return this.http.post(`${this.url}/investigator`, data)

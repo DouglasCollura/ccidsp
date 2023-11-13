@@ -36,12 +36,21 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.getInvestigators()
     this.getPnfs()
-    this.getTrayectos()
+    // this.getTrayectos()
     this.getAcademicYear()
   }
 
   ngAfterViewInit(): void {
     this.paginator.itemsPerPageLabel = ""
+
+    this.form.get('pnfId').valueChanges.subscribe(e=>{
+      if (e) {
+        this.trayectos = this.pnfs.data.find((pnf: any) => pnf.id == e)?.trayectos
+      } else {
+        this.trayectos = [];
+      }
+      this.form.get('trayectoId').reset()
+    })
 
     this.form.get('trayectoId').valueChanges.subscribe(e=>{
       e ? this.getSecciones() : this.secciones = [];
@@ -93,13 +102,13 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
     })
   }
 
-  getTrayectos(){
-    this.trayectoServices.getTrayecto()
-    .subscribe(e=>{
-      this.trayectos = e;
-      console.log(e)
-    })
-  }
+  // getTrayectos(){
+  //   this.trayectoServices.getTrayecto()
+  //   .subscribe(e=>{
+  //     this.trayectos = e;
+  //     console.log(e)
+  //   })
+  // }
 
   getAcademicYear(){
     this.academicYearService.getAcademicYear()
@@ -190,6 +199,8 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
 
   setEdit(data:any){
     this.form.patchValue(data)
+    this.form.get('trayectoId').setValue(data.trayectoId)
+    this.form.get('seccionId').setValue(data.seccionId)
     this.getSecciones()
     this.idEdit = data?.id;
     this.edit = true;

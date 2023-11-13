@@ -4,6 +4,7 @@ import {MatPaginator, MatPaginatorIntl} from '@angular/material/paginator';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { PnfService } from 'src/app/pages/services/pnf.service';
+import { TrayectoService } from '../../services/trayecto.service';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class PnfComponent implements OnInit, AfterViewInit{
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private paginator: MatPaginatorIntl,
-    private pnfServices:PnfService
+    private pnfServices:PnfService,
+    private trayectoServices:TrayectoService
   ){
   }
   @ViewChild('modal') modal!: TemplateRef<any>;
@@ -26,6 +28,7 @@ export class PnfComponent implements OnInit, AfterViewInit{
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
 
   ngOnInit(): void {
+    this.getTrayectos()
     this.getPnfs()
   }
 
@@ -39,10 +42,13 @@ export class PnfComponent implements OnInit, AfterViewInit{
   form = this.formBuilder.group({
     name: ['', Validators.required],
     code: ['', Validators.required],
+    trayectos: [[], Validators.required],
   })
 
-  displayedColumns: string[] = ['Codigo','Nombre', 'Opt.'];
+  displayedColumns: string[] = ['Codigo','Nombre', 'Trayectos', 'Opt.'];
   pnfs:any=[];
+  trayectos:any=[];
+
   modalActive: any;
   edit:boolean = false;
   idEdit:number=0;
@@ -54,9 +60,17 @@ export class PnfComponent implements OnInit, AfterViewInit{
     this.pnfServices.getPnf()
     .subscribe(e=>{
       this.pnfs = e;
+    })
+  }
+
+  getTrayectos(){
+    this.trayectoServices.getTrayecto()
+    .subscribe(e=>{
+      this.trayectos = e.data;
       console.log(e)
     })
   }
+
 
   store(){
     this.error = ''
@@ -68,7 +82,10 @@ export class PnfComponent implements OnInit, AfterViewInit{
 
     let name:string = this.form.get('name').value;
     this.form.get('name').setValue(name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
-    this.pnfServices.storePnf(this.form.value)
+
+    const data:any = this.form.value;
+
+    this.pnfServices.storePnf({...data,trayectos: data.trayectos.join()})
     .subscribe({
       next: (e)=>{
         this.getPnfs()
@@ -77,7 +94,6 @@ export class PnfComponent implements OnInit, AfterViewInit{
         this.SuccessRegisterSwal.fire()
       },
       error: ({error}) => {
-        console.log(error)
         this.error = error.message
         this.loading = false;
       }
@@ -94,8 +110,9 @@ export class PnfComponent implements OnInit, AfterViewInit{
     }
 
     this.loading = true;
+    const data:any = this.form.value;
 
-    this.pnfServices.updatePnf(this.idEdit,this.form.value)
+    this.pnfServices.updatePnf(this.idEdit,{...data,trayectos: data.trayectos.join()})
     .subscribe({
       next: (e)=>{
         this.getPnfs()
@@ -118,10 +135,16 @@ export class PnfComponent implements OnInit, AfterViewInit{
   }
 
   setEdit(data:any){
-    this.form.patchValue(data)
+
+    this.form.patchValue({...data, trayectos: data.trayectos.map((trayecto:any)=> trayecto?.id)})
+    console.log(this.form.value)
     this.idEdit = data?.id;
     this.edit = true;
     this.openModal()
+  }
+
+  getTrayectosString(data:any){
+    return data.map((trayecto:any)=> trayecto?.name).join()
   }
 
   paginate(event:any){

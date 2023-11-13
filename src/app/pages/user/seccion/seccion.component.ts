@@ -32,11 +32,21 @@ export class SeccionComponent implements OnInit, AfterViewInit{
   ngOnInit(): void {
     this.getSecciones()
     this.getPnf()
-    this.getTrayectos()
+    // this.getTrayectos()
   }
 
   ngAfterViewInit(): void {
-    this.paginator.itemsPerPageLabel = ""
+    this.paginator.itemsPerPageLabel = "";
+
+    this.form.get('pnfId').valueChanges.subscribe(e=>{
+
+      if(e){
+        this.trayectos = this.pnfs.data.find((pnf:any) => pnf.id == e).trayectos;
+      }else{
+        this.trayectos = [];
+        this.form.get('trayectoId').reset()
+      }
+    })
   }
 
   form = this.formBuilder.group({
@@ -66,13 +76,13 @@ export class SeccionComponent implements OnInit, AfterViewInit{
     })
   }
 
-  getTrayectos(){
-    this.trayectoServices.getTrayecto()
-    .subscribe(e=>{
-      this.trayectos = e;
-      console.log(e)
-    })
-  }
+  // getTrayectos(){
+  //   this.trayectoServices.getTrayecto()
+  //   .subscribe(e=>{
+  //     this.trayectos = e;
+  //     console.log(e)
+  //   })
+  // }
 
   getSecciones(){
     this.seccionService.getSecciones()
@@ -88,7 +98,6 @@ export class SeccionComponent implements OnInit, AfterViewInit{
       return;
     }
     this.loading = true;
-
     this.seccionService.storeSeccion(this.form.value)
     .subscribe({
       next: (e)=>{
@@ -114,6 +123,7 @@ export class SeccionComponent implements OnInit, AfterViewInit{
     }
 
     this.loading = true;
+    console.log(this.form.value)
 
     this.seccionService.updateSeccion(this.idEdit,this.form.value)
     .subscribe({

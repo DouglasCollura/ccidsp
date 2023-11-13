@@ -15,6 +15,8 @@ import { SujetoSocialService } from '../../services/sujeto-social.service';
 import { ProjectService } from '../../services/project.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { LocationService } from '../../services/location.service';
+import { of, zip } from 'rxjs';
 
 @Component({
   selector: 'app-project-investigator',
@@ -35,8 +37,8 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
     private dimensionEspacialService: DimensionEspacialService,
     private lineaInvestigacionService: LineaInvestigacionService,
     private sujetoSocialService: SujetoSocialService,
-    private projectService: ProjectService
-
+    private projectService: ProjectService,
+    private locationService: LocationService
   ) {
   }
   @ViewChild('modal') modal!: TemplateRef<any>;
@@ -47,12 +49,13 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
+    this.getEstados()
     this.getProjects()
     this.getPnfs()
-    this.getTrayectos()
+    // this.getTrayectos()
     this.getAcademicYear()
-    this.getAreas()
-    this.getDimension()
+    // this.getAreas()
+    // this.getDimension()
     console.log('student ', this.student)
   }
 
@@ -65,21 +68,56 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
       console.log(e)
     })
 
+    this.form.get('pnfId').valueChanges.subscribe(e => {
+      this.trayectos = []
+      if (e) {
+        this.getAreas(e)
+        this.trayectos = this.pnfs.data.find((pnf: any) => pnf.id == e)?.trayectos
+      } else {
+        this.secciones = [];
+      }
+      this.form.get('AreaPrioritariaId').reset()
+      console.log(e)
+    })
+
     this.form.get('AreaPrioritariaId').valueChanges.subscribe(e => {
       e && this.getLineaById(e);
     })
 
-    this.form.get('DimensionEspacialId').valueChanges.subscribe(e => {
-      e && this.getSulejoById(e);
-    })
+    // this.form.get('DimensionEspacialId').valueChanges.subscribe(e => {
+    //   e && this.getSulejoById(e);
+    // })
 
     this.inputSubject.pipe(debounceTime(500)).subscribe((e) => {
       console.log(e)
-      this.searchInvestigator({...this.form.value,search:e})
+      this.searchInvestigator({ ...this.form.value, search: e })
 
     });
 
-    this.setDataStudent()
+    this.form.get('estadoId')?.valueChanges.
+      subscribe((e: any) => {
+        console.log(e)
+        this.municipios = [];
+        this.form.get('municipioId')?.reset()
+        e && this.getMunicipiosById(e)
+      })
+
+    this.form.get('municipioId')?.valueChanges.
+      subscribe((e: any) => {
+        console.log(e)
+        this.parroquias = [];
+        this.form.get('parroquiaId')?.reset()
+        e && this.getParroquiaById(e)
+      })
+
+    this.form.get('parroquiaId')?.valueChanges.
+      subscribe((e: any) => {
+        console.log(e)
+        this.dimeniones = [];
+        this.form.get('DimensionEspacialId')?.reset()
+        e && this.getDimension(e)
+      })
+
   }
 
   form = this.formBuilder.group({
@@ -91,7 +129,15 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
     AreaPrioritariaId: [null, Validators.required],
     LineaInvestigacionId: [null, Validators.required],
     DimensionEspacialId: [null, Validators.required],
-    SujetoSocialId: [null, Validators.required],
+    sujetoSocial: [null, Validators.required],
+    estadoId: [null, Validators.required],
+    municipioId: [null, Validators.required],
+    parroquiaId: [null, Validators.required],
+  })
+
+  formDimension = this.formBuilder.group({
+    parroquiaId: [null],
+    name: ['', Validators.required],
   })
 
   student = JSON.parse(localStorage.getItem('investigator'))
@@ -107,6 +153,10 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
   lineas: any = []
   inv_selected: any = []
   sujetos: any = [];
+
+  estados: any = [];
+  municipios: any = [];
+  parroquias: any = [];
 
   proyectos_cursantes: any = []
   proyectos_cerrados: any = []
@@ -126,25 +176,47 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
   //   })
   // }
 
+  getEstados() {
+    this.locationService.getEstados()
+      .subscribe(e => {
+        this.estados = e;
+        console.log(e)
+      })
+  }
+
+  getMunicipiosById(id: number) {
+    this.locationService.getMunicipiosById(id)
+      .subscribe(e => {
+        this.municipios = e
+      })
+  }
+
+  getParroquiaById(id: number) {
+    this.locationService.getParroquiasById(id)
+      .subscribe(e => {
+        this.parroquias = e
+      })
+  }
+
   getProjects() {
     this.projectService.getProject(this.user?.peopleId)
       .subscribe(e => {
         console.log('projectos ', e)
-        this.proyectos_cursantes = e.rows.filter(e => e.status < 2)
-        this.proyectos_cerrados = e.rows.filter(e => e.status >= 2)
+        this.proyectos_cursantes = e.rows?.filter(e => e.status < 2)
+        this.proyectos_cerrados = e.rows?.filter(e => e.status >= 2)
       })
   }
 
-  getAreas() {
-    this.areaPrioritariaService.getAreaPrioritaria()
+  getAreas(id: any) {
+    this.areaPrioritariaService.getAreaByPnf(id)
       .subscribe(e => {
         this.areas = e;
         console.log('area ', e)
       })
   }
 
-  getDimension() {
-    this.dimensionEspacialService.getDimensionEspacial()
+  getDimension(id: any) {
+    this.dimensionEspacialService.getDimensionByParroquiaId(id)
       .subscribe(e => {
         this.dimeniones = e;
         console.log(e)
@@ -155,6 +227,7 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
     this.pnfServices.getPnf()
       .subscribe(e => {
         this.pnfs = e;
+        this.setDataStudent()
         console.log(e)
       })
   }
@@ -184,23 +257,16 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
   }
 
   getIvestigators() {
-    // this.error = ''
-    // console.log('cargaInvestigador ', this.form.value)
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
+
     this.loading = true;
 
-    // let name:string = this.form.get('name').value;
-    // this.form.get('name').setValue(name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
-    this.investigatorService.getInvestigatorList(this.form.value)
+    this.investigatorService.getInvestigatorProject(this.form.value)
       .subscribe({
         next: (e) => {
           // this.modalActive.close()
-          console.log(e)
           this.loading = false;
           this.investigators = e.data
+          console.log('investigators ', this.investigators)
           // this.SuccessRegisterSwal.fire()
         },
         error: ({ error }) => {
@@ -294,14 +360,19 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
     this.form.get('pnfId').setValue(this.student.pnfId)
     this.form.get('trayectoId').setValue(this.student.trayectoId)
     this.form.get('seccionId').setValue(this.student.seccionId)
+    this.form.get('AcademicYearId').setValue(this.student.academicYearId)
     this.getIvestigators()
   }
 
-  searchInvestigator(data){
+  searchInvestigator(data) {
+    this.loading = true;
+
     this.investigatorService.searchInvestigator(data)
-    .subscribe(e=>{
-      console.log(e)
-    })
+      .subscribe(e => {
+        console.log(e)
+        this.loading = false;
+        this.investigators = e.data
+      })
   }
 
   paginate(event: any) {
@@ -318,6 +389,31 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
     }
   }
 
+  storeDimension() {
+    if (this.formDimension.invalid) {
+      this.formDimension.markAllAsTouched();
+      return;
+    }
+    this.loading = true;
+
+    let data = this.formDimension.value;
+    data.parroquiaId = this.form.get('parroquiaId').value;
+    this.dimensionEspacialService.storeDimensionEspacial(data)
+      .subscribe({
+        next: (e) => {
+          this.loading = false;
+          this.dimeniones.data.push(e.data)
+          this.form.get('DimensionEspacialId').setValue(e.data.id)
+          this.formDimension.get('name').reset();
+        },
+        error: ({ error }) => {
+          console.log(error)
+          this.error = error.message
+          this.loading = false;
+        }
+      })
+  }
+
   onInputChange(value: any) {
     this.inputSubject.next(value.target.value);
   }
@@ -330,11 +426,21 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
     return this.form.get(field)?.invalid && this.form.get(field)?.touched
   }
 
+  getFieldInvalidDimension(field: string) {
+    return this.formDimension.get(field)?.invalid && this.formDimension.get(field)?.touched
+  }
+
+  returnFormDimension() {
+    this.form.get('DimensionEspacialId').reset();
+    this.formDimension.get('name').reset();
+  }
+
   getFieldValue(field: string) {
     return this.form.get(field).value;
   }
 
   openModal() {
+    this.setDataStudent()
     this.modalActive = this.dialog.open(this.modal,
       {
         maxWidth: '800px',
@@ -347,5 +453,9 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
       this.edit = false;
       this.form.reset()
     })
+  }
+
+  disableStep3() {
+    return this.form.get('parroquiaId').value == null;
   }
 }

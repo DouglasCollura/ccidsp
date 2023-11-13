@@ -91,6 +91,7 @@
               {{date_to ?? 'Hasta'}} <mat-icon *ngIf="date_to" (click)="clearTo()">close</mat-icon> </button>
           </div>
           <p *ngIf="getFieldInvalid('academicYearTo')" class="text-error">Campo requerido</p>
+          <p  *ngIf="date_to < date_from" class="text-error"> No puede ser menor </p>
           <p class="text-rojo text-center" > {{error}} </p>
         </div>
 
