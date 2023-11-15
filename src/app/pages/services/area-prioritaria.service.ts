@@ -16,6 +16,10 @@ export class AreaPrioritariaService {
     return this.http.get(`${this.url}/area-prioritaria`)
   }
 
+  getAreaByPnf(id:any): Observable<any> {
+    return this.http.get(`${this.url}/area-prioritaria/pnf/${id}`)
+  }
+
   storeAreaPrioritaria(data:any): Observable<any> {
     return this.http.post(`${this.url}/area-prioritaria`, data)
   }

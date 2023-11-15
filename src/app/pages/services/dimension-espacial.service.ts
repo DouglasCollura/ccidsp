@@ -16,6 +16,10 @@ export class DimensionEspacialService {
     return this.http.get(`${this.url}/dimension-espacial`)
   }
 
+  getDimensionByParroquiaId(id:any): Observable<any> {
+    return this.http.get(`${this.url}/dimension-espacial/parroquia/${id}`)
+  }
+
   storeDimensionEspacial(data:any): Observable<any> {
     return this.http.post(`${this.url}/dimension-espacial`, data)
   }

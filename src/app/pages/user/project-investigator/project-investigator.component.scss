@@ -228,3 +228,22 @@
     background-color: #b1b1b1 !important;
   }
 }
+
+
+.form-dimension{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  .content-btn{
+    display: flex;
+    gap: 5px;
+    .btn{
+      color: white !important;
+      padding:  5px !important;
+      background-color: #49BC62;
+    }
+    .back{
+      background-color: #FCB712;
+    }
+  }
+}

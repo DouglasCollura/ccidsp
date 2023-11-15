@@ -4,6 +4,7 @@ import {MatPaginator, MatPaginatorIntl} from '@angular/material/paginator';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { AreaPrioritariaService } from '../../services/area-prioritaria.service';
+import { PnfService } from '../../services/pnf.service';
 
 @Component({
   selector: 'app-area-prioritaria',
@@ -16,7 +17,8 @@ export class AreaPrioritariaComponent implements OnInit, AfterViewInit{
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private paginator: MatPaginatorIntl,
-    private areaPrioritariaService:AreaPrioritariaService
+    private areaPrioritariaService:AreaPrioritariaService,
+    private pnfServices:PnfService,
   ){
   }
   @ViewChild('modal') modal!: TemplateRef<any>;
@@ -26,6 +28,7 @@ export class AreaPrioritariaComponent implements OnInit, AfterViewInit{
 
   ngOnInit(): void {
     this.getAreas()
+    this.getPnfs()
   }
 
   ngAfterViewInit(): void {
@@ -37,9 +40,11 @@ export class AreaPrioritariaComponent implements OnInit, AfterViewInit{
 
   form = this.formBuilder.group({
     name: ['', Validators.required],
+    pnfId: [null, Validators.required],
   })
 
-  displayedColumns: string[] = ['Nombre', 'Opt.'];
+  displayedColumns: string[] = ['Nombre', 'PNF', 'Opt.'];
+  pnfs:any=[];
   areas:any=[];
   modalActive: any;
   edit:boolean = false;
@@ -52,6 +57,14 @@ export class AreaPrioritariaComponent implements OnInit, AfterViewInit{
     this.areaPrioritariaService.getAreaPrioritaria()
     .subscribe(e=>{
       this.areas = e;
+      console.log(e)
+    })
+  }
+
+  getPnfs(){
+    this.pnfServices.getPnf()
+    .subscribe(e=>{
+      this.pnfs = e;
       console.log(e)
     })
   }

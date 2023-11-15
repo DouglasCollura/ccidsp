@@ -7,7 +7,7 @@
     <div class="section">
       <div class="header">
         <h1>Cursante</h1>
-        <button class="btn-primary" (click)="openModal()"> Inscribir <mat-icon>add_box</mat-icon> </button>
+        <button class="btn-primary" *ngIf="proyectos_cursantes.length == 0" (click)="openModal()"> Inscribir <mat-icon>add_box</mat-icon> </button>
       </div>
 
       <ng-container *ngFor="let proyecto of proyectos_cursantes">
@@ -18,18 +18,16 @@
                 <mat-icon class="material-symbols-outlined">folder</mat-icon>
                 <span class="font-500"> {{proyecto.name}} </span>
               </mat-panel-title>
-              <mat-chip
-                [class]="
+              <mat-chip [class]="
                   proyecto.status == 0 ? 'chip-status-grey' :
                   proyecto.status == 1 ? 'chip-status-yellow' :
-                  proyecto.status == 2 ? 'chip-status-green' :'chip-status-red'"
-                  cdkDrag>
+                  proyecto.status == 2 ? 'chip-status-green' :'chip-status-red'" cdkDrag>
 
-                  {{
-                    proyecto.status == 0 ? 'En revisión' :
-                    proyecto.status == 1 ? 'En proceso' :
-                    proyecto.status == 2 ? 'Aprobado' : 'Reprobado'
-                  }}
+                {{
+                proyecto.status == 0 ? 'En revisión' :
+                proyecto.status == 1 ? 'En proceso' :
+                proyecto.status == 2 ? 'Aprobado' : 'Reprobado'
+                }}
 
               </mat-chip>
             </mat-expansion-panel-header>
@@ -92,7 +90,7 @@
 
                   <div class="card-investigator">
                     <mat-icon class="material-symbols-outlined">info</mat-icon>
-                    <h3>Sujeto social: {{proyecto.SujetoSocial.name}} </h3>
+                    <h3>Sujeto social: {{proyecto.sujetoSocial}} </h3>
                   </div>
                   <mat-divider></mat-divider>
 
@@ -151,18 +149,16 @@
 
             </mat-panel-title>
 
-            <mat-chip
-              [class]="
+            <mat-chip [class]="
                 proyecto.status == 0 ? 'chip-status-grey' :
                 proyecto.status == 1 ? 'chip-status-yellow' :
-                proyecto.status == 2 ? 'chip-status-green' :'chip-status-red'"
-                cdkDrag>
+                proyecto.status == 2 ? 'chip-status-green' :'chip-status-red'" cdkDrag>
 
-                {{
-                  proyecto.status == 0 ? 'En revisión' :
-                  proyecto.status == 1 ? 'En proceso' :
-                  proyecto.status == 2 ? 'Aprobado' : 'Reprobado'
-                }}
+              {{
+              proyecto.status == 0 ? 'En revisión' :
+              proyecto.status == 1 ? 'En proceso' :
+              proyecto.status == 2 ? 'Aprobado' : 'Reprobado'
+              }}
 
             </mat-chip>
           </mat-expansion-panel-header>
@@ -225,7 +221,7 @@
 
                 <div class="card-investigator">
                   <mat-icon class="material-symbols-outlined">info</mat-icon>
-                  <h3>Sujeto social: {{proyecto.SujetoSocial.name}} </h3>
+                  <h3>Sujeto social: {{proyecto.sujetoSocial}} </h3>
                 </div>
                 <mat-divider></mat-divider>
 
@@ -287,6 +283,7 @@
       <h2 class="text-center font-600">Proyecto</h2>
 
       <form class="grid" [formGroup]="form">
+
         <div class="form-group">
           <label>Nombre del proyecto</label>
           <textarea name="" id="" cols="10" rows="2" class="input-square"
@@ -297,48 +294,39 @@
 
         <div class="content-two">
           <div class="form-group">
-            <label>Area prioritaria </label>
-            <ng-select notFoundText="Sin Resultados" placeholder="Area prioritaria" formControlName="AreaPrioritariaId">
-              <ng-option *ngFor="let area of areas?.data" [value]="area?.id">{{
-                area?.name }}</ng-option>
+            <label>Estado</label>
+            <ng-select notFoundText="Sin Resultados" placeholder="Selecciona el estado" formControlName="estadoId">
+              <ng-option *ngFor="let estado of estados?.data" [value]="estado?.id">{{ estado?.name }}</ng-option>
             </ng-select>
-            <p *ngIf="getFieldInvalid('AreaPrioritariaId')" class="text-error">Campo requerido</p>
+            <p *ngIf="getFieldInvalid('estadoId')" class="text-error">Campo requerido</p>
           </div>
 
           <div class="form-group">
-            <label>Linea de investigación</label>
-            <ng-select notFoundText="Sin Resultados" placeholder="Linea de investigación"
-              formControlName="LineaInvestigacionId">
-              <ng-option *ngFor="let linea of lineas?.data" [value]="linea?.id">{{ linea?.name }}</ng-option>
+            <label>Municipio</label>
+            <ng-select notFoundText="Sin Resultados" placeholder="Selecciona el municipio"
+              formControlName="municipioId">
+              <ng-option *ngFor="let municipio of municipios?.data" [value]="municipio?.id">{{ municipio?.name
+                }}</ng-option>
             </ng-select>
-            <p *ngIf="getFieldInvalid('LineaInvestigacionId')" class="text-error">Campo requerido</p>
-
+            <p *ngIf="getFieldInvalid('municipioId')" class="text-error">Campo requerido</p>
           </div>
         </div>
 
         <div class="content-two">
-          <div class="form-group">
-            <label>Dimensión espacial </label>
-            <ng-select notFoundText="Sin Resultados" placeholder="Dimensión espacial"
-              formControlName="DimensionEspacialId">
-              <ng-option *ngFor="let dimenion of dimeniones?.data" [value]="dimenion?.id">{{
-                dimenion?.name }}</ng-option>
-            </ng-select>
-            <p *ngIf="getFieldInvalid('DimensionEspacialId')" class="text-error">Campo requerido</p>
-          </div>
 
           <div class="form-group">
-            <label>Sujeto social</label>
-            <ng-select notFoundText="Sin Resultados" placeholder="Sujeto social" formControlName="SujetoSocialId">
-              <ng-option *ngFor="let sujeto of sujetos?.data" [value]="sujeto?.id">{{ sujeto?.name }}</ng-option>
+            <label>Parroquia</label>
+            <ng-select notFoundText="Sin Resultados" placeholder="Selecciona la parroquia"
+              formControlName="parroquiaId">
+              <ng-option *ngFor="let parroquia of parroquias?.data" [value]="parroquia?.id">{{ parroquia?.name
+                }}</ng-option>
             </ng-select>
-            <p *ngIf="getFieldInvalid('SujetoSocialId')" class="text-error">Campo requerido</p>
-
+            <p *ngIf="getFieldInvalid('municipioId')" class="text-error">Campo requerido</p>
           </div>
         </div>
 
-        <mat-divider></mat-divider>
 
+        <mat-divider></mat-divider>
 
         <div class="content-two">
           <div class="form-group">
@@ -364,7 +352,7 @@
           <div class="form-group">
             <label>Trayecto </label>
             <ng-select notFoundText="Sin Resultados" placeholder="Selecciona el trayecto" formControlName="trayectoId">
-              <ng-option *ngFor="let trayecto of trayectos?.data" [value]="trayecto?.id">{{ trayecto?.name
+              <ng-option *ngFor="let trayecto of trayectos" [value]="trayecto?.id">{{ trayecto?.name
                 }}</ng-option>
             </ng-select>
             <p *ngIf="getFieldInvalid('trayectoId')" class="text-error">Campo requerido</p>
@@ -380,14 +368,82 @@
           </div>
         </div>
 
+        <mat-divider></mat-divider>
+
+        <div class="content-two">
+          <div class="form-group">
+            <label>Area prioritaria </label>
+            <ng-select notFoundText="Sin Resultados" placeholder="Area prioritaria" formControlName="AreaPrioritariaId"
+              [readonly]="disableStep3()">
+              <ng-option *ngFor="let area of areas?.data" [value]="area?.id">{{
+                area?.name }}</ng-option>
+            </ng-select>
+            <p *ngIf="getFieldInvalid('AreaPrioritariaId')" class="text-error">Campo requerido</p>
+          </div>
+
+          <div class="form-group">
+            <label>Linea de investigación</label>
+            <ng-select notFoundText="Sin Resultados" placeholder="Linea de investigación"
+              formControlName="LineaInvestigacionId" [readonly]="disableStep3()">
+              <ng-option *ngFor="let linea of lineas?.data" [value]="linea?.id">{{ linea?.name }}</ng-option>
+            </ng-select>
+            <p *ngIf="getFieldInvalid('LineaInvestigacionId')" class="text-error">Campo requerido</p>
+
+          </div>
+        </div>
+
+        <div class="content-two">
+          <div class="form-group">
+            <label>Dimensión espacial </label>
+            <ng-container *ngIf="getFieldValue('DimensionEspacialId') != 'other'">
+              <ng-select notFoundText="Sin Resultados" placeholder="Dimensión espacial"
+                formControlName="DimensionEspacialId" [readonly]="disableStep3()">
+                <ng-option *ngFor="let dimenion of dimeniones?.data" [value]="dimenion?.id">{{
+                  dimenion?.name }}</ng-option>
+                <ng-option value="other"> Otro </ng-option>
+              </ng-select>
+            </ng-container>
+
+            <ng-container *ngIf="getFieldValue('DimensionEspacialId') == 'other'">
+              <form [formGroup]="formDimension" class="form-dimension">
+                <input class="input-square" [ngClass]="{ 'errorCampos': getFieldInvalidDimension('name') }"
+                  placeholder="Nombre" formControlName="name">
+                <div class="content-btn">
+                  <button class="btn" (click)="storeDimension()">
+                    <mat-icon>check</mat-icon> </button>
+                  <button class="btn back" (click)="returnFormDimension()">
+                    <mat-icon>reply_outlined</mat-icon> </button>
+                </div>
+              </form>
+            </ng-container>
+
+            <p *ngIf="getFieldInvalid('DimensionEspacialId')" class="text-error">Campo requerido</p>
+          </div>
+
+          <div class="form-group">
+            <label>Sujeto social</label>
+            <input class="input-square input-block" onlyLetter
+              [ngClass]="{ 'errorCampos': getFieldInvalid('sujetoSocial') }" placeholder="Nombre"
+              formControlName="sujetoSocial">
+            <p *ngIf="getFieldInvalid('sujetoSocial')" class="text-error">Campo requerido</p>
+            <!-- <ng-select notFoundText="Sin Resultados" placeholder="Sujeto social" formControlName="SujetoSocialId"
+              [readonly]="disableStep3()">
+              <ng-option *ngFor="let sujeto of sujetos?.data" [value]="sujeto?.id">{{ sujeto?.name }}</ng-option>
+            </ng-select>
+            <p *ngIf="getFieldInvalid('SujetoSocialId')" class="text-error">Campo requerido</p> -->
+
+          </div>
+        </div>
+
       </form>
 
       <mat-divider></mat-divider>
       <div class="group-input-icon-left">
-        <input class="input-search" onlyNumbers (input)="onInputChange($event)" placeholder="Cedula o Expediente" type="text">
+        <input class="input-search" onlyNumbers (input)="onInputChange($event)" placeholder="Cedula o Expediente"
+          type="text">
         <mat-icon class="blue">search</mat-icon>
       </div>
-      <table mat-table [dataSource]="investigators?.data" class="table">
+      <table mat-table [dataSource]="investigators" class="table">
 
         <!--- Note that these columns can be defined in any order.
                     The actual rendered columns are set as a property on the row definition" -->
@@ -421,7 +477,9 @@
           <th mat-header-cell *matHeaderCellDef> </th>
           <td mat-cell *matCellDef="let element">
             <div class="content-btn">
-              <button class="btn" [class.btn-primary]="isChecked(element.id)" (click)="checkStudent(element.id)">
+              <button class="btn" *ngIf="element?.projectStudents?.length > 0" style="background-color: lightgrey;" disabled >
+                En un proyecto </button>
+              <button class="btn" *ngIf="element?.projectStudents?.length == 0" [class.btn-primary]="isChecked(element.id)" (click)="checkStudent(element.id)">
                 <mat-icon>check</mat-icon> </button>
             </div>
           </td>

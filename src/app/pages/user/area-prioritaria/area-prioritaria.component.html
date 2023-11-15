@@ -8,10 +8,14 @@
 
     <table mat-table [dataSource]="areas?.data" class="table">
 
-
       <ng-container matColumnDef="Nombre">
         <th mat-header-cell *matHeaderCellDef> Nombre </th>
         <td mat-cell *matCellDef="let element"> {{element?.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="PNF">
+        <th mat-header-cell *matHeaderCellDef> PNF </th>
+        <td mat-cell *matCellDef="let element"> {{element?.pnf?.name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="Opt.">
@@ -46,6 +50,14 @@
       <h2 class="text-center font-600">Área prioritaria</h2>
 
       <form class="grid" [formGroup]="form">
+
+        <div class="form-group">
+          <label>PNF</label>
+          <ng-select notFoundText="Sin Resultados" placeholder="Selecciona el PNF" formControlName="pnfId">
+            <ng-option *ngFor="let pnf of pnfs?.data" [value]="pnf?.id">{{ pnf?.name }}</ng-option>
+          </ng-select>
+          <p *ngIf="getFieldInvalid('pnfId')" class="text-error">Campo requerido</p>
+        </div>
 
         <div class="form-group">
           <label>Nombre</label>

@@ -14,6 +14,7 @@ import { LineaInvestigacionService } from '../../services/linea-investigacion.se
 import { SujetoSocialService } from '../../services/sujeto-social.service';
 import { ProjectService } from '../../services/project.service';
 import { TeacherService } from '../../services/teacher.service';
+import { LocationService } from '../../services/location.service';
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
@@ -34,8 +35,8 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
     private lineaInvestigacionService:LineaInvestigacionService,
     private sujetoSocialService:SujetoSocialService,
     private teacherService:TeacherService,
-    private projectService:ProjectService
-
+    private projectService:ProjectService,
+    private locationService: LocationService
   ){
   }
   @ViewChild('modal') modal!: TemplateRef<any>;
@@ -44,28 +45,34 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
 
   ngOnInit(): void {
-
+    this.getEstados()
     this.getProjects()
     this.getPnfs()
-    this.getTrayectos()
+    // this.getTrayectos()
     this.getAcademicYear()
-    this.getAreas()
-    this.getDimension()
+    // this.getAreas()
+    // this.getDimension()
   }
 
   ngAfterViewInit(): void {
     this.paginator.itemsPerPageLabel = ""
 
+    this.form.get('pnfId').valueChanges.subscribe(e => {
+      this.trayectos = []
+      if (e) {
+        this.getAreas(e)
+        this.trayectos = this.pnfs.data.find((pnf: any) => pnf.id == e)?.trayectos;
+        console.log('trayectos ', this.trayectos)
+      } else {
+        this.secciones = [];
+      }
+      this.form.get('AreaPrioritariaId').reset()
+    })
+
     this.form.get('trayectoId').valueChanges.subscribe(e=>{
       e ? this.getSecciones() : this.secciones = [];
       this.form.get('seccionId').reset()
-      console.log(e)
     })
-
-    // this.form.get('seccionId').valueChanges.subscribe(e=>{
-    //   console.log('seccion ', e)
-    //   e ? this.getIvestigators() : this.investigators = [];
-    // })
 
     this.form.get('AreaPrioritariaId').valueChanges.subscribe(e=>{
       e && this.getLineaById(e);
@@ -74,6 +81,27 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
     this.form.get('DimensionEspacialId').valueChanges.subscribe(e=>{
       e && this.getSulejoById(e);
     })
+
+    this.form.get('estadoId')?.valueChanges.
+      subscribe((e: any) => {
+        this.municipios = [];
+        this.form.get('municipioId')?.reset()
+        e && this.getMunicipiosById(e)
+      })
+
+    this.form.get('municipioId')?.valueChanges.
+      subscribe((e: any) => {
+        this.parroquias = [];
+        this.form.get('parroquiaId')?.reset()
+        e && this.getParroquiaById(e)
+      })
+
+    this.form.get('parroquiaId')?.valueChanges.
+      subscribe((e: any) => {
+        this.dimeniones = [];
+        this.form.get('DimensionEspacialId')?.reset()
+        e && this.getDimension(e)
+      })
   }
 
   form = this.formBuilder.group({
@@ -85,7 +113,10 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
     AreaPrioritariaId: [null, Validators.required],
     LineaInvestigacionId: [null, Validators.required],
     DimensionEspacialId: [null, Validators.required],
-    SujetoSocialId: [null, Validators.required],
+    sujetoSocial: [null, Validators.required],
+    estadoId: [null, Validators.required],
+    municipioId: [null, Validators.required],
+    parroquiaId: [null, Validators.required],
   })
 
   displayedColumns: string[] = ['Nombres', 'Apellidos', 'Cedula', 'Expediente', 'Opt.'];
@@ -100,6 +131,10 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
   inv_selected:any = []
   sujetos:any=[];
 
+  estados: any = [];
+  municipios: any = [];
+  parroquias: any = [];
+
   proyectos_cursantes:any=[]
   proyectos_cerrados:any=[]
   proyectos:any = []
@@ -111,15 +146,36 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
   error:string = '';
   user:any = JSON.parse(localStorage.getItem('user'))
 
+
+  getEstados() {
+    this.locationService.getEstados()
+      .subscribe(e => {
+        this.estados = e;
+      })
+  }
+
+  getMunicipiosById(id: number) {
+    this.locationService.getMunicipiosById(id)
+      .subscribe(e => {
+        this.municipios = e
+      })
+  }
+
+  getParroquiaById(id: number) {
+    this.locationService.getParroquiasById(id)
+      .subscribe(e => {
+        this.parroquias = e
+      })
+  }
+
+
   getProjects(){
     this.teacherService.getProjectsById(this.user?.peopleId)
     .subscribe(e=>{
-      console.log('projectos ', e)
       const groupedArray = e.reduce((result, item) => {
 
         const { seccionId, seccion:{name}, ...rest } = item;
         const existingGroup = result.find(group => group.name === name);
-        console.log('rest ', item)
         if (existingGroup) {
           existingGroup.grupo.push({ seccionId, ...rest.seccion , ...item });
         } else {
@@ -129,31 +185,28 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
         return result;
       }, []);
       this.proyectos = groupedArray
-      console.log('agrupados ', this.proyectos)
     })
   }
 
-  getAreas(){
-    this.areaPrioritariaService.getAreaPrioritaria()
-    .subscribe(e=>{
-      this.areas = e;
-      console.log('area ',e)
-    })
+
+  getAreas(id: any) {
+    this.areaPrioritariaService.getAreaByPnf(id)
+      .subscribe(e => {
+        this.areas = e;
+      })
   }
 
-  getDimension(){
-    this.dimensionEspacialService.getDimensionEspacial()
-    .subscribe(e=>{
-      this.dimeniones = e;
-      console.log(e)
-    })
+  getDimension(id: any) {
+    this.dimensionEspacialService.getDimensionByParroquiaId(id)
+      .subscribe(e => {
+        this.dimeniones = e;
+      })
   }
 
   getPnfs(){
     this.pnfServices.getPnf()
     .subscribe(e=>{
       this.pnfs = e;
-      console.log(e)
     })
   }
 
@@ -161,7 +214,6 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
     this.trayectoServices.getTrayecto()
     .subscribe(e=>{
       this.trayectos = e;
-      console.log(e)
     })
   }
 
@@ -169,7 +221,6 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
     this.academicYearService.getAcademicYear()
     .subscribe(e=>{
       this.academicYears = e;
-      console.log(e)
     })
   }
 
@@ -183,7 +234,6 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
 
   getIvestigators(){
     this.error = ''
-    console.log('cargaInvestigador ', this.form.value)
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -196,13 +246,11 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
     .subscribe({
       next: (e)=>{
         // this.modalActive.close()
-        console.log(e)
         this.loading = false;
         this.investigators = e.data
         // this.SuccessRegisterSwal.fire()
       },
       error: ({error}) => {
-        console.log(error)
         this.error = error.message
         this.loading = false;
       }
@@ -213,7 +261,6 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
     this.lineaInvestigacionService.getLineaInvestigacionById(id)
     .subscribe(e=>{
       this.lineas = e;
-      console.log(e)
     })
 
   }
@@ -222,7 +269,6 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
     this.sujetoSocialService.getSujetoSocialById(id)
     .subscribe(e=>{
       this.sujetos = e
-      console.log(e)
     })
   }
 
@@ -232,7 +278,6 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
     }
     this.projectService.changeStatus(data.id, send)
     .subscribe(e=>{
-      console.log(e)
       this.getProjects()
     })
   }
@@ -246,7 +291,6 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
 
     this.projectService.storeProject(data)
     .subscribe(e=>{
-      console.log(e)
       // this.proyectos = e.rows
     })
   }
@@ -285,8 +329,28 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
   }
 
   setEdit(data:any){
+    const {DimensionEspacial:{
+
+      parroquia:{
+        id:parroquiaId,
+        municipio:{
+          id:municipioId,
+          estado:{
+            id:estadoId
+          }
+        }
+      }
+    }} = data;
+    console.log(data)
     this.form.patchValue(data)
     this.form.get('seccionId').setValue(data.seccionId)
+    this.form.get('estadoId').setValue(estadoId)
+    this.form.get('municipioId').setValue(municipioId)
+    this.form.get('parroquiaId').setValue(parroquiaId)
+    this.form.get('DimensionEspacialId').setValue(data.DimensionEspacialId)
+
+    // this.form.get('trayectoId').setValue(data.trayectoId)
+    // this.form.get('AcademicYearId').setValue(data.academicYearId)
     this.getIvestigators()
     this.idEdit = data?.id;
     this.edit = true;

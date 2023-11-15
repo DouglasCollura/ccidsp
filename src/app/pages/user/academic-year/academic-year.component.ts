@@ -70,7 +70,7 @@ export class AcademicYearComponent implements OnInit, AfterViewInit {
 
   store() {
     this.error = null
-    if (this.form.invalid) {
+    if (this.form.invalid || this.date_to < this.date_from) {
       this.form.markAllAsTouched();
       return;
     }
@@ -202,5 +202,10 @@ export class AcademicYearComponent implements OnInit, AfterViewInit {
   clearFrom() {
     this.date_from = null
     this.date_from_format = null
+  }
+
+
+  getFieldError(field:string, error:string){
+    return this.form.get(field).hasError(error)
   }
 }

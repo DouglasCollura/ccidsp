@@ -58,6 +58,10 @@ export class LocationService {
     return this.http.get(`${this.url}/parroquia`)
   }
 
+  getParroquiasById(id:number): Observable<any> {
+    return this.http.get(`${this.url}/parroquia/${id}`)
+  }
+
   storeParroquia(data:any): Observable<any> {
     return this.http.post(`${this.url}/parroquia`, data)
   }

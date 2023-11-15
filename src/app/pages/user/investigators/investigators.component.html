@@ -121,7 +121,7 @@
           <div class="form-group">
             <label>Trayecto  </label>
             <ng-select [readonly]="!getFieldValue('pnfId')" notFoundText="Sin Resultados" placeholder="Selecciona el trayecto" formControlName="trayectoId">
-              <ng-option *ngFor="let trayecto of trayectos?.data" [value]="trayecto?.id">{{ trayecto?.name }}</ng-option>
+              <ng-option *ngFor="let trayecto of trayectos" [value]="trayecto?.id">{{ trayecto?.name }}</ng-option>
             </ng-select>
             <p *ngIf="getFieldInvalid('trayectoId')" class="text-error">Campo requerido</p>
           </div>
