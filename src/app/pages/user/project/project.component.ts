@@ -43,6 +43,7 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
   @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
+  @ViewChild('desincorporarSwal') desincorporarSwal!: SwalComponent;
 
   ngOnInit(): void {
     this.getEstados()
@@ -145,7 +146,8 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
   loading:boolean = false;
   error:string = '';
   user:any = JSON.parse(localStorage.getItem('user'))
-
+  projectData:any=null;
+  invIncorporate:any=null;
 
   getEstados() {
     this.locationService.getEstados()
@@ -242,13 +244,17 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
 
     // let name:string = this.form.get('name').value;
     // this.form.get('name').setValue(name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
-    this.investigatorService.getInvestigatorList(this.form.value)
+    this.investigatorService.getListForTeacher(this.projectData)
     .subscribe({
-      next: (e)=>{
+      next: ({data:{data}})=>{
         // this.modalActive.close()
         this.loading = false;
-        this.investigators = e.data
+        this.projectData.projectStudent.map((inv:any)=>{
+          this.investigators.push({...inv.investigator, isProject:true, status:inv.status})
+        })
+        this.investigators = this.investigators.concat(data)
         // this.SuccessRegisterSwal.fire()
+        console.log('investigator ', this.investigators)
       },
       error: ({error}) => {
         this.error = error.message
@@ -342,6 +348,7 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
       }
     }} = data;
     console.log(data)
+    this.projectData = data;
     this.form.patchValue(data)
     this.form.get('seccionId').setValue(data.seccionId)
     this.form.get('estadoId').setValue(estadoId)
@@ -356,6 +363,25 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
     this.edit = true;
     this.openModal()
     this.inv_selected = data.projectStudent.map(e=> e.investigatorId)
+  }
+
+  changeStatusInvestigator(){
+    const {id, status} = this.invIncorporate;
+    console.log(this.invIncorporate)
+    this.projectService.changeStatusInvestigator(id, {status})
+    .subscribe((e:any)=>{
+      let investigators = [...this.investigators]
+      const index = investigators.findIndex((investigator:any)=> investigator.id == e.data.investigatorId);
+      investigators[index] = {...this.investigators[index], status: e.data.status}
+      this.investigators = [];
+      this.investigators = investigators;
+      console.log(this.investigators)
+    })
+  }
+
+  incorporateInv(id:any, status:any){
+    this.invIncorporate = {id, status}
+    this.changeStatusInvestigator()
   }
 
   paginate(event:any){
@@ -407,4 +433,16 @@ export class ProjectComponent  implements OnInit, AfterViewInit{
       this.form.reset()
     })
   }
+
+  openModalDesincorp(id:any, status:any){
+    this.invIncorporate = {id, status}
+    this.modalActive = this.desincorporarSwal.fire()
+    this.modalActive.then((result) => {
+      if (result.value) {
+        this.changeStatusInvestigator()
+      }
+    });
+  }
+
 }
+
