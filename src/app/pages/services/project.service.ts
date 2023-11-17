@@ -24,6 +24,10 @@ export class ProjectService {
     return this.http.patch(`${this.url}/project/change-status/${id}`, data)
   }
 
+  changeStatusInvestigator(id:number,data:any): Observable<any> {
+    return this.http.patch(`${this.url}/project/change-status-investigator/${id}`, data)
+  }
+
   update(id:number,data:any): Observable<any> {
     return this.http.patch(`${this.url}/project/update/${id}`, data)
   }

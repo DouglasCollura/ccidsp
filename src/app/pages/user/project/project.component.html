@@ -488,7 +488,7 @@
         <input class="input-search" type="text">
         <mat-icon class="blue">search</mat-icon>
       </div>
-      <table mat-table [dataSource]="investigators?.data" class="table">
+      <table mat-table [dataSource]="investigators" class="table">
 
         <!--- Note that these columns can be defined in any order.
                     The actual rendered columns are set as a property on the row definition" -->
@@ -521,18 +521,20 @@
         <ng-container matColumnDef="Opt.">
           <th mat-header-cell *matHeaderCellDef> </th>
           <td mat-cell *matCellDef="let element">
-            <div class="content-btn">
-              <button class="btn" *ngIf="element?.projectStudents?.length > 0" disabled
-                [class.btn-primary]="isChecked(element.id)" (click)="checkStudent(element.id)">
-                En un proyecto </button>
+            <div class="content-btn" *ngIf="element?.isProject">
+              <button class="btn btn-secondary" *ngIf="element.status == 0"
+                (click)="openModalDesincorp(element.id, 1)"> Desincorporar </button>
+              <button class="btn btn-primary" *ngIf="element.status == 1"
+                (click)="incorporateInv(element.id, 0)"> Incorporar </button>
+            </div>
+
+            <div class="content-btn" *ngIf="!element?.isProject">
               <button class="btn" *ngIf="element?.projectStudents?.length == 0"
                 [class.btn-primary]="isChecked(element.id)" (click)="checkStudent(element.id)">
                 <mat-icon>check</mat-icon> </button>
             </div>
           </td>
         </ng-container>
-
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
@@ -551,6 +553,8 @@
 </ng-template>
 
 <swal #deleteSwal title="Desea eliminar?" [showDenyButton]="true" denyButtonText="Cancelar" confirmButtonColor="#d16868"
+  denyButtonColor="#68bcd1" icon="warning" confirmButtonText="Continuar"></swal>
+<swal #desincorporarSwal title="Seguro que quiere desincorporar?" [showDenyButton]="true" denyButtonText="Cancelar" confirmButtonColor="#d16868"
   denyButtonColor="#68bcd1" icon="warning" confirmButtonText="Continuar"></swal>
 <swal #SuccessRegisterSwal title="Registrado con exito" confirmButtonColor="#68bcd1" icon="success"
   confirmButtonText="Continuar"></swal>

@@ -23,6 +23,10 @@ export class InvestigatorService {
     return this.http.post(`${this.url}/investigator/list`, data)
   }
 
+  getListForTeacher(data:any): Observable<any> {
+    return this.http.post(`${this.url}/investigator/listForTeacher`, data)
+  }
+
   searchInvestigator(data:any): Observable<any> {
     return this.http.post(`${this.url}/investigator/search`, data)
   }
