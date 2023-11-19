@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SeccionService } from 'src/app/pages/services/seccion.service';
 import { PnfService } from 'src/app/pages/services/pnf.service';
 import { TrayectoService } from '../../services/trayecto.service';
+import { Subject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-seccion',
@@ -27,6 +28,7 @@ export class SeccionComponent implements OnInit, AfterViewInit{
   @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
+  private inputSubject = new Subject<string>();
 
 
   ngOnInit(): void {
@@ -47,6 +49,13 @@ export class SeccionComponent implements OnInit, AfterViewInit{
         this.form.get('trayectoId').reset()
       }
     })
+
+    this.inputSubject.pipe(debounceTime(500)).subscribe((e) => {
+      console.log(e)
+      this.search = {...this.search, search:e}
+      this.searchSeccion()
+
+    });
   }
 
   form = this.formBuilder.group({
@@ -66,7 +75,14 @@ export class SeccionComponent implements OnInit, AfterViewInit{
   idEdit:number=0;
   loading:boolean = false;
   error:string = '';
+  search:any={
+    search:null,
+    pnf:null
+  };
 
+  onInputChange(value: any) {
+    this.inputSubject.next(value.target.value);
+  }
 
   getPnf(){
     this.pnfService.getPnf()
@@ -145,6 +161,23 @@ export class SeccionComponent implements OnInit, AfterViewInit{
       this.getSecciones()
       this.successDeleteSwal.fire()
     })
+  }
+
+  changePnf(data:any){
+    console.log(data)
+    this.search = {...this.search,pnf:data};
+    this.searchSeccion()
+  }
+
+  searchSeccion() {
+    this.loading = true;
+
+    this.seccionService.search(this.search)
+      .subscribe(e => {
+        console.log(e)
+        this.loading = false;
+        this.secciones = e
+      })
   }
 
   setEdit(data:any){

@@ -17,6 +17,10 @@ export class LocationService {
     return this.http.get(`${this.url}/estado`)
   }
 
+  searchEstados(search): Observable<any> {
+    return this.http.post(`${this.url}/estado/search`,search)
+  }
+
   storeEstado(data:any): Observable<any> {
     return this.http.post(`${this.url}/estado`, data)
   }
@@ -33,6 +37,10 @@ export class LocationService {
 
   getMunicipios(): Observable<any> {
     return this.http.get(`${this.url}/municipio`)
+  }
+
+  searchMunicipio(search): Observable<any> {
+    return this.http.post(`${this.url}/municipio/search`,search)
   }
 
   getMunicipiosById(id:number): Observable<any> {
@@ -56,6 +64,10 @@ export class LocationService {
 
   getParroquias(): Observable<any> {
     return this.http.get(`${this.url}/parroquia`)
+  }
+
+  searchParroquia(search): Observable<any> {
+    return this.http.post(`${this.url}/parroquia/search`,search)
   }
 
   getParroquiasById(id:number): Observable<any> {

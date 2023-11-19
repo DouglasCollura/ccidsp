@@ -6,6 +6,12 @@
       <button class="btn-primary" (click)="openModal()"> Registrar <mat-icon>add_box</mat-icon> </button>
     </div>
 
+    <div class="group-input-icon-left">
+      <input class="input-search"  (input)="onInputChange($event)" placeholder="Cedula o Nombre"
+        type="text">
+      <mat-icon class="blue">search</mat-icon>
+    </div>
+
     <table mat-table [dataSource]="teachers?.data" class="table">
 
       <ng-container matColumnDef="Cedula">
@@ -21,6 +27,12 @@
       <ng-container matColumnDef="Apellido">
         <th mat-header-cell *matHeaderCellDef> Apellido </th>
         <td mat-cell *matCellDef="let element"> {{element?.lastname}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Usuario">
+        <th mat-header-cell *matHeaderCellDef> Usuario </th>
+        <td mat-cell *matCellDef="let element"> <div class="user-circle" [class.user-circle-green]="element?.user?.id" ></div> </td>
       </ng-container>
 
       <ng-container matColumnDef="Opt.">

@@ -69,6 +69,16 @@
 .section-card{
   margin-bottom: 10px;
 }
+
+
+.card-footer{
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+}
+
 .header-section-card{
   display: flex;
   width: 100%;

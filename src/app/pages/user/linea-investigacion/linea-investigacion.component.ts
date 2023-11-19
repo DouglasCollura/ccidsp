@@ -5,6 +5,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { LineaInvestigacionService } from '../../services/linea-investigacion.service';
 import { AreaPrioritariaService } from '../../services/area-prioritaria.service';
+import { Subject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-linea-investigacion',
@@ -25,6 +26,7 @@ export class LineaInvestigacionComponent  implements OnInit, AfterViewInit{
   @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
+  private inputSubject = new Subject<string>();
 
   ngOnInit(): void {
     this.getLienas()
@@ -36,6 +38,13 @@ export class LineaInvestigacionComponent  implements OnInit, AfterViewInit{
 
     this.form.get('name')
     .valueChanges.subscribe(()=> this.error = '')
+
+    this.inputSubject.pipe(debounceTime(500)).subscribe((e) => {
+      console.log(e)
+      this.search = {...this.search, search:e}
+      this.searchLinea()
+
+    });
   }
 
   form = this.formBuilder.group({
@@ -51,7 +60,14 @@ export class LineaInvestigacionComponent  implements OnInit, AfterViewInit{
   idEdit:number=0;
   loading:boolean = false;
   error:string = '';
+  search:any={
+    search:null,
+    area_prioritaria_id:null
+  };
 
+  onInputChange(value: any) {
+    this.inputSubject.next(value.target.value);
+  }
 
   getAreas(){
     this.areaPrioritariaService.getAreaPrioritaria()
@@ -125,6 +141,23 @@ export class LineaInvestigacionComponent  implements OnInit, AfterViewInit{
       this.getLienas()
       this.successDeleteSwal.fire()
     })
+  }
+
+  changeArea(data:any){
+    console.log(data)
+    this.search = {...this.search,area_prioritaria_id:data};
+    this.searchLinea()
+  }
+
+  searchLinea() {
+    this.loading = true;
+
+    this.lineaInvestigacionService.search(this.search)
+      .subscribe(e => {
+        console.log(e)
+        this.loading = false;
+        this.lineas = e.data
+      })
   }
 
   setEdit(data:any){

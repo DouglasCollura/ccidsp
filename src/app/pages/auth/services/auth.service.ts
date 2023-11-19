@@ -37,4 +37,16 @@ export class AuthService {
   signUpInvestigator(data:any): Observable<any> {
     return this.http.post(`${this.url}/investigator/register`,data)
   }
+
+  sendCode(data:any): Observable<any> {
+    return this.http.post(`${this.url}/user/sendEmail`,data)
+  }
+
+  verifyCode(data:any): Observable<any> {
+    return this.http.post(`${this.url}/user/verifyCode`,data)
+  }
+
+  changePassword(data:any): Observable<any> {
+    return this.http.post(`${this.url}/user/changePassword`,data)
+  }
 }

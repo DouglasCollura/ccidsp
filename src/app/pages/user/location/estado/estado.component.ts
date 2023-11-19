@@ -4,6 +4,7 @@ import {MatPaginator, MatPaginatorIntl} from '@angular/material/paginator';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { LocationService } from 'src/app/pages/services/location.service';
+import { Subject, debounceTime } from 'rxjs';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class EstadoComponent implements OnInit, AfterViewInit {
   @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
+  private inputSubject = new Subject<string>();
 
   ngOnInit(): void {
     this.getEstados()
@@ -33,6 +35,14 @@ export class EstadoComponent implements OnInit, AfterViewInit {
     this.paginator.itemsPerPageLabel = ""
     this.form.get('name')
     .valueChanges.subscribe(()=> this.error = '')
+
+
+    this.inputSubject.pipe(debounceTime(500)).subscribe((e) => {
+      console.log(e)
+      this.search = {...this.search, search:e}
+      this.searchEstados()
+
+    });
   }
 
   form = this.formBuilder.group({
@@ -46,7 +56,13 @@ export class EstadoComponent implements OnInit, AfterViewInit {
   idEdit:number=0;
   loading:boolean = false;
   error:string = '';
+  search:any={
+    search:"",
+  };
 
+  onInputChange(value: any) {
+    this.inputSubject.next(value.target.value);
+  }
 
   getEstados(){
     this.estadoService.getEstados()
@@ -114,6 +130,18 @@ export class EstadoComponent implements OnInit, AfterViewInit {
       this.successDeleteSwal.fire()
     })
   }
+
+  searchEstados() {
+    this.loading = true;
+
+    this.estadoService.searchEstados(this.search)
+      .subscribe(e => {
+        console.log(e)
+        this.loading = false;
+        this.estados = e.data
+      })
+  }
+
 
   setEdit(data:any){
     this.form.patchValue(data)

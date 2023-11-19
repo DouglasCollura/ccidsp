@@ -134,3 +134,22 @@
     max-height: auto !important;
     overflow-y: auto !important;
 }
+
+
+.user-circle{
+  width: 14px;
+  height:14px;
+
+  background-color: gray;
+
+  &-green{
+    @extend .user-circle;
+    background-color: #49BC62;
+  }
+
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}

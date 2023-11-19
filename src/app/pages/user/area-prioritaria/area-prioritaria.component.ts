@@ -5,6 +5,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { AreaPrioritariaService } from '../../services/area-prioritaria.service';
 import { PnfService } from '../../services/pnf.service';
+import { Subject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-area-prioritaria',
@@ -25,6 +26,7 @@ export class AreaPrioritariaComponent implements OnInit, AfterViewInit{
   @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
+  private inputSubject = new Subject<string>();
 
   ngOnInit(): void {
     this.getAreas()
@@ -36,6 +38,13 @@ export class AreaPrioritariaComponent implements OnInit, AfterViewInit{
 
     this.form.get('name')
     .valueChanges.subscribe(()=> this.error = '')
+
+    this.inputSubject.pipe(debounceTime(500)).subscribe((e) => {
+      console.log(e)
+      this.search = {...this.search, search:e}
+      this.searchArea()
+
+    });
   }
 
   form = this.formBuilder.group({
@@ -51,7 +60,10 @@ export class AreaPrioritariaComponent implements OnInit, AfterViewInit{
   idEdit:number=0;
   loading:boolean = false;
   error:string = '';
-
+  search:any={
+    search:null,
+    pnf:null
+  };
 
   getAreas(){
     this.areaPrioritariaService.getAreaPrioritaria()
@@ -67,6 +79,10 @@ export class AreaPrioritariaComponent implements OnInit, AfterViewInit{
       this.pnfs = e;
       console.log(e)
     })
+  }
+
+  onInputChange(value: any) {
+    this.inputSubject.next(value.target.value);
   }
 
   store(){
@@ -133,6 +149,23 @@ export class AreaPrioritariaComponent implements OnInit, AfterViewInit{
     this.idEdit = data?.id;
     this.edit = true;
     this.openModal()
+  }
+
+  changePnf(data:any){
+    console.log(data)
+    this.search = {...this.search,pnf:data};
+    this.searchArea()
+  }
+
+  searchArea() {
+    this.loading = true;
+
+    this.areaPrioritariaService.search(this.search)
+      .subscribe(e => {
+        console.log(e)
+        this.loading = false;
+        this.areas = e
+      })
   }
 
   paginate(event:any){
