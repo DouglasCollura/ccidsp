@@ -6,6 +6,12 @@
       <button class="btn-primary" (click)="openModal()"> Registrar <mat-icon>add_box</mat-icon> </button>
     </div>
 
+    <div class="group-input-icon-left">
+      <input class="input-search" (input)="onInputChange($event)" placeholder="Código o Nombre"
+        type="text">
+      <mat-icon class="blue">search</mat-icon>
+    </div>
+
     <table mat-table [dataSource]="pnfs?.data" class="table">
 
       <ng-container matColumnDef="Codigo">

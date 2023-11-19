@@ -20,6 +20,11 @@ export class PnfService {
     return this.http.post(`${this.url}/pnf`, data)
   }
 
+  searchPnf(data:any): Observable<any> {
+    return this.http.post(`${this.url}/pnf/search`, data)
+  }
+
+
   updatePnf(id:number,data:any): Observable<any> {
     return this.http.patch(`${this.url}/pnf/${id}`, data)
   }

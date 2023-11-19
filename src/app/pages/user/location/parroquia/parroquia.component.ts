@@ -4,6 +4,7 @@ import {MatPaginator, MatPaginatorIntl} from '@angular/material/paginator';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { LocationService } from 'src/app/pages/services/location.service';
+import { Subject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-parroquia',
@@ -23,6 +24,7 @@ export class ParroquiaComponent implements OnInit, AfterViewInit{
   @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
+  private inputSubject = new Subject<string>();
 
 
   ngOnInit(): void {
@@ -43,6 +45,12 @@ export class ParroquiaComponent implements OnInit, AfterViewInit{
       this.form.get('municipioId')?.reset()
       e && this.getMunicipiosById(e)
     })
+
+    this.inputSubject.pipe(debounceTime(500)).subscribe((e) => {
+      console.log(e)
+      this.search = {...this.search, search:e}
+      this.searchParroquia()
+    });
   }
 
   form = this.formBuilder.group({
@@ -60,7 +68,15 @@ export class ParroquiaComponent implements OnInit, AfterViewInit{
   idEdit:number=0;
   loading:boolean = false;
   error:string = '';
+  search:any={
+    search:"",
+    estado_id:null,
+    municipio_id:null
+  };
 
+  onInputChange(value: any) {
+    this.inputSubject.next(value.target.value);
+  }
 
   getEstados(){
     this.locationService.getEstados()
@@ -142,6 +158,32 @@ export class ParroquiaComponent implements OnInit, AfterViewInit{
       this.getParroquia()
       this.successDeleteSwal.fire()
     })
+  }
+
+  changeEstado(data:any){
+    this.search = {...this.search,estado_id:data, municipio_id:null};
+    if(!data){
+      this.municipios.data = null
+    }else{
+      this.getMunicipiosById(data)
+    }
+    this.searchParroquia()
+  }
+
+  changeMunicipio(data:any){
+    this.search = {...this.search,municipio_id:data};
+    this.searchParroquia()
+  }
+
+  searchParroquia() {
+    this.loading = true;
+
+    this.locationService.searchParroquia(this.search)
+      .subscribe(e => {
+        console.log(e)
+        this.loading = false;
+        this.parroquias = e.data
+      })
   }
 
   setEdit(data:any){

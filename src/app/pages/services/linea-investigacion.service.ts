@@ -16,6 +16,10 @@ export class LineaInvestigacionService {
     return this.http.get(`${this.url}/linea-investigacion`)
   }
 
+  search(search): Observable<any> {
+    return this.http.post(`${this.url}/linea-investigacion/search`,search)
+  }
+
   getLineaInvestigacionById(id:number): Observable<any> {
     return this.http.get(`${this.url}/linea-investigacion/find/${id}`)
   }

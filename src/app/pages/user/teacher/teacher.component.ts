@@ -8,6 +8,7 @@ import { TrayectoService } from '../../services/trayecto.service';
 import { SeccionService } from '../../services/seccion.service';
 import { TeacherService } from '../../services/teacher.service';
 import { PeopleService } from '../../services/people.service';
+import { Subject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-teacher',
@@ -31,6 +32,7 @@ export class TeacherComponent implements OnInit, AfterViewInit {
   @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
+  private inputSubject = new Subject<string>();
 
   ngOnInit(): void {
     this.getPnfs()
@@ -57,6 +59,12 @@ export class TeacherComponent implements OnInit, AfterViewInit {
         this.error = '';
         e ? this.canAdd = true : this.canAdd = false
       })
+
+    this.inputSubject.pipe(debounceTime(500)).subscribe((e) => {
+      console.log(e)
+      this.searchTeacher({ search: e })
+
+    });
   }
 
 
@@ -83,7 +91,7 @@ export class TeacherComponent implements OnInit, AfterViewInit {
   asignaturasEdit: any = []
   peopleId: number = 0;
 
-  displayedColumns: string[] = ['Cedula', 'Nombre', 'Apellido', 'Opt.'];
+  displayedColumns: string[] = ['Cedula', 'Nombre', 'Apellido', 'Usuario', 'Opt.'];
   modalActive: any;
   edit: boolean = false;
   idEdit: number = 0;
@@ -131,8 +139,8 @@ export class TeacherComponent implements OnInit, AfterViewInit {
       this.form.markAllAsTouched();
       return;
     }
-    
-    let formData:any = this.form.value;
+
+    let formData: any = this.form.value;
     formData.cedula.length == 7 && (formData.cedula = `0${formData.cedula}`);
 
     this.peopleService.storePeople(formData)
@@ -204,10 +212,10 @@ export class TeacherComponent implements OnInit, AfterViewInit {
     this.teacherService.deleteTeacher(data.teacher)
       .subscribe(e => {
         this.peopleService.delete(data.id)
-        .subscribe(e => {
-          this.getTeachers()
-          this.successDeleteSwal.fire()
-        })
+          .subscribe(e => {
+            this.getTeachers()
+            this.successDeleteSwal.fire()
+          })
       })
 
   }
@@ -220,6 +228,11 @@ export class TeacherComponent implements OnInit, AfterViewInit {
     this.openModal()
   }
 
+
+  onInputChange(value: any) {
+    this.inputSubject.next(value.target.value);
+  }
+
   paginate(event: any) {
     console.log(event)
   }
@@ -230,16 +243,16 @@ export class TeacherComponent implements OnInit, AfterViewInit {
 
   storeSignatures() {
     this.loading = true;
-    let data = this.asignaturas.filter(e=> !e.id)
+    let data = this.asignaturas.filter(e => !e.id)
 
     data = data.map((e: any) => {
-        const col = {
-          seccionId: e.seccion.id,
-          trayectoId: e.trayecto.id,
-          pnfId: e.pnf.id,
-          peopleId: this.idEdit != 0 ? this.idEdit: this.peopleId,
-        };
-        return col
+      const col = {
+        seccionId: e.seccion.id,
+        trayectoId: e.trayecto.id,
+        pnfId: e.pnf.id,
+        peopleId: this.idEdit != 0 ? this.idEdit : this.peopleId,
+      };
+      return col
     })
 
     if (this.deleteAsignaturas.length > 0) {
@@ -259,6 +272,18 @@ export class TeacherComponent implements OnInit, AfterViewInit {
         error: (e) => {
           this.loading = false;
         }
+      })
+  }
+
+
+  searchTeacher(data) {
+    this.loading = true;
+
+    this.teacherService.search(data)
+      .subscribe(e => {
+        console.log(e)
+        this.loading = false;
+        this.teachers = e
       })
   }
 

@@ -5,6 +5,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { PnfService } from 'src/app/pages/services/pnf.service';
 import { TrayectoService } from '../../services/trayecto.service';
+import { Subject, debounceTime } from 'rxjs';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class PnfComponent implements OnInit, AfterViewInit{
   @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
+  private inputSubject = new Subject<string>();
 
   ngOnInit(): void {
     this.getTrayectos()
@@ -37,6 +39,12 @@ export class PnfComponent implements OnInit, AfterViewInit{
 
     this.form.get('name')
     .valueChanges.subscribe(()=> this.error = '')
+
+    this.inputSubject.pipe(debounceTime(500)).subscribe((e) => {
+      console.log(e)
+      this.searchPnf({ search: e })
+
+    });
   }
 
   form = this.formBuilder.group({
@@ -132,6 +140,23 @@ export class PnfComponent implements OnInit, AfterViewInit{
       this.getPnfs()
       this.successDeleteSwal.fire()
     })
+  }
+
+
+  onInputChange(value: any) {
+    this.inputSubject.next(value.target.value);
+  }
+
+
+  searchPnf(data) {
+    this.loading = true;
+
+    this.pnfServices.searchPnf(data)
+      .subscribe(e => {
+        console.log(e)
+        this.loading = false;
+        this.pnfs = e.data
+      })
   }
 
   setEdit(data:any){

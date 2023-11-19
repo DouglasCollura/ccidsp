@@ -6,6 +6,29 @@
       <button class="btn-primary" (click)="openModal()"> Registrar <mat-icon>add_box</mat-icon> </button>
     </div>
 
+    <div class="filter">
+      <div class="form-group">
+        <label>Estado</label>
+        <ng-select notFoundText="Sin Resultados" placeholder="Selecciona el Estado" [(ngModel)]="search.estado_id" (change)="changeEstado($event)">
+          <ng-option *ngFor="let estado of estados.data" [value]="estado?.id">{{ estado?.name }}</ng-option>
+        </ng-select>
+      </div>
+
+      <div class="form-group">
+        <label>Municipio</label>
+        <ng-select notFoundText="Sin Resultados" placeholder="Selecciona el Municipio" [(ngModel)]="search.municipio_id" (change)="changeMunicipio($event)">
+          <ng-option *ngFor="let municipio of municipios.data" [value]="municipio?.id">{{ municipio?.name }}</ng-option>
+        </ng-select>
+      </div>
+
+      <div class="group-input-icon-left">
+        <input class="input-search"  (input)="onInputChange($event)" placeholder="Nombre"
+          type="text">
+        <mat-icon class="blue">search</mat-icon>
+      </div>
+    </div>
+
+
     <table mat-table [dataSource]="parroquias?.data" class="table">
 
       <ng-container matColumnDef="Estado">

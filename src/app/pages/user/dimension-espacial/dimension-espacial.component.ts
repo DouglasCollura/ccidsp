@@ -5,6 +5,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { DimensionEspacialService } from '../../services/dimension-espacial.service';
 import { LocationService } from '../../services/location.service';
+import { Subject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-dimension-espacial',
@@ -25,6 +26,7 @@ export class DimensionEspacialComponent implements OnInit, AfterViewInit {
   @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
+  private inputSubject = new Subject<string>();
 
   ngOnInit(): void {
     this.getLienas();
@@ -53,6 +55,12 @@ export class DimensionEspacialComponent implements OnInit, AfterViewInit {
         e && this.getParroquiaById(e)
       })
 
+      this.inputSubject.pipe(debounceTime(500)).subscribe((e) => {
+        console.log(e)
+        this.search = {...this.search, search:e}
+        this.searchDimension()
+
+      });
   }
 
   form = this.formBuilder.group({
@@ -73,6 +81,15 @@ export class DimensionEspacialComponent implements OnInit, AfterViewInit {
   idEdit: number = 0;
   loading: boolean = false;
   error: string = '';
+  search:any={
+    search:"",
+    estado_id:null
+  };
+
+  onInputChange(value: any) {
+    this.inputSubject.next(value.target.value);
+  }
+
 
   getEstados() {
     this.locationService.getEstados()
@@ -167,6 +184,55 @@ export class DimensionEspacialComponent implements OnInit, AfterViewInit {
         this.successDeleteSwal.fire()
       })
   }
+
+
+  changeEstado(data:any){
+    this.search = {...this.search, municipio_id:null, parroquia_id:null}
+    console.log(data)
+    if(!data){
+      this.municipios.data = null
+    }else{
+      this.getMunicipiosById(data)
+    }
+    this.search = {...this.search,estado_id:data};
+
+    this.searchDimension()
+  }
+
+  changeMunicipio(data:any){
+    this.search = {...this.search, parroquia_id:null}
+    if(!data){
+      this.parroquias.data = null
+    }else{
+      this.getParroquiaById(data)
+    }
+    console.log(data)
+    this.search = {...this.search,municipio_id:data};
+    this.getParroquiaById(data)
+    this.searchDimension()
+  }
+
+  changeParroquia(data:any){
+    if(!data){
+      this.parroquias.data = null
+    }
+
+    console.log(data)
+    this.search = {...this.search,parroquia_id:data};
+    this.searchDimension()
+  }
+
+  searchDimension() {
+    this.loading = true;
+
+    this.dimensionEspacialService.search(this.search)
+      .subscribe(e => {
+        console.log(e)
+        this.loading = false;
+        this.lineas = e.data
+      })
+  }
+
 
   setEdit(data: any) {
     const {

@@ -8,6 +8,7 @@ import { PnfService } from '../../services/pnf.service';
 import { TrayectoService } from '../../services/trayecto.service';
 import { SeccionService } from '../../services/seccion.service';
 import { AcademicYearService } from '../../services/academic-year.service';
+import { Subject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-investigators',
@@ -32,6 +33,7 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessRegisterSwal') SuccessRegisterSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
+  private inputSubject = new Subject<string>();
 
   ngOnInit(): void {
     this.getInvestigators()
@@ -57,9 +59,15 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
       this.form.get('seccionId').reset()
       console.log(e)
     })
+
+    this.inputSubject.pipe(debounceTime(500)).subscribe((e) => {
+      console.log(e)
+      this.searchInvestigator({search: e })
+
+    });
   }
 
-  displayedColumns: string[] = ['Nombres', 'Apellidos', 'Cedula', 'Expediente', 'Opt.'];
+  displayedColumns: string[] = ['Nombres', 'Apellidos', 'Cedula', 'Expediente', 'Usuario', 'Opt.'];
   investigators:any = [];
   trayectos:any=[];
   secciones:any=[];
@@ -205,6 +213,21 @@ export class InvestigatorsComponent implements OnInit, AfterViewInit {
     this.idEdit = data?.id;
     this.edit = true;
     this.openModal()
+  }
+
+  searchInvestigator(data) {
+    this.loading = true;
+
+    this.investigatorService.search(data)
+      .subscribe(e => {
+        console.log(e)
+        this.loading = false;
+        this.investigators = e
+      })
+  }
+
+  onInputChange(value: any) {
+    this.inputSubject.next(value.target.value);
   }
 
   getFieldInvalid(field: string) {

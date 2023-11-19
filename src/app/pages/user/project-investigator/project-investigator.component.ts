@@ -46,6 +46,7 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
   @ViewChild('SuccessDeleteSwal') successDeleteSwal!: SwalComponent;
   @ViewChild('SuccessUpdateSwal') SuccessUpdateSwal!: SwalComponent;
   private inputSubject = new Subject<string>();
+  projectData: any = null;
 
   ngOnInit(): void {
 
@@ -327,7 +328,7 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
 
     this.loading = true;
 
-    this.projectService.update(this.idEdit, this.form.value)
+    this.projectService.updateInv(this.idEdit, this.form.value)
       .subscribe({
         next: (e) => {
           this.getProjects()
@@ -350,7 +351,31 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
   }
 
   setEdit(data: any) {
+    console.log(data)
+
+    const { DimensionEspacial: {
+
+      parroquia: {
+        id: parroquiaId,
+        municipio: {
+          id: municipioId,
+          estado: {
+            id: estadoId
+          }
+        }
+      }
+    } } = data;
+    this.projectData = data;
     this.form.patchValue(data)
+
+    this.form.get('seccionId').setValue(data.seccionId)
+    this.form.get('pnfId').setValue(data.pnfId)
+    this.form.get('estadoId').setValue(estadoId)
+    this.form.get('municipioId').setValue(municipioId)
+    this.form.get('parroquiaId').setValue(parroquiaId)
+    this.form.get('DimensionEspacialId').setValue(data.DimensionEspacialId)
+    this.form.get('AreaPrioritariaId').setValue(data.AreaPrioritariaId)
+
     this.idEdit = data?.id;
     this.edit = true;
     this.openModal()
@@ -361,6 +386,7 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
     this.form.get('trayectoId').setValue(this.student.trayectoId)
     this.form.get('seccionId').setValue(this.student.seccionId)
     this.form.get('AcademicYearId').setValue(this.student.academicYearId)
+
     this.getIvestigators()
   }
 

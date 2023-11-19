@@ -26,12 +26,14 @@
                   <mat-chip [class]="
                       proyecto.status == 0 ? 'chip-status-grey' :
                       proyecto.status == 1 ? 'chip-status-yellow' :
-                      proyecto.status == 2 ? 'chip-status-green' :'chip-status-red'" cdkDrag>
+                      proyecto.status == 2 ? 'chip-status-green' :
+                      proyecto.status == 3 ? 'chip-status-red' :'chip-status-yellow'" cdkDrag>
 
                     {{
                     proyecto.status == 0 ? 'En revisión' :
                     proyecto.status == 1 ? 'En proceso' :
-                    proyecto.status == 2 ? 'Aprobado' : 'Reprobado'
+                    proyecto.status == 2 ? 'Aprobado' :
+                    proyecto.status == 3 ? 'Reprobado' : 'Abandono'
                     }}
 
                   </mat-chip>
@@ -130,6 +132,14 @@
                         <mat-icon class="material-symbols-outlined">info</mat-icon>
                         <h3>Sección: {{proyecto.seccion.name}} </h3>
                       </div>
+
+                      <div class="card-investigator" *ngIf="proyecto.status == 4" >
+                        <mat-icon class="material-symbols-outlined">info</mat-icon>
+                        <div class="form-group">
+                          <h3>Observaciones</h3>
+                          <textarea name="" id="" cols="80" rows="4" style="resize: none;" [value]="proyecto.description" class="input-square" placeholder="Observación"></textarea>
+                        </div>
+                      </div>
                       <mat-divider></mat-divider>
                     </div>
                   </div>
@@ -139,9 +149,10 @@
                     <button class="btn-warning" (click)="changeStatus(proyecto, 1)"> Aceptar proyecto </button>
                   </div>
 
-                  <div class="card-footer" *ngIf="proyecto.status > 0">
+                  <div class="card-footer" *ngIf="proyecto.status == 1">
                     <button class="btn-green" (click)="changeStatus(proyecto, 2)">Aprobar </button>
                     <button class="btn-secondary" (click)="changeStatus(proyecto, 3)"> Reprobar </button>
+                    <button class="btn-warning" (click)="openModalAbandono(proyecto)"> Abandono </button>
                   </div>
                 </div>
                 <mat-divider></mat-divider>
@@ -552,8 +563,8 @@
   </mat-dialog-actions>
 </ng-template>
 
-<swal #deleteSwal title="Desea eliminar?" [showDenyButton]="true" denyButtonText="Cancelar" confirmButtonColor="#d16868"
-  denyButtonColor="#68bcd1" icon="warning" confirmButtonText="Continuar"></swal>
+<swal #abandonoSwal title="Marcar como abandono" [showDenyButton]="true" denyButtonText="Cancelar" confirmButtonColor="#68bcd1"
+  denyButtonColor="#d16868" icon="warning" input="textarea" inputLabel="Observación" confirmButtonText="Continuar" ></swal>
 <swal #desincorporarSwal title="Seguro que quiere desincorporar?" [showDenyButton]="true" denyButtonText="Cancelar" confirmButtonColor="#d16868"
   denyButtonColor="#68bcd1" icon="warning" confirmButtonText="Continuar"></swal>
 <swal #SuccessRegisterSwal title="Registrado con exito" confirmButtonColor="#68bcd1" icon="success"

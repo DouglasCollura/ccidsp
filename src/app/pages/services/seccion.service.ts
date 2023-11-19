@@ -17,6 +17,11 @@ export class SeccionService {
     return this.http.get(`${this.url}/seccion`)
   }
 
+
+  search(search): Observable<any> {
+    return this.http.post(`${this.url}/seccion/search`, search)
+  }
+
   getSeccionesById(id:number,idTrayecto:number): Observable<any> {
     return this.http.get(`${this.url}/seccion/${id}/${idTrayecto}`)
   }
