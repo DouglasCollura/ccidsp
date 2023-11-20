@@ -382,6 +382,7 @@ export class ProjectInvestigatorComponent implements OnInit, AfterViewInit {
   }
 
   setDataStudent() {
+    console.log(this.student)
     this.form.get('pnfId').setValue(this.student.pnfId)
     this.form.get('trayectoId').setValue(this.student.trayectoId)
     this.form.get('seccionId').setValue(this.student.seccionId)

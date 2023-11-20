@@ -76,7 +76,7 @@ export class SeccionComponent implements OnInit, AfterViewInit{
   loading:boolean = false;
   error:string = '';
   search:any={
-    search:null,
+    search: "",
     pnf:null
   };
 

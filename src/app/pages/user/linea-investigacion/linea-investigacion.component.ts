@@ -61,7 +61,7 @@ export class LineaInvestigacionComponent  implements OnInit, AfterViewInit{
   loading:boolean = false;
   error:string = '';
   search:any={
-    search:null,
+    search:"",
     area_prioritaria_id:null
   };
 
