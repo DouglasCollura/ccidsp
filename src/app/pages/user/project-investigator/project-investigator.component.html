@@ -44,7 +44,7 @@
                 <div class="list-investigators">
 
                   <ng-container *ngFor="let inv of proyecto.projectStudent">
-                    <div class="card-investigator">
+                    <div class="card-investigator" *ngIf="inv.status != 1">
                       <h3>Cedula: {{inv.investigator.people.cedula}}</h3>
                       <h3>Nombre: {{inv.investigator.people.name}}</h3>
                       <h3>Apellido: {{inv.investigator.people.lastname}}</h3>

@@ -51,7 +51,7 @@
                     <div class="list-investigators">
 
                       <ng-container *ngFor="let inv of proyecto.projectStudent">
-                        <div class="card-investigator">
+                        <div class="card-investigator" *ngIf="inv.status != 1">
                           <h3>Cedula: {{inv.investigator.people.cedula}}</h3>
                           <h3>Nombre: {{inv.investigator.people.name}}</h3>
                           <h3>Apellido: {{inv.investigator.people.lastname}}</h3>
@@ -162,138 +162,6 @@
 
         </ng-container>
       </div>
-
-      <!-- <ng-container *ngFor="let proyectos_group of proyectos">
-        <ng-container *ngFor="let proyecto of proyectos_group">
-
-
-        </ng-container>
-        <mat-accordion>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <mat-icon class="material-symbols-outlined">folder</mat-icon>
-                <span class="font-500"> {{proyecto.name}} </span>
-              </mat-panel-title>
-              <mat-chip
-                [class]="
-                  proyecto.status == 0 ? 'chip-status-grey' :
-                  proyecto.status == 1 ? 'chip-status-yellow' :
-                  proyecto.status == 2 ? 'chip-status-green' :'chip-status-red'"
-                  cdkDrag>
-
-                  {{
-                    proyecto.status == 0 ? 'En revisión' :
-                    proyecto.status == 1 ? 'En proceso' :
-                    proyecto.status == 2 ? 'Aprobado' : 'Reprobado'
-                  }}
-
-              </mat-chip>
-            </mat-expansion-panel-header>
-
-            <div class="body-expansion">
-
-              <div class="section-card">
-                <div class="header-section-card">
-                  <mat-icon class="material-symbols-outlined">group</mat-icon>
-                  <h3>Investigadores</h3>
-                </div>
-                <mat-divider></mat-divider>
-
-                <div class="list-investigators">
-
-                  <ng-container *ngFor="let inv of proyecto.projectStudent">
-                    <div class="card-investigator">
-                      <h3>Cedula: {{inv.investigator.people.cedula}}</h3>
-                      <h3>Nombre: {{inv.investigator.people.name}}</h3>
-                      <h3>Apellido: {{inv.investigator.people.lastname}}</h3>
-                    </div>
-                    <mat-divider></mat-divider>
-                  </ng-container>
-                </div>
-              </div>
-
-
-              <div class="section-card">
-                <div class="header-section-card">
-                  <mat-icon class="material-symbols-outlined">info</mat-icon>
-                  <h3>Información</h3>
-                </div>
-                <mat-divider></mat-divider>
-
-                <div class="list-investigators">
-
-                  <div class="card-investigator">
-                    <mat-icon class="material-symbols-outlined">info</mat-icon>
-                    <h3>Proyecto: {{proyecto.name}}</h3>
-                  </div>
-                  <mat-divider></mat-divider>
-
-                  <div class="card-investigator">
-                    <mat-icon class="material-symbols-outlined">info</mat-icon>
-                    <h3>Area prioritaria: {{proyecto.AreaPrioritaria.name}} </h3>
-                  </div>
-                  <mat-divider></mat-divider>
-
-                  <div class="card-investigator">
-                    <mat-icon class="material-symbols-outlined">info</mat-icon>
-                    <h3>Linea de investigación: {{proyecto.LineaInvestigacion.name}} </h3>
-                  </div>
-                  <mat-divider></mat-divider>
-
-                  <div class="card-investigator">
-                    <mat-icon class="material-symbols-outlined">info</mat-icon>
-                    <h3>Dimensión espacial: {{proyecto.DimensionEspacial.name}} </h3>
-                  </div>
-                  <mat-divider></mat-divider>
-
-                  <div class="card-investigator">
-                    <mat-icon class="material-symbols-outlined">info</mat-icon>
-                    <h3>Sujeto social: {{proyecto.SujetoSocial.name}} </h3>
-                  </div>
-                  <mat-divider></mat-divider>
-
-                  <div class="card-investigator">
-                    <mat-icon class="material-symbols-outlined">info</mat-icon>
-                    <h3>Area: Tal</h3>
-                  </div>
-                  <mat-divider></mat-divider>
-                </div>
-              </div>
-
-              <div class="section-card">
-                <div class="header-section-card">
-                  <mat-icon class="material-symbols-outlined">info</mat-icon>
-                  <h3>Datos académicos</h3>
-                </div>
-                <mat-divider></mat-divider>
-
-                <div class="list-investigators">
-
-                  <div class="card-investigator">
-                    <mat-icon class="material-symbols-outlined">info</mat-icon>
-                    <h3>PNF: {{proyecto.pnf.name}} </h3>
-                  </div>
-                  <mat-divider></mat-divider>
-                  <div class="card-investigator">
-                    <mat-icon class="material-symbols-outlined">info</mat-icon>
-                    <h3>Trayecto: {{proyecto.trayecto.name}} </h3>
-                  </div>
-                  <mat-divider></mat-divider>
-
-                  <div class="card-investigator">
-                    <mat-icon class="material-symbols-outlined">info</mat-icon>
-                    <h3>Sección: {{proyecto.seccion.name}} </h3>
-                  </div>
-                  <mat-divider></mat-divider>
-                </div>
-              </div>
-
-            </div>
-            <mat-divider></mat-divider>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </ng-container> -->
 
 
     </div>
@@ -534,9 +402,9 @@
           <td mat-cell *matCellDef="let element">
             <div class="content-btn" *ngIf="element?.isProject">
               <button class="btn btn-secondary" *ngIf="element.status == 0"
-                (click)="openModalDesincorp(element.id, 1)"> Desincorporar </button>
+                (click)="openModalDesincorp(element.project_student_id, 1)"> Desincorporar </button>
               <button class="btn btn-primary" *ngIf="element.status == 1"
-                (click)="incorporateInv(element.id, 0)"> Incorporar </button>
+                (click)="incorporateInv(element.project_student_id, 0)"> Incorporar </button>
             </div>
 
             <div class="content-btn" *ngIf="!element?.isProject">

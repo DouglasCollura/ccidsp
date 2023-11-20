@@ -253,7 +253,7 @@ export class ProjectComponent implements OnInit, AfterViewInit {
           // this.modalActive.close()
           this.loading = false;
           this.projectData.projectStudent.map((inv: any) => {
-            this.investigators.push({ ...inv.investigator, isProject: true, status: inv.status })
+            this.investigators.push({ ...inv.investigator, isProject: true, status: inv.status, project_student_id: inv.id })
           })
           this.investigators = this.investigators.concat(data)
           // this.SuccessRegisterSwal.fire()
@@ -463,12 +463,13 @@ export class ProjectComponent implements OnInit, AfterViewInit {
 
   openModalDesincorp(id: any, status: any) {
     this.invIncorporate = { id, status }
+    console.log()
     this.modalDesinc = this.desincorporarSwal.fire()
     this.modalDesinc.then((result) => {
       if (result.value) {
 
-        const index = this.investigators.findIndex((e: any) => e.id == id);
-
+        const index = this.investigators.findIndex((e: any) => e.project_student_id == id);
+        console.log('sisa ', this.investigators[index])
         if (this.investigators[index].pnf) {
           delete this.investigators[index].status;
           delete this.investigators[index].isProject;
